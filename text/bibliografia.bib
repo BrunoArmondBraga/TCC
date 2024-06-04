@@ -1,0 +1,121 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%% INSERINDO COMENTÁRIOS EM ARQUIVOS .bib %%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% 1. Como em outros arquivos LaTeX, comentários são iniciados por "%" e,
+%    portanto, é preciso usar "\%" para imprimir o caractere "%". Esquecer
+%    disso pode gerar erros difíceis de encontrar!
+%
+% 2. Não é possível inserir comentários dentro de uma entrada, apenas fora.
+%
+% 3. Não é possível incluir o caractere arroba em um comentário.
+%
+% 4. Se quiser desabilitar temporariamente um campo ("comentar" o campo),
+%    troque seu nome para algum nome inválido, como "author-disable".
+%    Se quiser fazer alguma observação permanente dentro de uma entrada,
+%    você também pode usar algum nome de campo inválido, como "lembrete",
+%    ou usar o campo "annotation", que normalmente é ignorado.
+%
+% 5. Se quiser desabilitar temporariamente uma entrada inteira ("comentar" a
+%    entrada), não basta colocar "%" nas linhas correspondentes por causa do
+%    caractere arroba; também é preciso remover a arroba.
+%
+% 6. Na verdade, as regras não são bem essas, mas segui-las é uma boa ideia:
+%    https://tex.stackexchange.com/a/262282
+
+
+@article{selfadjustingbst,
+    author = {Sleator, Daniel Dominic and Tarjan, Robert Endre},
+    title = {Self-adjusting binary search trees},
+    year = {1985},
+    publisher = {Association for Computing Machinery},
+    address = {New York, NY, USA},
+    volume = {32},
+    number = {3},
+    issn = {0004-5411},
+    url = {https://doi.org/10.1145/3828.3835},
+    doi = {10.1145/3828.3835},
+    journal = {J. ACM},
+    pages = {652–686},
+    numpages = {35}
+}
+
+@article{dynamicoptimality,
+  author    = {Erik D. Demaine and Dion Harmon and John Iacono and Mihai Pătrașcu},
+  title     = {Dynamic optimality\,---\,{A}lmost},
+  journal   = {SIAM Journal on Computing},
+  volume    = 37,
+  number    = 1,
+  pages     = {240-251},
+  year      = 2007,
+  url       = {https://erikdemaine.org/papers/Tango_SICOMP/paper.pdf},
+}
+
+@inproceedings{geometry_of_bst,
+  title={The geometry of binary search trees},
+  author={Erik D. Demaine and Dion Harmon and John Iacono and Daniel M. Kane and Mihai Patrascu},
+  booktitle={ACM-SIAM Symposium on Discrete Algorithms},
+  year={2009},
+  url={https://api.semanticscholar.org/CorpusID:7609102}
+}
+
+@article{lowerbound_wilbert,
+  author = {Wilber, Robert},
+  title = {Lower Bounds for Accessing Binary Search Trees with Rotations},
+  journal = {SIAM Journal on Computing},
+  volume = {18},
+  number = {1},
+  pages = {56-67},
+  year = {1989},
+  doi = {10.1137/0218004},
+}
+
+@misc{bst_comparison,
+  title = {{BST} Comparison},
+  author = {Tyrel Clayton},
+  howpublished = {Disponível em \url{https://sites.google.com/view/comparison-dynamic-bst/}},
+  note = {Acesso em 17/02/2024},
+}
+
+@misc{rotation_link,
+  title = {Balancing Rotations in Binary Search Trees},
+  author = {Tim Sheard},
+  howpublished = {Disponível em {\small \url{https://web.cecs.pdx.edu/~sheard/course/Cs163/Doc/Balancing%20Rotations.html}}},
+  note = {Acesso em 13/03/2024},
+}
+
+@book{CLRS,
+    author = {Thomas H. Cormen and Charles E. Leiserson and Ronald L. Rivest and Clifford Stein},
+    title = {Introduction to Algorithms},
+    publisher = {MIT Press},
+    year = {2009}
+}
+
+@INPROCEEDINGS{rubro_negra,
+  author={Guibas, Leo J. and Sedgewick, Robert},
+  booktitle={19th Annual Symposium on Foundations of Computer Science (SFCS 1978)}, 
+  title={A dichromatic framework for balanced trees}, 
+  year={1978},
+  volume={},
+  number={},
+  pages={8-21},
+  keywords={Computer science;Petroleum;Particle measurements;Algorithm design and analysis;Performance analysis},
+  doi={10.1109/SFCS.1978.3}}
+
+@book{Sedgewick,
+    author = {Robert Sedgewick and Kevin Wayne},
+    title = {Algorithms},
+    publisher = {Addison-Wesley Professional},
+    year = {2011}
+}
+
+@misc{Foundation_for_proving_splay,
+      title={A Foundation for Proving Splay is Dynamically Optimal}, 
+      author={Caleb C. Levy and Robert E. Tarjan},
+      year={2022},
+      eprint={1907.06310},
+      archivePrefix={arXiv},
+      primaryClass={cs.DS},
+      note = {DOI: 10.48550/arXiv.1907.06310}
+}
+
