@@ -1,0 +1,16 @@
+**/*.out
+**/*.swp
+**/*.o
+**/*.gch
+**/*.a
+**/*.log
+**/*.aux
+**/*.toc
+**/*.bbl
+**/*.pdf
+**/*.blg
+**/*.fdb_latexmk
+**/*.fls
+**/*.nav
+**/*.snm
+**/*.vrb
