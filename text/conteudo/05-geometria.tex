@@ -14,9 +14,9 @@ Os algoritmos de busca dentro do modelo de computação adotado sempre iniciam o
 
 Por simplicidade das provas, neste capítulo definiremos que todas as chaves são buscadas uma única vez, logo $n = m$.
 
-Dada uma sequência $X = (x_{1},\ldots,x_{m})$ de $m$ acessos às chaves $x_{1}, x_{2},\ldots,x_{m}$, é possível ilustrar essas buscas de maneira gráfica.
+Dada uma sequência $X = (x_{1},\ldots,x_{m})$ de $m$ acessos às chaves $x_{1}, x_{2},\ldots,x_{n}$, é possível ilustrar essas buscas de maneira gráfica.
 
-Definindo um gráfico com o eixo X representando as chaves armazenadas dentro da ABB e com o eixo Y representando a buscas. Assim, o ponto na coordenada (p.x,p.y) representa que no instante de tempo p.y, a chave p.x foi buscada na ABB.
+Definindo um gráfico com o eixo X representando as chaves armazenadas dentro da ABB e com o eixo Y representando as buscas. Assim, o ponto na coordenada (p.x,p.y) representa que no instante de tempo p.y, a chave p.x foi buscada na ABB.
 
 \begin{figure}
     \centering    
@@ -49,7 +49,9 @@ Definindo um gráfico com o eixo X representando as chaves armazenadas dentro da
 \end{figure}
 
 
-\textit{Conjuntos arboreamente satisfeitos}: um par de pontos (a,b) do conjunto $P$ é arboreamente satisfeito se a e b são ortogonalmente colineares ou se há pelo menos um ponto do conjunto \( P \setminus \{a,b\} \) que está dentro da área delimitada pelo retângulo de vértices a e b. Um conjunto $P$ é arboreamente satisfeito se todos os pares de pontos do conjunto são arboreamente satisfeitos.
+\section{Conjuntos Aboreamente Satisfeitos}
+
+\textit{Conjuntos arboreamente satisfeitos}: um par de pontos (a,b) do conjunto $P$ é \textit{arboreamente satisfeito} se a e b são ortogonalmente colineares ou se há pelo menos um ponto do conjunto \( P \setminus \{a,b\} \) que está dentro da área delimitada pelo retângulo de vértices a e b. Um conjunto $P$ é \textit{arboreamente satisfeito} se todos os pares de pontos do conjunto são arboreamente satisfeitos.
 
 Em todo par de pontos (a,b) não ortogonalmente colineares, há sempre pelo menos um ponto de \( P \setminus \{a,b\} \) que está em alguma aresta que incide em a, e há também pelo menos um ponto que está em alguma aresta que incide em b.
 
