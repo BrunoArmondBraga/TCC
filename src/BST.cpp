@@ -1,92 +1,70 @@
 #include <iostream>
-#include <stdlib.h>
 #include <vector>
-#include <math.h>
-#include <climits>
 
 using namespace std;
 
-struct matrix_pair{
-    vector<vector<float>> first;
-    vector<vector<float>> second;
-};
-
-void print_vector(vector<float> e){
-    cout << "-------------------" << endl;
-    for(int i = 0; i < e.size(); i++){
-        cout << e[i] << " ";
+void print_vector(vector<int> e){
+    cout << "-----------------chaves------------------" << endl;
+    cout << "(";
+    for(int i = 0; i < e.size()-1; i++){
+        cout << e[i] << ", ";
     }
-    cout << "-------------------" << endl;
-    cout << endl;
+    cout << e[e.size() - 1] << ")" << endl << endl;
 }
 
-void print_matrix(vector<vector<float>> e){
-    cout << "-------------------" << endl;
-    for(int i = 0; i < e.size(); i++){
-        for(int j = 0; j < e[0].size(); j++){
-            cout << e[i][j] << "     ";
-        }
-        cout << endl;
+void debug_tree_rec(int i, int j, int spacing, int** root){
+    if(i > j){
+        return;
     }
-    cout << "-------------------" << endl;
-    cout << endl;
 
-    /* for(int i = 0; i < sizeof(c) / sizeof(c[0]); i++){
-        for(int j = 0; j < sizeof(c[0]) / sizeof(c[0][0]); j++){
-            cout << c[i][j] << " ";
-        }
-        cout << endl;
-    } */
+    int k = root[i][j];
+    
+    debug_tree_rec(k+1, j, spacing + 3, root);
+    for(int i = 0; i < spacing; i++){
+        cout << " ";
+    }
+
+    cout << k << endl;
+    
+    debug_tree_rec(i, k-1, spacing + 3, root);
 }
 
-int optimal_BST(vector<int> e, int n){
+int optimal_BST(vector<int> e, int n, int** root){
     int c[n+1][n+1];
     int s[n + 1];
-    int root[n][n];
 
     for(int i = 0; i < n + 1; i++){
         for(int j = 0; j < n + 1; j++){
             c[i][j] = 0;
+            root[i][j] = 0;
         }
     }
-
-    cout << "--------" << endl;
-    for(int i = 1; i < n + 1; i++){
-        for(int j = 0; j < n + 1; j++){
-            cout << c[i][j] << " ";
-        }
-        cout << endl;
-    }
-    cout << "--------" << endl;
     
     s[0] = 0;
 
     for(int i = 1; i < n + 1; i++){
-        int aux = s[i - 1] + e[i - 1];
-        s[i] = aux;
+        s[i] = s[i - 1] + e[i - 1];
     } 
 
     for(int l = 1; l < n + 1; l++){
         for(int i = 1; i < n - l + 2; i++){
             int j = i + l - 1;
 
-            int aux = c[i + 1][j];
-            c[i][j] = aux;
+            c[i][j] = c[i + 1][j];
+            root[i][j] = i;
 
             for(int k = i + 1; k < j + 1; k++){
                 if(c[i][k - 1] + c[k + 1][k] < c[i][j]){
-                    aux = c[i][k - 1] + c[k + 1][j];
+                    int aux = c[i][k - 1] + c[k + 1][j];
                     c[i][j] = aux;
+                    root[i][j] = k;
                 }
             }
-
-
-            aux =  c[i][j] + s[j] - s[i -1];
-            c[i][j] = aux;
+            c[i][j] = c[i][j] + s[j] - s[i -1];
         }
     }
 
-    cout << "--------" << endl;
+    cout << "---------  Matriz  de  custos  ---------" << endl;
     for(int i = 1; i < n + 1; i++){
         for(int j = 0; j < n + 1; j++){
             if(c[i][j] < 10){
@@ -102,9 +80,18 @@ int optimal_BST(vector<int> e, int n){
         }
         cout << endl;
     }
-    cout << "--------" << endl;
 
-    cout << c[1][n] << endl;
+    cout << "---------  Matriz  de  raízes  ---------" << endl;
+    for(int i = 1; i < n+1; i++){
+        for(int j = 1; j < n+1; j++){
+            cout << " " << root[i][j];
+        }
+        cout << endl;
+    }
+    cout << "----------------------------------------" << endl;
+
+    cout << "Custo mínimo para ABB: " << c[1][n] << endl << endl;
+    debug_tree_rec(1, n, 0, root);
     return c[1][n];
 }
 
@@ -112,16 +99,30 @@ int optimal_BST(vector<int> e, int n){
 
 int main(){
     vector<int> p;
+    int n;
 
-    p.push_back(10);
-    p.push_back(20);
-    p.push_back(30);
-    p.push_back(15);
-    p.push_back(30);
+    cout << "Informe o número de chaves: ";
+    cin >> n;
 
-    /* p.push_back(20);
-    p.push_back(10);
-    p.push_back(40); */
+    cout << "Informe as frequências:" << endl;
+    for(int i=0;i<n;i++){
+        int aux;
+        cin >> aux;
+        p.push_back(aux);
+    }
+    print_vector(p);
 
-    optimal_BST(p,p.size());    
+    int** root = new int*[n+1];
+    for (int i = 0; i <= n; ++i) {
+        root[i] = new int[n+1];
+    }
+
+    optimal_BST(p, n, root);    
+
+    for (int i = 0; i <= n; ++i) {
+        delete[] root[i];
+    }
+    delete[] root;
+
+    return 0;
 }
