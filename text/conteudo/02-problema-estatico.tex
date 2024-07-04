@@ -6,47 +6,44 @@
 \chapter{ABB estática ótima}
 \label{cap:abb-estatica-otima}
 
-//trocar a chave $x_i$ por $i$
-
 Neste capítulo será apresentada a solução para o problema de encontrar uma árvore binária de busca estática com custo mínimo para uma determinada sequência de acessos. O algoritmo foi desenvolvido por \cite{knuth}.
 
 \section{Custo de uma ABB}
 
-O custo de um acesso à chave $j$ em uma ABB estática é o número de nós acessados durante o algoritmo de busca. Como rotações não são permitidas em ABBs estáticas, a estrutura da árvore não muda, logo o custo de um acesso à chave $j$ numa tal ABB $T$ sempre é 1 mais a profundidade de $j$ em $T$. Denotaremos a profundidade do nó com chave $j$ por $d(j)$.
+O custo de um acesso à chave $j$ em uma ABB estática é o número de nós acessados durante o algoritmo de busca. A \textit{profundidade} de uma chave $j$ em uma ABB $T$ é definida pela distância do nó com chave $j$ à raiz de $T$ e é denotada por $d_T(j)$. Como rotações não são permitidas em ABBs estáticas, a estrutura da árvore não muda, logo o custo de um acesso à chave $j$ numa tal ABB $T$ sempre é 1 mais a profundidade de $j$ em $T$.
 
 O custo de executar uma sequência $X = (x_{1},\ldots,x_{m})$ de $m$ acessos às chaves $1, 2,\ldots,n$ de uma ABB estática é a somatória dos custos dos acessos executados, ou seja, é
 \begin{align*}
-    \sum_{i=1}^{m} (d(i) + 1).
+c(T) = \sum_{i=1}^{m} d_T(i).
 \end{align*}
 
-Uma delimitação óbvia para este custo é que ele é no mínimo $m$, pois $d(j) \geq 0$.
+Uma delimitação óbvia para este custo é que ele é no mínimo $m$, pois $d_T(j) \geq 0$.
 
-Dada uma sequência $X$ de acessos, uma ABB é considerada ótima se executa os acessos de $X$ com o menor custo possível.
+Dada uma sequência $X$ de acessos, uma ABB é considerada ótima para $X$ se executa os acessos de $X$ com o menor custo possível.
 
 \section{Natureza do problema}
 
-Definimos o custo para uma sequência de buscas em uma ABB com base em cada elemento de $X$. Porém, nota-se que é possível definir o mesmo custo com base no número de ocorrências de cada elemento desta ABB. Denotaremos por $e(j)$ o número de ocorrências de $j$ na sequência.
-Cada acesso ao nó de chave $j$ contribui com $d(j) + 1$ ao custo. Como o nó com chave $j$ será acessado $e(j)$ vezes, então o nó de chave $j$ contribui com $(d(j) + 1)  \cdot e(j)$ para o custo total, ou seja,
+Definimos o custo para uma sequência de acessos em uma ABB com base em cada elemento de $X$. Porém, nota-se que é possível definir o mesmo custo com base no número de ocorrências de cada elemento desta ABB em $X$. Denotaremos por $e(j)$ o número de ocorrências de $j$ na sequência $X$.
+Cada acesso ao nó de chave $j$ contribui com $d_T(j) + 1$ ao custo. Como o nó com chave $j$ será acessado $e(j)$ vezes, então o nó de chave $j$ contribui com $(d_T(j) + 1)  \cdot e(j)$ para o custo total, ou seja,
 \begin{align*}
-\sum_{i=1}^{m} (d(i) + 1) &= \sum_{j=1}^{n} (d(j) + 1) \cdot e(j).
+c(T) = \sum_{i=1}^{m} (d_T(i) + 1) &= \sum_{j=1}^{n} (d_T(j) + 1) \cdot e(j),
 \end{align*}
+onde a dependência do custo agora é no vetor de ocorrências $e$[1\tdots$n$].
 
+% aqui é o melhor lugar para esse trecho?
+Essa abordagem também encapsula uma formulação alternativa do problema na qual $e$[1\tdots$n$] representa um vetor de probabilidades de acesso às chaves [1\tdots$n$] na sequência de entrada $X$. Nesse caso a ABB ótima é aquela que possui custo esperado mínimo. Essa é, inclusive, a abordagem utilizada no texto do \cite{knuth}. Neste artigo também são utilizadas chaves adicionais entre as chaves de 1 a $n$ e nos extremos que representam buscas mal sucedidas na ABB entre as duas chaves consecutivas estritamente maior e menor e buscas menores que a chave 1 ou maiores que a chave $n$. Assim, apesar de limitarmos a análise a buscas bem sucedidas, é possível utilizar a mesma abordagem para resolver problemas um pouco mais sofisticados.
 
-Dado que a contribuição de cada chave para o custo é uma multiplicação entre a sua profundidade na ABB e seu número de ocorrências na sequência, intuitivamente é esperado que os nós mais próximos da raiz da ABB ótima guardem as chaves com os maiores números de ocorrência na sequência, já que a ABB terá que acessar esse nó múltiplas vezes. Analogamente, é esperado que os nós mais distantes da raiz da ABB ótima guardem as chaves com os menores números de ocorrência na sequência.
+Dado que a contribuição de cada chave para o custo é uma multiplicação entre a sua profundidade na ABB e seu número de ocorrências na sequência $X$, intuitivamente é esperado que os nós mais próximos da raiz da ABB ótima guardem as chaves com os maiores números de ocorrência na sequência, já que a ABB terá que acessar esse nó múltiplas vezes. Analogamente, é esperado que os nós mais distantes da raiz da ABB ótima guardem as chaves com os menores números de ocorrência na sequência.
 
 De maneira sucinta, é esperado que o custo de acessos mais caros, ou seja, acessos a nós mais profundos, sejam pagos menos vezes e é esperado que os custos de nós mais baratos, ou seja, acessos a nós mais superficiais, sejam pagos mais vezes.
 
 \section{Algoritmo guloso}
 
-É possível desenvolver um algoritmo guloso para a construção de uma ABB com base nessa intuição de priorizar que chaves com maior número de ocorrência estejam mais próximas da raiz. O Programa~\ref{prog:abb-gulosa} organiza as chaves de maneira decrescente no número de ocorrências e adiciona iterativamente à árvore um nó com a chave de maior número de ocorrências que ainda não foi adicionada. Para isso, ele utiliza uma fila de prioridades de máximo que armazenas pares ($j$, $e[j]$), considerando os vetores de $e[j]$ como chave.
+É possível desenvolver um algoritmo guloso para a construção de uma ABB com base nessa intuição de priorizar que chaves com maior número de ocorrência estejam mais próximas da raiz. O Programa~\ref{prog:abb-gulosa} organiza as chaves de maneira decrescente no número de ocorrências e adiciona iterativamente à árvore a chave de maior número de ocorrências que ainda não foi adicionada. Para isso, ele utiliza uma fila de prioridades de máximo que armazena pares ($j$, $e[j]$), considerando o segundo valor do par como chave.
 
-
-
-% ARRUMAR O HFILL!!
-% arrumar vazio
 \begin{programruledcaption}{Algoritmo guloso ABB.\label{prog:abb-gulosa}}
-  \noindent\textbf{Entrada}: Vetor e[1,\ldots,$n$] de ocorrências por chave e número de chaves \\
-  \textbf{Saída}: ABB com as chaves 1 a $n$
+  \noindent\textbf{Entrada}: Número $n$ de chaves e vetor $e$[1\tdots$n$] de ocorrências por chave. \\
+  \textbf{Saída}: ABB com as chaves 1 a $n$ com respeito ao vetor $e$.
   \vspace{-0.5\baselineskip}
   %função guloso_ABB(e,n)
   \begin{lstlisting}[
@@ -57,11 +54,11 @@ De maneira sucinta, é esperado que o custo de acessos mais caros, ou seja, aces
       specialidentifiers={},
       escapeinside={(*@}{@*)},
   ]
-  (*@\bfseries\scshape{Função}@*) guloso_ABB(e,n)
+  (*@\bfseries\scshape{Função}@*) guloso_ABB(n,e)
     Q := fila_de_prioridade() (*@ \hfill @*) // Cria uma fila de prioridade vazia
     abb := abb() (*@ \hfill @*) // Cria uma ABB vazia
     para i de 1 até n (*@\textbf{faça}@*)
-        Q.insere((i, e[i])) 
+        Q.insere(i, e[i]) 
     enquanto Q != (*@$\varnothing$@*) 
         (a,b) := Q.remove_max()
         abb.insere(a) (*@ \hfill @*) // Adiciona chave com maior número de ocorrências
@@ -70,7 +67,7 @@ De maneira sucinta, é esperado que o custo de acessos mais caros, ou seja, aces
   \vspace{-0.5\baselineskip}
 \end{programruledcaption}
 
-Apesar da abordagem acima ser bastante promissora, priorizar unicamente o número de ocorrências não garante adquirir uma solução ótima. Isso acontece porque a posição de cada nó na árvore influencia a profundidade mínima de todos os nós abaixo dele, principalmente levando em conta a propriedade de árvores binárias que todos os nós da subárvore esquerda são menores que o nó pai e todos os nós da subárvore direita são maiores. Assim, em algumas situações, é mais vantajoso ter como pai um nó com menor número de ocorrências e ter nós com maior número de ocorrências mais profundos. Isto se torna ainda mais evidente quando pensamos em entradas com número de ocorrências por nó muito parecidos. Nestes casos, a estrutura de uma árvore binária mais balanceada tende a ser melhor. Veja o exemplo da Figura~\ref{fig:caso-guloso-subotimo}.
+Apesar da abordagem acima ser bastante promissora, priorizar unicamente o número de ocorrências não garante adquirir uma solução ótima. Isso acontece porque a posição de cada nó na árvore influencia a profundidade mínima de todos os nós descendentes dele, principalmente levando em conta a propriedade de árvores binárias que todos os nós da subárvore esquerda são menores que o nó pai e todos os nós da subárvore direita são maiores. Assim, em algumas situações, é mais vantajoso ter como pai um nó com menor número de ocorrências e ter nós com maior número de ocorrências mais profundos. Isto se torna ainda mais evidente quando pensamos em entradas com número de ocorrências por nó muito parecidos. Nestes casos, a estrutura de uma árvore binária mais balanceada tende a ser melhor. Veja o exemplo da Figura~\ref{fig:caso-guloso-subotimo}.
 
 
 \begin{figure}[h]
@@ -122,14 +119,103 @@ Apesar da abordagem acima ser bastante promissora, priorizar unicamente o númer
 
 \section{Algoritmo ótimo}
 
-A análise da seção anterior nos leva a perceber que precisamos de uma conduta que considere tanto o número de ocorrências de cada nó quanto a estrutura da árvore em si. Um algoritmo para encontrar a ABB ótima foi desenvolvido por \cite{knuth}.
+A análise da seção anterior nos leva a perceber que precisamos de uma conduta que considere tanto o número de ocorrências de cada nó quanto a estrutura da árvore em si. Um algoritmo para encontrar uma ABB ótima foi desenvolvido por \cite{knuth}.
 
-Primeiramente é preciso entender como a estrutura de uma árvore ótima está disposta. Consideremos que a árvore possui as chaves em um intervalo contínuo de 1 até $n$. 
+Primeiramente é preciso entender como a estrutura de uma árvore ótima está disposta.
 
-Para uma árvore $T$ com chave $k$ na raiz ser ótima, a sua subárvore esquerda, contendo as chaves $1,\dots,k$, deve ser ótima e sua subárvore direita, contendo as chaves $k$+1$,\dots,n$, deve ser ótima também.
+%Sabemos que a profundidade é uma medida quantitativa de distância de um nó em relação à raiz. A profundidade de um nó $i$, $d(i)$, é o comprimento do caminho deste nó $i$ à raiz da árvore, adicionado em 1 unidade. Assim, sabemos que se uma subárvore $T'$ está a uma distância $x$ da raiz, todos os elementos de $T'$ terão sua profundidade total igual a profundidade em relação à raiz de $T'$ adicionada em $x$ unidades.
 
-Isso pode ser provado da seguinte maneira. Seja $T$ uma árvore ótima para uma entrada $X$ com chave $k$ na raiz e seja $T'$ a sub-árvore de $k$ que não é ótima. Como $T'$ não é ótima, então existe uma árvore $T''$ ótima que também possui as mesmas chaves de $T'$, mas possui custo menor para os acessos de $X$. Assim, é possível trocar a sub-árvore $T'$ pela sub-árvore $T''$ em $T$ e encontramos uma árvore com custo menor que $T$. Como $T$ é uma árvore ótima, isso é uma contradição.
+Lembremos que a profundidade de uma chave $i$ em uma ABB $T$, $d_T(i)$, é a distância entre o nó com chave $i$ e o nó raiz da árvore. Assim sabemos que se a chave $i$ está contido na subárvore $T'$ de $T$, então a distância do nó com chave $i$ à raiz de $T$ é a distância do nó com chave $i$ à raiz de $T'$ adicionada com a distância da raiz de $T'$ à raiz de $T$. Suponha que a chave $j$ seja raiz de $T'$. Então, $d_T(i) = d_{T'}(i) + d_{T}(j)$.
 
-Assim, sabemos que para um intervalo $k_i, \ldots, k_j$ ($i \leq j$), a árvore ótima possui um nó com chave $k_r$ ($i \leq r \leq j$) como raiz e duas subárvores possivelmente vazias como filhas. A sub-árvore esquerda é uma árvore ótima que contém as chaves $k_i, \ldots, k_{r-1}$ e a sub-árvore direita é uma árvore ótima que contém as chaves $k_{r+1}, \ldots, k_j$.
+Seja $T$ uma ABB estática ótima para uma sequência de acessos $X$ com $n$ chaves. Seja $k$ a chave da raiz de $T$ e $T_e$ e $T_d$ as subárvores esquerdas e direitas da raiz. Como $k$ é a chave da raiz, $T_e$ possui as chaves \{$1,\ldots,k-1$\} e $T_d$ possui as chaves \{$k+1,\ldots,n$\}. 
 
-Levando em consideração essa estrutura, dado um intervalo de chaves $k_i, \ldots, k_j$, o algoritmo ótimo precisa descobrir qual das chaves deve permanecer no nó raiz para minimizar o custo total.
+Como $T_e$ é subárvore da raiz de $T$, então a profundidade da raiz de $T_e$ é 1. Logo, para qualquer chave $i \in T_e$, $d_T(i) = d_{T_{e}}(i) + 1$. O caso de $T_d$ é análogo. %Logo, é possível observar que o custo de uma árvore $T$ é o número de ocorrências de $k$ adicionado com o custo de cada subárvore $T_e$ e $T_d$ e adicionado também o número de ocorrências de cada chave de $T_e$ e de $T_d$.
+
+Assim,
+\begin{center}
+  $c(T) = \sum_{j=1}^{n}(d_T(j) + 1)\cdot e(j)$, \\
+  $c(T) = \sum_{j=1}^{k-1}(d_T(j) + 1) \cdot e(j) + \sum_{j=k+1}^{n}(d_T(j) + 1)\cdot e(j) + (d_T(k) + 1)\cdot e(k)$, \\
+  $c(T) = \sum_{j=1}^{k-1}d_T(j) \cdot e(j) + \sum_{j=k+1}^{n}d_T(j)\cdot e(j) + \sum_{j=1}^{n} e(j)$, \\
+
+  $c(T) = \sum_{j=1}^{k-1}(d_{T_e}(j) + 1)\cdot e(j) + \sum_{j=k+1}^{n}(d_{T_d}(j) + 1)\cdot e(j) + \sum_{j=1}^{n} e(j)$, \\
+  $c(T) = c(T_e) + c(T_d) + \sum_{j=1}^{n}e(j)$, \\
+\end{center}
+
+%Conclui-se então que $c(T) = c(T_e) + c(T_d) + S[1,n]$.
+
+De acordo com a fórmula acima, é evidente que o custo total de uma ABB $T$ depende do custo de suas duas subárvores, logo para uma árvore $T$ ter custo mínimo então tanto a sua subárvore esquerda quanto a sua subárvore direita devem ter custo mínimo.
+
+Expressaremos por $c[i,j]$ o custo mínimo de uma ABB que possua as chaves de $i$ a $j$ e por $S[i,j]$ a soma do número de ocorrências de todas as chaves entre $i$ e $j$ em $X$, ou seja, $S[i,j] = \sum_{h=i}^{j} e(h)$. %Assim, $c(T) = e(k) + c(T_e) + S[1,k-1] + c(T_d) + S[k+1,n]$.
+
+Chegamos na recorrência abaixo que resolve o problema:
+\[
+c[i, j] = 
+\begin{cases}
+    0 & \text{se } i > j. \\
+    \min_{i \leq k \leq j} \{ c[i, k - 1] + c[k + 1, j]\} + S[i, j] & \text{se } i \leq j.
+\end{cases}
+\]
+
+Como podemos obter a ABB ótima a partir de ABBs ótimas menores, então a única preocupação do algoritmo construtor dessa ABB deve ser a escolha da chave da raiz que minimize a soma acima.
+
+O programa~\ref{prog:abb-otima} produz uma ABB com custo mínimo dado o vetor de ocorrências por chave.
+
+\begin{programruledcaption}{Algoritmo ABB ótima.\label{prog:abb-otima}}
+  \noindent\textbf{Entrada}: Número $n$ de chaves e vetor $e$[1\tdots$n$] de ocorrências por chave. \\
+  \textbf{Saída}: ABB ótima com chaves 1 a $n$ e seu custo com respeito ao vetor $e$.
+  \vspace{-0.5\baselineskip}
+  \begin{lstlisting}[
+      language={[brazilian]pseudocode},
+      style=pseudocode,
+      style=wider,
+      functions={},
+      specialidentifiers={},
+      escapeinside={(*@}{@*)},
+  ]
+  (*@\bfseries\scshape{Função}@*) ABB_ótima(n,e)
+    s[0] := 0
+    para i de 1 até n (*@\textbf{faça}@*)
+        s[i] := s[i - 1] + e[i]
+    para i de 1 até n + 1 (*@\textbf{faça}@*)
+        c[i, i - 1] := 0
+    para l de 1 até n (*@\textbf{faça}@*)
+        para i de 1 até n - l + 1 (*@\textbf{faça}@*)
+            j := i + l - 1
+            c[i, j] := c[i + 1, j]
+            r[i][j] := i
+            para k de i + 1 até j (*@\textbf{faça}@*)
+                se c[i, k - 1] + c[k + 1, j] < c[i, j]
+                    (*@\textbf{então}@*) c[i, j] := c[i, k - 1] + c[k + 1, j]
+            c[i, j] := c[i, j] + s[j] - s[i - 1]
+  abb := abb()
+  abb := construção_recursiva(r, abb, 1, n)
+  devolva abb, c[1][n]
+  \end{lstlisting}
+  \vspace{-0.5\baselineskip}
+\end{programruledcaption}
+
+%O código acima se utiliza de uma abordagem chamada programação dinâmica que consiste na 
+
+\begin{programruledcaption}{Construção recursiva da ABB ótima.\label{prog:abb-construcao}}
+  \noindent\textbf{Entrada}: Matriz r[1\tdots$n$,1\tdots$n$] de inteiros, uma ABB e dois inteiros $i$ e $j$. \\
+  \textbf{Saída}: ABB ótima com as chaves $i$ a $j$ inclusas.
+  \vspace{-0.5\baselineskip}
+  \begin{lstlisting}[
+      language={[brazilian]pseudocode},
+      style=pseudocode,
+      style=wider,
+      functions={},
+      specialidentifiers={},
+      escapeinside={(*@}{@*)},
+  ]
+  (*@\bfseries\scshape{Função}@*) construção_recursiva(r, abb, i, j)
+  se i > j
+      (*@\textbf{então}@*) devolva abb
+  k := r[i][j]
+  abb.insere(k)
+  abb := construção_recursiva(r, abb, i, k - 1)
+  abb := construção_recursiva(r, abb, k + 1, j)
+  devolva abb
+  \end{lstlisting}
+  \vspace{-0.5\baselineskip}
+\end{programruledcaption}
