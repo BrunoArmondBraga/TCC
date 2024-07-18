@@ -28,11 +28,11 @@ node* create_tree(int i, int j, int** root, node* abb){
 }
 
 int optimal_BST(vector<int> e, int n, int** root, node* abb){
-    int c[n + 1][n + 1];
+    int c[n + 2][n + 2];
     int s[n + 1];
 
-    for(int i = 0; i <= n; i++){
-        for(int j = 0; j <= n; j++){
+    for(int i = 0; i <= n + 1; i++){
+        for(int j = 0; j <= n + 1; j++){
             c[i][j] = 0;
             root[i][j] = 0;
         }
@@ -62,6 +62,7 @@ int optimal_BST(vector<int> e, int n, int** root, node* abb){
     }
 
     cout << "---------  Matriz  de  custos  ---------" << endl;
+    cout << "n = " << n << endl;
     for(int i = 1; i <= n; i++){
         for(int j = 0; j <= n; j++){
             if(c[i][j] < 10){
@@ -110,9 +111,9 @@ int main(){
     }
     print_keys(p);
 
-    int** root = new int*[n+1];
-    for (int i = 0; i <= n; ++i) {
-        root[i] = new int[n+1];
+    int** root = new int*[n + 2];
+    for (int i = 0; i <= n + 1; ++i) {
+        root[i] = new int[n + 2];
     }
 
     struct node* abb = nullptr;
