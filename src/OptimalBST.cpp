@@ -5,7 +5,7 @@
 using namespace std;
 
 void print_keys(vector<int> e){
-    cout << "-----------------chaves------------------" << endl;
+    cout << "--------------frequências---------------" << endl;
     cout << "(";
     for(int i = 0; i < e.size()-1; i++){
         cout << e[i] << ", ";
@@ -62,7 +62,6 @@ int optimal_BST(vector<int> e, int n, int** root, node* abb){
     }
 
     cout << "---------  Matriz  de  custos  ---------" << endl;
-    cout << "n = " << n << endl;
     for(int i = 1; i <= n; i++){
         for(int j = 0; j <= n; j++){
             if(c[i][j] < 10){
