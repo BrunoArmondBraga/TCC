@@ -13,18 +13,18 @@ void print_keys(vector<int> e){
     cout << e[e.size() - 1] << ")" << endl << endl;
 }
 
-node* create_tree(int i, int j, int** root, node* abb){
+node* create_tree(int i, int j, int** root){
     if(i > j){
-        return abb;
+        return nullptr;
     }
 
     int k = root[i][j];
-
-    abb = insert(abb, k);
-
-    abb = create_tree(i, k - 1, root, abb);
-    abb = create_tree(k + 1, j, root, abb);
-    return abb;
+    
+    node* node = newNode(k);
+    
+    node->left = create_tree(i, k - 1, root);
+    node->right = create_tree(k + 1, j, root);
+    return node;
 }
 
 int optimal_BST(vector<int> e, int n, int** root, node* abb){
@@ -88,7 +88,7 @@ int optimal_BST(vector<int> e, int n, int** root, node* abb){
     cout << "----------------------------------------" << endl;
 
     cout << "Custo mínimo para ABB: " << c[1][n] << endl << endl;
-    abb = create_tree(1, n, root, abb);
+    abb = create_tree(1, n, root);
     debug_rec(abb,0);
     return c[1][n];
 }
