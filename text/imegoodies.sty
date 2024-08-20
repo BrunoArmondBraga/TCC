@@ -1221,7 +1221,9 @@
 
 % Gráficos gerados diretamente em LaTeX; é possível usar tikz para
 % isso também.
-%\RequirePackage{pgfplots}
+\RequirePackage{pgfplots}
+\pgfplotsset{compat=1.18}
+%\usepackage{pgfplots}
 % sobre níveis de compatibilidade do pgfplots, veja
 % https://tex.stackexchange.com/a/81912
 %\pgfplotsset{compat=newest}
