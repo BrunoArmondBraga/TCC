@@ -6,11 +6,13 @@
 \chapter{Interpretação geométrica de buscas em ABBs}
 \label{cap:geometria}
 
-Neste capítulo entenderemos o que são conjuntos de pontos arboreamente independente e como interpretar de maneira geométrica algoritmos de busca em ABBs..
+Neste capítulo explicaremos o que são conjuntos de pontos arboreamente independente e como interpretar de maneira geométrica algoritmos de busca em ABBs.
 
 \section{Conjuntos arboreamente satisfeitos}
 
-Um par de pontos $(a,b)$ de um conjunto de pontos $P$ é \textit{arboreamente satisfeito} se $a$ e $b$ são ortogonalmente colineares ou se há pelo menos um ponto do conjunto \( P \setminus \{a,b\} \) que está dentro da área delimitada pelo retângulo de vértices $a$ e $b$, isto inclui o perímetro deste retângulo. Um conjunto $P$ de pontos é \textit{arboreamente satisfeito} se todos os pares de pontos do conjunto são arboreamente satisfeitos. Veja a Figura~\ref{fig:geometria-inicial}.
+Chamamos dois pontos $a$ e $b$ de \textit{ortogonalmente colineares} se $a$ e $b$ estão na mesma linha horizontal ou vertical. Se $a$ e $b$ não são ortogonalmente colineares, denotamos por \textit{$\{a,b\}$-retângulo} o retângulo ortogonal que tem $a$ e $b$ como vértices.
+
+Um par de pontos $\{a,b\}$ de um conjunto de pontos $P$ é \textit{arboreamente satisfeito} se $a$ e $b$ são ortogonalmente colineares ou se há pelo menos um ponto do conjunto \( P \setminus \{a,b\} \) que está dentro da região delimitada pelo \{a,b\}-retângulo, incluindo seu perímetro. Um conjunto $P$ de pontos é \textit{arboreamente satisfeito} se todos os pares de pontos do conjunto são arboreamente satisfeitos. Veja a Figura~\ref{fig:geometria-inicial}.
 
 \begin{figure}[h!]
     \centering
@@ -76,13 +78,13 @@ Um par de pontos $(a,b)$ de um conjunto de pontos $P$ é \textit{arboreamente sa
         \end{axis}
         \end{tikzpicture}
     \end{minipage}
-    \caption{À esquerda, um conjunto de pontos $P$ aboreamente satisfeito. À direita, um conjunto de pontos $P$ com dois pares de pontos aboreamente insatisfeitos com seus retângulos esboçados.}
+    \caption{À esquerda, um conjunto $P$ de pontos arboreamente satisfeito. À direita, um conjunto $P$ de pontos com dois pares de pontos arboreamente insatisfeitos com seus retângulos destacados.}
 \label{fig:geometria-inicial}
 \end{figure}
 
 \begin{lemma}
 \label{lem:pontos_em_arestas_incidentes}
-Em um conjunto arboreamento satisfeito, para todo par de pontos $(a,b)$ não ortogonalmente colineares, há sempre pelo menos um ponto de \( P \setminus \{a,b\} \) que está em alguma aresta que incide em $a$, e há sempre também pelo menos um ponto de \( P \setminus \{a,b\} \) que está em alguma aresta que incide em $b$.
+Em um conjunto arboreamente satisfeito $P$, para todo par de pontos $\{a,b\}$ não ortogonalmente colineares, há sempre pelo menos um ponto de \( P \setminus \{a,b\} \) que está em um dos lados do $\{a,b\}$-retângulo que incide em $a$, e há sempre também pelo menos um ponto de \( P \setminus \{a,b\} \) que está em um dos lados do $\{a,b\}$-retângulo que incide em $b$.
 \end{lemma}
 
 
@@ -98,19 +100,19 @@ Em um conjunto arboreamento satisfeito, para todo par de pontos $(a,b)$ não ort
         \draw[blue, thick] (2,1) -- (0,1);
         \draw[blue, thick] (2,1) -- (2,0);
     \end{tikzpicture}
-    \caption{Retângulo com vértices $a$ e $b$. Em vermelho estão destacadas as arestas do retângulo que incidem em $a$ e em azul estão destacadas as arestas que incidem em $b$.}
+    \caption{O $\{a,b\}$-retângulo. Em vermelho estão destacados os lados do retângulo que incidem em $a$ e em azul estão destacados os lados que incidem em $b$.}
 \end{figure}
 
-\begin{proof} Sejam $a$ e $b$ dois pontos de um conjunto arboreamente satisfeito. Como $(a,b)$ é um par de pontos arboreamente satisfeitos, então a área delimitada pelo retângulo de vértices $a$ e $b$ possui pelo menos 1 ponto diferente de $\{a,b\}$. Denotemos por $c$ tal ponto. Se $c$ não estiver em uma aresta que incide em $a$, então é possível recursivamente procurar tal ponto no retângulo delimitado pelo par de pontos arboreamente satisfeitos $(a,c)$. Analogamente, se $c$ não estiver em uma aresta que incide em $b$, então é possível recursivamente procurar tal ponto no retângulo delimitado pelo par de pontos arboreamente satisfeitos $(c,b)$.
+\begin{proof} Sejam $a$ e $b$ dois pontos não ortogonalmente colineares de um conjunto arboreamente satisfeito $P$. Como $\{a,b\}$ é um par de pontos arboreamente satisfeito não ortogonalmente colineares, então a região delimitada pelo $\{a,b\}$-retângulo possui pelo menos um ponto de $P$ diferente de $\{a,b\}$. Denotemos por $c$ tal ponto. Se $c$ não estiver em um lado do $\{a,b\}$-retângulo que incide em $a$, então $a$ e $c$ não são ortogonalmente colineares e o $\{a,c\}$-retângulo está contido no $\{a,b\}$-retângulo, logo é também arboreamente satisfeito e é possível recursivamente procurar tal ponto no $\{a,c\}$-retângulo. Analogamente, se $c$ não estiver em um lado do $\{a,b\}$-retângulo que incide em $b$, então é possível recursivamente procurar tal ponto no $\{b,c\}$-retângulo, que também é arboreamente satisfeito.
 \end{proof}
 
 %Seja $\tau_i$ a subárvore // falar de subarvores?
 
 \section{Visão geométrica de buscas}
 
-No modelo de computação adotado, para realizar um acesso em uma ABB, o algoritmo de busca inicia o nó corrente na raiz da ABB. Em seguida, este algoritmo percorre a árvore descendo para o filho apropriado por meio de comparações até alcançar a chave procurada.
+No modelo de computação adotado, para realizar um acesso em uma ABB, o algoritmo de busca inicia o nó corrente na raiz da ABB. Em seguida, percorre a árvore descendo para o filho apropriado por meio de comparações até alcançar a chave procurada.
 
-Dada uma sequência $X = (x_{1},\ldots,x_{m})$ de $m$ acessos às chaves $x_{1}, x_{2},\ldots,x_{m}$, é possível ilustrar essa sequência $X$ de maneira gráfica em um plano cartesiano da seguinte forma: o eixo X representará as chaves armazenadas dentro da ABB e o eixo Y representará o tempo, ou seja, as buscas feitas nessa ABB. Assim, um ponto de coordenada ($x$,$y$) representa a busca da chave $x$ na ABB no instante de tempo $y$. Veja o exemplo da Figura~\ref{fig:busca_padrao}.
+Dada uma sequência $X = (x_{1},\ldots,x_{m})$ de $m$ acessos às chaves $1,2,\ldots,n$, é possível ilustrar essa sequência $X$ de maneira gráfica em um plano cartesiano da seguinte forma: o eixo $x$ representará as chaves armazenadas na ABB e o eixo $y$ representará os índices $i = 1,2,\ldots,m$, que interpretamos como o tempo. Assim, um ponto de coordenada ($x$,$i$) representa a busca da chave $x$ na ABB no instante de tempo $i$, ou seja, representa $x_i$. Veja o exemplo da Figura~\ref{fig:busca_padrao}.
 
 \begin{figure}
     \begin{tikzpicture}[scale=0.67]
@@ -118,8 +120,8 @@ Dada uma sequência $X = (x_{1},\ldots,x_{m})$ de $m$ acessos às chaves $x_{1},
             xlabel={Chaves},
             ylabel={Buscas},
             grid=major,
-            xmin=0, xmax=10,
-            ymin=0, ymax=10,
+            xmin=0, xmax=11,
+            ymin=0, ymax=11,
             xtick={0,2,4,6,8,10},
             ytick={0,2,4,6,8,10}
         ]
@@ -137,38 +139,108 @@ Dada uma sequência $X = (x_{1},\ldots,x_{m})$ de $m$ acessos às chaves $x_{1},
         };
         \end{axis}
     \end{tikzpicture}
-    \caption{Gráfico representando a busca (7, 2, 9, 6, 10, 3, 8, 5, 1, 4).}
+    \caption{Gráfico representando a sequência (7, 2, 9, 6, 10, 3, 8, 5, 1, 4) de acessos.}
 \label{fig:busca_padrao}
 \end{figure}
 
-A visão geométrica da execução de um algoritmo de busca em ABB para uma sequência $X = (x_{1},\ldots,x_{m})$ de buscas, de maneira similar, é o conjunto de pontos na forma ($x$,$y$) tal que $x$ foi uma chave acessada durante o instante de tempo $y$. É possível mapear esse conjunto de pontos para um plano cartesiano. Logo, todos os pontos com altura $y$ representam as chaves acessadas durante o instante de tempo $y$, ou seja, os nós acessados durante a busca por $x_y$. 
-%não sei se eu gostei de $x_y$, porque $x$ é tanto coordenada quanto ponto na sequencia de busca
+A \textit{visão geométrica da execução de um algoritmo de busca em ABB} para uma sequência $X = (x_{1},\ldots,x_{m})$ de buscas, de maneira similar, é o conjunto de pontos na forma ($x$,$i$) tal que $x$ foi uma das chaves visitadas durante a busca pela chave $x_i$. Para cada $i \in \{1,\ldots,m\}$, esse conjunto de pontos esta sob a reta $y = i$ e representa os nós visitados durante a busca por $x_i$. Veja a Figura~\ref{fig:traducao-busca-em-ASS}.
+
+\begin{figure}[h!]
+    \centering
+    \begin{minipage}[b]{0.34\textwidth}
+        \centering
+        \begin{tikzpicture}[scale=0.6]
+        \begin{axis}[
+            grid=major,
+            xmin=0, xmax=6,
+            ymin=0, ymax=6,
+            xtick={1,2,3,4,5},
+            ytick={1,2,3,4,5}
+        ]
+        \addplot[only marks, mark=*] coordinates {
+            (3,1)
+            (1,2)
+            (4,3)
+            (2,4)
+            (5,5)
+        };
+        \end{axis}
+        \end{tikzpicture}
+    \end{minipage}\hfill
+    \begin{minipage}[b]{0.33\textwidth}
+        \centering
+        \begin{tikzpicture}
+            [node/.style={circle,draw,minimum size=1.5em}]
+            \node[node] (A) at (-1.5,-1.5) {$1$};
+            \node[node] (B) at (0,0) {$2$};
+            \node[node] (C) at (0.5,-3) {$3$};
+            \node[node] (D) at (1.5,-1.5) {$4$};
+            \node[node] (E) at (2.5,-3) {$5$};
+            
+            \draw (A) -- (B);
+            \draw (B) -- (D);
+            \draw (C) -- (D);
+            \draw (E) -- (D);
+          \end{tikzpicture}
+    \end{minipage}\hfill
+    \begin{minipage}[b]{0.33\textwidth}
+        \centering
+        \begin{tikzpicture}[scale=0.6]
+            \begin{axis}[
+                grid=major,
+                xmin=0, xmax=6,
+                ymin=0, ymax=6,
+                xtick={1,2,3,4,5},
+                ytick={1,2,3,4,5}
+            ]
+            \addplot[only marks, mark=*] coordinates {
+                (3,1)
+                (1,2)
+                (4,3)
+                (2,4)
+                (5,5)
+            };
+            \addplot[color=red, only marks, mark=*] coordinates {
+                (2,1)
+                (4,1)
+                (2,2)
+                (2,3)
+                (2,5)
+                (4,5)
+            };
+            \end{axis}
+            \end{tikzpicture}
+    \end{minipage}
+    \caption{À esquerda, o conjunto de pontos que representa a sequência $X = (3,1,4,2,5)$. No meio, uma possível ABB com as chaves \{1,2,\ldots,5\}. À direita, o conjunto correspondente aos nós da ABB ao centro, visitados pelo algoritmo de busca que não efetua rotações, os pontos pretos são os nós da sequência $X$ de acessos e os pontos vermelhos são o restante dos nós visitados durante cada um desses acessos. Note que o conjunto de pontos à esquerda não é arboreamente satisfeito, mas o conjunto à direita é.}
+\label{fig:traducao-busca-em-ASS}
+\end{figure}
 
 \begin{lemma} A visão geométrica de qualquer execução de um algoritmo de busca em ABB no modelo de computação adotado é um conjunto de pontos arboreamente satisfeitos.
+\label{lema:visao_geometrica_vira_ASS}
 \end{lemma}
 
 \begin{proof}
-Assuma que a visão geométrica de um algoritmo de busca em ABB não é arboreamento satisfeita. Dessa maneira, há pelo menos um par de pontos $(a,b)$ nesse conjunto que não é arboreamente satisfeito. Seja $a$ a chave buscada no instante de tempo $i$ e seja $b$ a chave buscada no instante de tempo $j$. Assumiremos também sem perda de generalidade que $i < j$ e $a < b$.
+Assuma que a visão geométrica de um algoritmo de busca em uma ABB $T$ não é arboreamente satisfeita. Dessa maneira, há pelo menos um par $\{a,b\}$ de pontos nesse conjunto que não é arboreamente satisfeito. Seja $i$ o instante de tempo que a chave $a$ foi visitada, e seja $j$ o instante de tempo que a chave $b$ foi visitada. Assumiremos também sem perda de generalidade que $i < j$ e $a < b$.
 
-Seja $c$ o ancestral comum mais profundo de $a$ e $b$ imediatamente antes da busca $i$. E seja $d$ o acestral comum mais profundo de $a$ e $b$ imediatamente antes da busca $j$.
+Seja $c$ o ancestral comum mais profundo de $a$ e $b$ em $T$ imediatamente antes da busca $i$. E seja $d$ o ancestral comum mais profundo de $a$ e $b$ em $T$ imediatamente antes da busca $j$.
 
-Denotaremos números para áreas específicas para simplificar a explicação da prova. 
-Área 1 = \{$(x,y)$ | $x = a$ e $i < y \leq j$\}, representando todos os acessos a chave $a$ entre os instantes de tempo $i$ e $j$. \\
-Área 2 = \{$(x,y)$ | $a \leq x < b$ e $y = j$\}, representando todos os acessos a chaves entre $a$ e $b$ no instante de tempo $j$. \\
-Área 3 = \{$(x,y)$ | $x = b$ e $i \leq y < j$\}, representando todos os acessos a chave $b$ entre os instantes de tempo $i$ e $j$. \\
-Área 4 = \{$(x,y)$ | $a < x \leq b$ e $y = i$\}, representando todos os acessos a chaves entre $a$ e $b$ no instante de tempo $i$. \\
+Os quatro lados do $\{a,b\}$-retângulo terão um papel a seguir na prova. Eles são\\
+$\ell_1$ = \{$(x,y)$ | $x = a$ e $i < y \leq j$\}, representando todas as visitas a chave $a$ entre os instantes de tempo $i$ e $j$. \\
+$\ell_2$ = \{$(x,y)$ | $a \leq x < b$ e $y = j$\}, representando todas as visitas a chaves entre $a$ e $b$ no instante de tempo $j$. \\
+$\ell_3$ = \{$(x,y)$ | $x = b$ e $i \leq y < j$\}, representando todas as visitas a chave $b$ entre os instantes de tempo $i$ e $j$. \\
+$\ell_4$ = \{$(x,y)$ | $a < x \leq b$ e $y = i$\}, representando todas as visitas a chaves entre $a$ e $b$ no instante de tempo $i$. \\
 
-Como $(a,b)$ não é um par de pontos arboreamente satisfeitos, nota-se que não há nenhum ponto tanto nas bordas quanto no interior do retângulo de vértices $a$ e $b$. Logo, $1 \cup 2 \cup 3 \cup 4 = \emptyset$.
+Como $\{a,b\}$ é um par de pontos arboreamente insatisfeitos, nota-se que não há nenhum ponto tanto nas bordas quanto no interior do $\{a,b\}$-retângulo. Logo, $\ell_1 \cup \ell_2 \cup \ell_3 \cup \ell_4 = \emptyset$.
 
-Vale ressaltar que se $e$ é o ancestral comum mais profundo de $a$ e $b$, então sabemos que $a \leq e \leq b$ e mais importante, $e$ está mais acima na ABB em comparação com $a$ e $b$ (possivelmente na mesma profundidade caso seja igual a $a$ ou $b$). Assim, $e$ está no caminho da raiz da ABB até qualquer chave no intervalo $[a,b]$. Em outras palavras, para acessar qualquer chave no intervalo $[a,b]$, é necessário acessar o ancestral comum mais profundo entre $a$ e $b$.
+Vale ressaltar que se $e$ é o ancestral comum mais profundo de $a$ e $b$ em $T$, então sabemos que $a \leq e \leq b$ e, mais importante, $e$ está mais acima em $T$ em comparação com $a$ e $b$ (possivelmente na mesma profundidade caso seja igual a $a$ ou $b$). Assim, $e$ está no caminho da raiz da ABB até qualquer chave no intervalo $[a,b]$. Em outras palavras, para visitar qualquer chave no intervalo $[a,b]$, é necessário visitar o ancestral comum mais profundo entre $a$ e $b$.
 
 \begin{figure}[H]
     \centering
     \vfill % Adiciona espaço acima da figura para centralização vertical
     \begin{minipage}[t]{0.6\textwidth}
-        Se $2 = \emptyset$, então obrigatoriamente $d = b$. Se $c = b$, então $3 \neq \emptyset$. Se $c \neq b$, então em pelo menos algum outro instante de tempo $h$, $h < j$, $b$ teve que ser acessado para ser rotacionado até virar o ancestral comum mais profundo entre $a$ e $b$, logo $3 \neq \emptyset$.   
+        Se $\ell_2 = \emptyset$, então obrigatoriamente $d = b$. Se $c = b$, então $\ell_3 \neq \emptyset$. Se $c \neq b$, então em pelo menos algum outro instante de tempo $h$, $h < j$, $b$ teve que ser visitado para ser rotacionado até virar o ancestral comum mais profundo entre $a$ e $b$, logo $\ell_3 \neq \emptyset$.   
 
-        Se $4 = \emptyset$, então $c = a$. Porém, no instante $j$, $b$ é acessado. Caso $c = d = a$, $a$ precisa ser acessado no instante de tempo $j$, logo $1 \neq \emptyset$. Caso $c \neq d$, então em algum instante de tempo $h$, $i \leq h < j$, o ancestral comum mais profundo entre $a$ e $b$ mudou, logo algum nó com chave no intervalo $(a,b]$ precisa ter sido rotacionado para cima, porém sabemos que para acessar qualquer chave no intervalo $[a,b]$ no instante de tempo $h$, é necesssário acessar o ancestral comum mais profundo que neste caso é $a$. Logo $1 \neq \emptyset$. 
+        Se $\ell_4 = \emptyset$, então $c = a$. Porém, no instante $j$, $b$ é acessado. Caso $c = d = a$, $a$ precisa ser visitado no instante de tempo $j$, logo $\ell_1 \neq \emptyset$. Caso $c \neq d$, então em algum instante de tempo $h$, $i \leq h < j$, o ancestral comum mais profundo entre $a$ e $b$ mudou, logo algum nó com chave no intervalo $(a,b]$ precisa ter sido rotacionado para cima, porém sabemos que para visitar qualquer chave no intervalo $[a,b]$ no instante de tempo $h$, é necessário visitar o ancestral comum mais profundo que neste caso é $a$. Logo $\ell_1 \neq \emptyset$. 
     \end{minipage}\hfill
     \begin{minipage}[t]{0.4\textwidth}
         % Coluna da direita com a imagem e a legenda
@@ -187,8 +259,8 @@ Vale ressaltar que se $e$ é o ancestral comum mais profundo de $a$ e $b$, entã
                 ytick={1,2},
                 xlabel style={at={(axis description cs:0.5,-0.08)}, anchor=center}, % Ajusta a posição do rótulo do eixo x
                 ylabel style={at={(axis description cs:-0.08,0.5)}, anchor=center},
-                xticklabels={a,b}, % Define os rótulos do eixo x
-                yticklabels={i,j} % Define os rótulos do eixo y
+                xticklabels={$a$,$b$}, % Define os rótulos do eixo x
+                yticklabels={$i$,$j$} % Define os rótulos do eixo y
             ]
 
             \addplot[only marks, mark=*] coordinates {
@@ -220,10 +292,10 @@ Vale ressaltar que se $e$ é o ancestral comum mais profundo de $a$ e $b$, entã
             \node at (axis cs:1,1) [anchor=north east, fill=white, font=\small] {$a$};
             \node at (axis cs:2,2) [anchor=south west, fill=white, font=\small] {$b$};
 
-            \node at (axis cs:1,1.5) [anchor=east, font=\normalsize] {1};
-            \node at (axis cs:1.5,2) [anchor=south, font=\normalsize] {2};
-            \node at (axis cs:2,1.5) [anchor=west, font=\normalsize] {3};
-            \node at (axis cs:1.5,1) [anchor=north, font=\normalsize] {4};
+            \node at (axis cs:1,1.5) [anchor=east, font=\normalsize] {$\ell_1$};
+            \node at (axis cs:1.5,2) [anchor=south, font=\normalsize] {$\ell_2$};
+            \node at (axis cs:2,1.5) [anchor=west, font=\normalsize] {$\ell_3$};
+            \node at (axis cs:1.5,1) [anchor=north, font=\normalsize] {$\ell_4$};
             %\node at (axis cs:1.5,1.5) [anchor=center, font=\normalsize] {5};
 
             \end{axis}
@@ -236,33 +308,31 @@ Vale ressaltar que se $e$ é o ancestral comum mais profundo de $a$ e $b$, entã
     \label{fig:chaves-buscas}
 \end{figure}
 
-Por contrapositiva das conclusões acima, temos:
+Por contra-positiva das conclusões acima, temos:
 \begin{center}
-Se $3 = \emptyset \Rightarrow 2 \neq \emptyset$. \\
-Se $1 = \emptyset \Rightarrow 4 \neq \emptyset$.
+Se $\ell_3 = \emptyset \Rightarrow \ell_2 \neq \emptyset$. \\
+Se $\ell_1 = \emptyset \Rightarrow \ell_4 \neq \emptyset$.
 \end{center}
 
-Conclui-se então que $1 \cup 4  \neq \emptyset$ e $2 \cup 3  \neq \emptyset$, e assim chegamos numa contradição.
+Conclui-se então que $\ell_1 \cup \ell_4  \neq \emptyset$ e $\ell_2 \cup \ell_3  \neq \emptyset$, e assim chegamos numa contradição.
 
-Vale ressaltar que é conveniente $1 \cup 4  \neq \emptyset$ e $2 \cup 3  \neq \emptyset$, uma vez que $1 \cup 4$ representa os pontos pertencentes as arestas do retângulo de vértices $a$ e $b$ incidentes ao vértice $a$ e  $2 \cup 3$ representa os pontos pertencentes as arestas incidentes ao vértice $b$. Assim, respeitando o Lema~\ref{lem:pontos_em_arestas_incidentes}.
+Vale ressaltar que é conveniente que $\ell_1 \cup \ell_4  \neq \emptyset$ e $\ell_2 \cup \ell_3  \neq \emptyset$, uma vez que $\ell_1 \cup \ell_4$ representa os pontos pertencentes ao $\{a,b\}$-retângulo incidentes ao vértice $a$ e  $\ell_2 \cup \ell_3$ representa os pontos pertencentes ao $\{a,b\}$-retângulo incidentes ao vértice $b$. Assim, respeitando o Lema~\ref{lem:pontos_em_arestas_incidentes}.
 \end{proof}
 
-\begin{lemma}Qualquer conjunto de pontos arboreamente satisfeitos representa a execução de um algoritmo de busca em ABB no modelo de computação adotado.
+\begin{lemma}Qualquer conjunto de pontos arboreamente satisfeito representa a execução de um algoritmo de busca em ABB no modelo de computação adotado.
 \end{lemma}
 
 \begin{proof}
 
-Seja $N(x,i)$ o próximo acesso a chave $x$ depois do instante de tempo $i$.
+É possível criar uma treap com nós que possuem a coordenada $x$ como chave. Usaremos o campo prioridade dos nós da treap para representar o próximo instante de tempo que tal chave é visitada. Seja $N(x,i)$ a próximo visita à chave $x$ depois do instante de tempo $i$, ou seja, o ponto ($x$,p.y) do conjunto com menor p.y > $i$. Se não há mais visitas a chave $x$ depois do tempo $i$, ou seja, não há nenhum ponto no conjunto com coordenadas ($x$,p.y) com p.y > $i$, então definimos $N(x,i) = \infty$. Os nós (chave, prioridade) da treap são inicializadas como ($x$, $N(x,0)$) e no instante de tempo $t$ as chaves estão no formato ($x$, $N(x,t)$).
 
-É possível criar uma treap com nós que possuem a coordenada $x$ como chave. Além disso, usaremos o campo prioridade para representar o próximo instante de tempo que tal chave é acessada. As chaves são inicializadas como ($x$, $N(x,0)$) e no instante de tempo $t$ as chaves estão no formato ($x$, $N(x,t)$).
+No instante de tempo $i$, os nós visitados, ou seja, todos os pontos do conjunto arboreamente satisfeito com coordenada $y=i$, formam uma subárvore que possui a raiz. Para reorganizar os nós de maneira a manter a propriedade heap da prioridade da treap para o instante de tempo $i+1$, é preciso reconfigurar os nós visitados de maneira a manter os nós que serão visitados mais , mais superficiais e os nós que serão visitados mais tarde, mais profundos. Na prática, basta manter a prioridade de heap mínimo da treap em relação ao $N(x,i)$.
 
-No instante de tempo $i$, os nós acessados, ou seja, todos os pontos do conjunto arboreamente satisfeito com coordenada $y=i$, formam uma subárvore que possui a raiz. Para reorganizar os nós de maneira a manter a propriedade heap da prioridade da treap para o instante de tempo $i+1$, é preciso reconfigurar os nós acessados de maneira a manter os nós mais superficiais como os nós que serão acessados mais cedo, ou seja, com menor $N(x,i)$. Na prática, após qualquer modificação de tempo é necessário reconfigurar a subárvore formada pelos pontos acessados como uma treap local.
+Se conseguirmos manter a estrutura da treap após cada busca apenas visitando os elementos dados pelo conjunto arboreamente satisfeito, então descrevemos um algoritmo offline que visita todos os elementos da sequência de entrada e evidentemente traduz um conjunto arboreamente satisfeito em um algoritmo de busca em ABB.
 
-Se conseguirmos manter a estrutura da treap após cada busca apenas acessando os elementos apropriados dados pelo conjunto arboreamente satisfeito, então evidentemente descrevemos um algoritmo offline que traduz um conjunto arboreamente satisfeito em um algoritmo de busca em ABB.
+Vamos supor por contradição que não é possível manter a estrutura da treap entre o instante de tempo $i$ e $i+1$. Se não é possível manter tal estrutura, isso significa que há duas chaves, nomeadas $a$ e $b$ ($a \neq b$), tal que $a$ está contida na subárvore das chaves visitas no instante de tempo $i$ e $b$ não é visitada no instante de tempo $i$ e não consegue ser visitada no instante de tempo $i+1$ apenas com os pontos do conjunto arboreamente satisfeito. Assim, $N(a,i) > N(b,i)$. Assumiremos sem perda de generalidade que $a < b$ e o nó de $b$ é filho do nó de $a$ na ABB durante o instante de tempo $i$. Veja a Figura~\ref{fig:representacao_grafica}.
 
-Vamos supor por contradição que não é possível manter a estrutura da treap entre o instante de tempo $i$ e $i+1$. Se não é possível manter tal estrutura, isso significa que há dois pontos, nomeados $a$ e $b$ ($a \neq b$), tal que $a$ está contido na subárvore dos vértices acessados no instante de tempo $i$ e $b$ não é acessado no instante de tempo $i$ e não consegue ser acessado no instante de tempo $i+1$ apenas com os pontos do conjunto arboreamente satisfeito. Assim, $N(a,i) > N(b,i)$. Assumiremos sem perda de generalidade que $a < b$ e $b$ é filho de $a$ na ABB durante o instante de tempo $i$. Veja a Figura~\ref{fig:representacao_grafica}.
-
-De maneira informal, $a$ é um vértice que foi acessado no tempo $i$ e $b$ é o vértice filho de $a$ que por sua vez, não foi acessado no tempo $i$. O próximo acesso do vértice $b$ é mais cedo que o próximo acesso do vértice $a$. Para contradizer o lema, precisamos provar que um conjunto ser arboreamente satisfeito não é condição suficiente para garantir a manutenção da estrutura da treap de maneira adequada entre quaisquer instantes de tempo.
+De maneira informal, $a$ é uma chave que foi visitada no tempo $i$ e $b$ é filha de $a$ e não foi visitada no tempo $i$. O próximo acesso de $b$ é mais cedo que o próximo acesso de $a$. Para contradizer o lema, precisamos provar que um conjunto ser arboreamente satisfeito não é condição suficiente para garantir a manutenção da estrutura da treap de maneira adequada entre quaisquer instantes de tempo.
 
 \begin{figure}
     \begin{tikzpicture}
@@ -276,32 +346,32 @@ De maneira informal, $a$ é um vértice que foi acessado no tempo $i$ e $b$ é o
         \path (start) ++(3,0.7) coordinate (end);
         \draw[dashed] (start) -- (end) node[midway,below] {};
     
-        \path (start) ++(1.5,0.55) coordinate (x);
+        \path (start) ++(1.5,0.57) coordinate (x);
         \path (start) ++(1.7,0.2) coordinate (y);
-    
-        \filldraw (x) circle (2pt) node[anchor=south] {};
-        \filldraw (y) circle (2pt) node[anchor=north] {};
-    
-        \draw[red, thick] (x) -- (y);
-    
+
         \begin{scope}
             \clip (A) -- (B) -- (C) -- cycle; % Clipping para definir a área do triângulo
             \fill[pattern=vertical lines] (A) -- (C) -- (end) -- (start) -- cycle; % Preenchimento hachurado
         \end{scope}
+    
+        %\filldraw (x) circle (2pt) node[anchor=south] {};
+        %\filldraw (y) circle (2pt) node[anchor=north] {};
+    
+        \draw[red, thick] (x) -- (y);
 
-        \filldraw (x) circle (2pt) node[anchor=south] {a};
-        \filldraw (y) circle (2pt) node[anchor=north] {b};
+        \filldraw (x) circle (1.5pt) node[anchor=south] {a};
+        \filldraw (y) circle (1.5pt) node[anchor=north] {b};
 
-        \draw[->, black] (1.8,1.8) -- (2.5,2) node[pos=1, right] {Chaves acessadas no instante de tempo $i$};
+        \draw[->, black] (1.8,1.8) -- (2.5,2) node[pos=1, right] {Chaves visitadas no instante de tempo $i$};
     \end{tikzpicture}
-    \caption{Representação da situação descrita. Simplificação do formato de uma ABB por um triângulo, a área hachurada representa todos os nós acessados no instante de tempo $i$ e os nós $a$ e $b$ são nós pai-filho. O nó $b$ não foi acessado neste instante de tempo.}
+    \caption{Representação da situação descrita. Simplificação do formato de uma ABB por um triângulo, a área destacada representa todos os nós acessados no instante de tempo $i$. A chave $b$ não foi visitada nesse instante de tempo.}
 \label{fig:representacao_grafica}
 \end{figure}
 
-Para simplificar a prova, denotaremos novamente números para áreas específicas: \\
-Área 1 = \{$(x,y)$ | $x = a$ e $i < y \leq i+1$\}, representando todos os acessos a chave $a$ entre os instantes de tempo $i$ e $i+1$. \\
-Área 2 = \{$(x,y)$ | $a < x \leq b$ e $y = i$\}, representando todos os acessos a chaves entre $a$ e $b$ no instante de tempo $i$.
-Veja a Figura~\ref{fig:area_delimitada}.
+Os lados a seguir terão um papel na prova e estão representados na Figura~\ref{fig:area_delimitada}. \\
+$\ell_1$ = \{$(x,y)$ | $x = a$ e $i < y \leq i+1$\}, representando todas as visitas a chave $a$ entre os instantes de tempo $i$ e $i+1$. \\
+$\ell_2$ = \{$(x,y)$ | $a < x \leq b$ e $y = i$\}, representando todas as visitas a chaves entre $a$ e $b$ no instante de tempo $i$. \\
+
 
 \begin{figure}[H]
     \centering
@@ -317,8 +387,8 @@ Veja a Figura~\ref{fig:area_delimitada}.
         ytick={1,2},
         xlabel style={at={(axis description cs:0.5,-0.08)}, anchor=center}, % Ajusta a posição do rótulo do eixo x
         ylabel style={at={(axis description cs:-0.08,0.5)}, anchor=center},
-        xticklabels={a,b}, % Define os rótulos do eixo x
-        yticklabels={i,i+1} % Define os rótulos do eixo y
+        xticklabels={$a$,$b$}, % Define os rótulos do eixo x
+        yticklabels={$i$,$i+1$} % Define os rótulos do eixo y
     ]
 
     \addplot[only marks, mark=*] coordinates {
@@ -350,20 +420,21 @@ Veja a Figura~\ref{fig:area_delimitada}.
     \node at (axis cs:1,1) [anchor=north east, fill=white, font=\small] {$a$};
     \node at (axis cs:2,2) [anchor=south west, fill=white, font=\small] {$b$};
 
-    \node at (axis cs:1,1.5) [anchor=east, font=\normalsize] {1};
-    \node at (axis cs:1.5,1) [anchor=north, font=\normalsize] {2};
-    %\node at (axis cs:1.5,1.5) [anchor=center, font=\normalsize] {5};
+    \node at (axis cs:1,1.5) [anchor=east, font=\normalsize] {$\ell_1$};
+    \node at (axis cs:1.5,1) [anchor=north, font=\normalsize] {$\ell_2$};
 
     \end{axis}
     \end{tikzpicture}
     \end{adjustbox}
-    \caption{Representação geométrica da área delimitada pelo retângulo de vértices $a$ e $b$.}
+    \caption{$\{a,b\}$-retângulo.}
 \label{fig:area_delimitada}
 \end{figure}
 
-De acordo com o Lema~\ref{lem:pontos_em_arestas_incidentes}, como $(a,b)$ representa um par de pontos arboreamente satisfeitos, então há pelo menos um outro ponto em alguma das arestas que incide em $a$. Como $N(a,i) > N(b,i)$, então sabemos que a área 1 não possui pontos no conjunto arboreamente satisfeito. Logo, para o Lema~\ref{lem:pontos_em_arestas_incidentes} ser verdadeiro, alguma chave entre $a$ e $b$ deve ter sido acessada no instante de tempo $i$, ou seja, $2 \neq \emptyset$. 
+De acordo com o Lema~\ref{lem:pontos_em_arestas_incidentes}, como $\{a,b\}$ representa um par de pontos arboreamente satisfeitos, então há pelo menos um outro ponto em alguma das arestas do $\{a,b\}$-retângulo que incide em $a$. Como $N(a,i) > N(b,i)$, então sabemos que a área $\ell_1$ não possui pontos no conjunto arboreamente satisfeito. Logo, para o Lema~\ref{lem:pontos_em_arestas_incidentes} ser verdadeiro, alguma chave entre $a$ e $b$ deve ter sido visitada no instante de tempo $i$, ou seja, $\ell_2 \neq \emptyset$. 
 
-Como $b$ é filho direito de $a$, então para acessar qualquer chave no intervalo ($a,b$) no instante de tempo $i$, pela propriedade de ordenação de ABBs, é necessário acessar a chave $b$, pois as chaves neste intervalo são mais profundas que $a$ e $b$. Porém a suposição inicial era que $b$ não foi tocado no instante de tempo $i$, logo chegamos numa contradição.
+Como $b$ é filho direito de $a$, então para acessar qualquer chave no intervalo ($a,b$) no instante de tempo $i$, pela propriedade de ordenação de ABBs, é necessário acessar a chave $b$, pois as chaves neste intervalo são mais profundas que $a$ e $b$. 
+
+Assim, para o par de pontos $\{a,b\}$ ser arboreamente satisfeito é preciso que alguma chave no intervalo ($a,b$) tenha sido visitada no instante de tempo $i$, porém para acessar alguma destas chave neste instante de tempo é preciso acessar a chave $b$, e a suposição inicial era que $b$ não era visitada neste instante de tempo. Chegamos numa contradição.
 
 Assim, nota-se que a reestruturação da treap da maneira proposta é sempre válida em conjuntos de pontos arboreamente satisfeitos e tal reestruturação é um algoritmo offline que converte um conjunto de pontos arboreamente satisfeitos em uma execução de um algoritmo de busca em ABB.
 \end{proof}
