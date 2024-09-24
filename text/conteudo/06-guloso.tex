@@ -23,9 +23,11 @@ Isso implica que o problema de encontrar o custo do algoritmo ótimo de busca em
 %ainda não sabemos porque isso é seção 3 eu acho(?).
 %Ainda não se sabe se é possível encontrar o valor de $OPT(X)$ em tempo polinomial, e obviamente pela discussão acima, também não sabemos encontrar o menor superconjunto arboreamente satisfeito, mas apresentaremos um algoritmo guloso chamado Greedy Future que produz um 
 
-Apesar de não se saber se é possível encontrar o valor de $OPT(X)$ em tempo polinomial, e consequentemente encontrar o menor subconjunto arboreamente satisfeito, apresentaremos o algoritmo guloso Greedy Future que dado um conjunto P de pontos que representam uma sequência $X$ de acessos, produz um conjunto de pontos $P'$ que contém P, ou seja, $P' \supseteq P$ e que é arboreamente satisfeito. Estamos assumindo que as sequências de acesso sempre buscam uma única chave em cada instante de tempo, então $P$ obrigatoriamente possui $m$ pontos e todos possuem coordenadas $y$ distintas dentro do intervalo $[1,m]$. 
+Apesar de não se saber se é possível encontrar o valor de $OPT(X)$ em tempo polinomial, e consequentemente encontrar o menor subconjunto arboreamente satisfeito, apresentaremos o algoritmo guloso Greedy Future que dado um conjunto P de pontos que representam uma sequência $X$ de acessos, produz um conjunto de pontos $P'$ que contém P, ou seja, $P' \supseteq P$ e que é arboreamente satisfeito. 
 
-O algoritmo funciona da seguinte maneira: inicialmente defina uma reta horizontal $r$ em $y = 1$ e inicialize $P' = P$. Seja $a$ um ponto coordenadas $(a.x, a.y)$ e que $a \in P'$ e $a \in r$. Para cada $\{a,b\}$-retângulo insatisfeito com $b.y < a.y$, adicione um ponto em $(b.x, a.y)$. Após satisfazer todos $\{a,b\}$-retângulos, mova $r$ uma unidade para cima e repita. O algoritmo termina após satisfazer todos os $\{a,b\}$-retângulos com $r$ em $y = m$. Veja a Figura~\ref{fig:GreedyFuture-funcionamento}.
+Estamos assumindo que as sequências de acesso $X$ sempre buscam uma única chave em cada instante de tempo, então $P$ obrigatoriamente possui $m$ pontos e todos possuem coordenadas $y$ distintas dentro do intervalo $[1,m]$. 
+
+O algoritmo funciona da seguinte maneira: inicialmente defina uma reta horizontal $r$ em $y = 1$ e inicialize $P' = P$. Seja $a$ um ponto com coordenadas $(a.x, a.y)$ e que $a \in P'$ e $a \in r$. Para cada $\{a,b\}$-retângulo insatisfeito em $P'$, com $b$ um ponto com coordenadas $(b.x, b.y)$, $b.y < a.y$, adicione um ponto em $(b.x, a.y)$. Após satisfazer todos $\{a,b\}$-retângulos, mova $r$ uma unidade para cima e repita. O algoritmo termina após satisfazer todos os $\{a,b\}$-retângulos com $r$ em $y = m$. Veja a Figura~\ref{fig:GreedyFuture-funcionamento}.
 
 \begin{figure}
     \centering
@@ -346,4 +348,3 @@ Embora o algoritmo garantir encontrar uma solução válida, ou seja um conjunto
     \caption{Em preto, os pontos dados por uma sequência de acessos. À esquerda, o conjunto de pontos produzidos pelo Greedy Future. À direita, o menor conjunto arboreamente satisfeito para a entrada, de tamanho minASS.}
 \label{fig:greedy_subotimo}
 \end{figure}
-

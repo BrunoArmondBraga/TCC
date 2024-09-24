@@ -6,7 +6,7 @@
 \chapter{Interpretação geométrica de buscas em ABBs}
 \label{cap:geometria}
 
-Neste capítulo explicaremos o que são conjuntos de pontos arboreamente independente e como interpretar de maneira geométrica algoritmos de busca em ABBs.
+Neste capítulo explicaremos a visão geométrica proposta no artigo \cite{geometry_of_bst}, o que são conjuntos de pontos arboreamente independente e como interpretar de maneira geométrica algoritmos de busca em ABBs.
 
 \section{Conjuntos arboreamente satisfeitos}
 
@@ -143,7 +143,7 @@ Dada uma sequência $X = (x_{1},\ldots,x_{m})$ de $m$ acessos às chaves $1,2,\l
 \label{fig:busca_padrao}
 \end{figure}
 
-A \textit{visão geométrica da execução de um algoritmo de busca em ABB} para uma sequência $X = (x_{1},\ldots,x_{m})$ de buscas, de maneira similar, é o conjunto de pontos na forma ($x$,$i$) tal que $x$ foi uma das chaves visitadas durante a busca pela chave $x_i$. Para cada $i \in \{1,\ldots,m\}$, esse conjunto de pontos esta sob a reta $y = i$ e representa os nós visitados durante a busca por $x_i$. Veja a Figura~\ref{fig:traducao-busca-em-ASS}.
+A \textit{visão geométrica da execução de um algoritmo de busca em ABB} para uma sequência $X = (x_{1},\ldots,x_{m})$ de buscas, de maneira similar, é o conjunto de pontos na forma ($x$,$i$) tal que $x$ foi uma das chaves visitadas durante a busca pela chave $x_i$. Para cada $i \in \{1,\ldots,m\}$, o conjunto de pontos de $P$ pertencentes a reta $y = i$ representa os nós visitados durante a busca por $x_i$. Veja a Figura~\ref{fig:traducao-busca-em-ASS}.
 
 \begin{figure}[h!]
     \centering
@@ -211,7 +211,7 @@ A \textit{visão geométrica da execução de um algoritmo de busca em ABB} para
             \end{axis}
             \end{tikzpicture}
     \end{minipage}
-    \caption{À esquerda, o conjunto de pontos que representa a sequência $X = (3,1,4,2,5)$. No meio, uma possível ABB com as chaves \{1,2,\ldots,5\}. À direita, o conjunto correspondente aos nós da ABB ao centro, visitados pelo algoritmo de busca que não efetua rotações, os pontos pretos são os nós da sequência $X$ de acessos e os pontos vermelhos são o restante dos nós visitados durante cada um desses acessos. Note que o conjunto de pontos à esquerda não é arboreamente satisfeito, mas o conjunto à direita é.}
+    \caption{À esquerda, o conjunto de pontos que representa a sequência $X = (3,1,4,2,5)$. No meio, uma possível ABB com as chaves \{1,2,\ldots,5\}. À direita, o conjunto correspondente aos nós da ABB ao centro, visitados pelo algoritmo de busca que não efetua rotações. Os pontos pretos são os nós da sequência $X$ de acessos e os pontos vermelhos são o restante dos nós visitados durante cada um desses acessos. Note que o conjunto de pontos à esquerda não é arboreamente satisfeito, mas o conjunto à direita é.}
 \label{fig:traducao-busca-em-ASS}
 \end{figure}
 
@@ -220,34 +220,39 @@ A \textit{visão geométrica da execução de um algoritmo de busca em ABB} para
 \end{lemma}
 
 \begin{proof}
-Assuma que a visão geométrica de um algoritmo de busca em uma ABB $T$ não é arboreamente satisfeita. Dessa maneira, há pelo menos um par $\{a,b\}$ de pontos nesse conjunto que não é arboreamente satisfeito. Seja $i$ o instante de tempo que a chave $a$ foi visitada, e seja $j$ o instante de tempo que a chave $b$ foi visitada. Assumiremos também sem perda de generalidade que $i < j$ e $a < b$.
+Suponha, por contradição, que a visão geométrica de um algoritmo de busca em uma ABB $T$ não é um conjunto arboreamente satisfeito. Dessa maneira, há pelo menos um par $\{p,q\}$ de pontos nesse conjunto que não é arboreamente satisfeito, onde $p = (a,i)$ e $q = (b,j)$. Assumiremos sem perda de generalidade que $i < j$ e $a < b$.
 
-Seja $c$ o ancestral comum mais profundo de $a$ e $b$ em $T$ imediatamente antes da busca $i$. E seja $d$ o ancestral comum mais profundo de $a$ e $b$ em $T$ imediatamente antes da busca $j$.
+Os quatro lados do $\{p,q\}$-retângulo terão um papel a seguir na prova. São eles:
+\begin{itemize}
+    \item $\ell_1$ = \{$(x,y)$ | $x = a$ e $i < y \leq j$\},
+    \item $\ell_2$ = \{$(x,y)$ | $a \leq x < b$ e $y = j$\},
+    \item $\ell_3$ = \{$(x,y)$ | $x = b$ e $i \leq y < j$\},
+    \item $\ell_4$ = \{$(x,y)$ | $a < x \leq b$ e $y = i$\},
+\end{itemize}
+onde $\ell_1$ representa as visitas à chave $a$ entre os instantes de tempo $i$ e $j$, $\ell_2$ as visitas às chaves entre $a$ e $b$ no instante de tempo $j$, $\ell_3$ as visitas à chave $b$ entre os instantes de tempo $i$ e $j$ e $\ell_4$ as visitas às chaves entre $a$ e $b$ no instante de tempo $i$.
 
-Os quatro lados do $\{a,b\}$-retângulo terão um papel a seguir na prova. Eles são\\
-$\ell_1$ = \{$(x,y)$ | $x = a$ e $i < y \leq j$\}, representando todas as visitas a chave $a$ entre os instantes de tempo $i$ e $j$. \\
-$\ell_2$ = \{$(x,y)$ | $a \leq x < b$ e $y = j$\}, representando todas as visitas a chaves entre $a$ e $b$ no instante de tempo $j$. \\
-$\ell_3$ = \{$(x,y)$ | $x = b$ e $i \leq y < j$\}, representando todas as visitas a chave $b$ entre os instantes de tempo $i$ e $j$. \\
-$\ell_4$ = \{$(x,y)$ | $a < x \leq b$ e $y = i$\}, representando todas as visitas a chaves entre $a$ e $b$ no instante de tempo $i$. \\
+Como $\{p,q\}$ é um par de pontos arboreamente insatisfeito, nota-se que não há nenhum ponto tanto nas bordas quanto no interior do $\{p,q\}$-retângulo. Logo, $\ell_1 \cup \ell_2 \cup \ell_3 \cup \ell_4 = \emptyset$.
 
-Como $\{a,b\}$ é um par de pontos arboreamente insatisfeitos, nota-se que não há nenhum ponto tanto nas bordas quanto no interior do $\{a,b\}$-retângulo. Logo, $\ell_1 \cup \ell_2 \cup \ell_3 \cup \ell_4 = \emptyset$.
+Sejam $e$, $f$ e $g$ chaves dos nós $E$, $F$ e $G$ de uma ABB. Note que se o $F$ é o ancestral comum mais profundo dos nós $E$ e $G$, então sabemos que $e \leq f \leq g$ e, mais importante, $F$ é ancestral dos nós $E$ e $G$ nesta ABB, e assim os nós $E$ e $G$ têm profundidade maior que~$F$. Logo, $F$ está no caminho da raiz desta ABB até qualquer chave no intervalo $[e,g]$. Em outras palavras, para visitar qualquer nó da ABB com chave no intervalo $[e,g]$, é necessário visitar o ancestral comum mais profundo entre $E$ e $G$ que neste caso é $F$.
 
-Vale ressaltar que se $e$ é o ancestral comum mais profundo de $a$ e $b$ em $T$, então sabemos que $a \leq e \leq b$ e, mais importante, $e$ está mais acima em $T$ em comparação com $a$ e $b$ (possivelmente na mesma profundidade caso seja igual a $a$ ou $b$). Assim, $e$ está no caminho da raiz da ABB até qualquer chave no intervalo $[a,b]$. Em outras palavras, para visitar qualquer chave no intervalo $[a,b]$, é necessário visitar o ancestral comum mais profundo entre $a$ e $b$.
+No que segue, abusaremos da notação e usaremos um valor $x$ em $[1,n]$ para nos referimos tanto a uma chave $x$ como ao nó de $T$ que armazena $x$.
+
+Seja $c$ o ancestral comum mais profundo de $a$ e $b$ em $T$ imediatamente antes da busca $i$. Seja $d$ o ancestral comum mais profundo de $a$ e $b$ em $T$ imediatamente antes da busca $j$.
 
 \begin{figure}[H]
     \centering
     \vfill % Adiciona espaço acima da figura para centralização vertical
     \begin{minipage}[t]{0.6\textwidth}
-        Se $\ell_2 = \emptyset$, então obrigatoriamente $d = b$. Se $c = b$, então $\ell_3 \neq \emptyset$. Se $c \neq b$, então em pelo menos algum outro instante de tempo $h$, $h < j$, $b$ teve que ser visitado para ser rotacionado até virar o ancestral comum mais profundo entre $a$ e $b$, logo $\ell_3 \neq \emptyset$.   
+        Como $\ell_2 = \emptyset$, então obrigatoriamente $d = b$. Por outro lado, como $\ell_3 = \emptyset$, temos que $c \neq b$ e, em algum instante de tempo $h$, com $i \leq h < j$, $b$ teve que ser visitado para ser rotacionado e se tornar o ancestral comum mais profundo entre $a$ e $b$ no instante $j$, logo $\ell_3 \neq \emptyset$ e concluímos que $\ell_2 \cup \ell_3 \neq \emptyset$.
 
-        Se $\ell_4 = \emptyset$, então $c = a$. Porém, no instante $j$, $b$ é acessado. Caso $c = d = a$, $a$ precisa ser visitado no instante de tempo $j$, logo $\ell_1 \neq \emptyset$. Caso $c \neq d$, então em algum instante de tempo $h$, $i \leq h < j$, o ancestral comum mais profundo entre $a$ e $b$ mudou, logo algum nó com chave no intervalo $(a,b]$ precisa ter sido rotacionado para cima, porém sabemos que para visitar qualquer chave no intervalo $[a,b]$ no instante de tempo $h$, é necessário visitar o ancestral comum mais profundo que neste caso é $a$. Logo $\ell_1 \neq \emptyset$. 
+        Como $\ell_4 = \emptyset$, então $c = a$. Porém, no instante $j$, $b$ é acessado. Caso $c = d = a$, $a$ precisa ser visitado no instante de tempo $j$, logo $\ell_1 \neq \emptyset$. Caso $c \neq d$, então em algum instante de tempo $h$, com $i \leq h < j$, o ancestral comum mais profundo entre $a$ e $b$ mudou. Logo algum nó com chave no intervalo $(a,b]$ precisa ter sido rotacionado para se tornar o novo ancestral comum mais profundo entre $a$ e $b$. Porém sabemos que para visitar qualquer chave no intervalo $[a,b]$ no instante de tempo $h$, é necessário visitar o ancestral comum mais profundo entre $a$ e $b$, que neste caso é $a$. Logo $\ell_1 \neq \emptyset$ e concluímos que $\ell_1 \cup \ell_4 \neq \emptyset$.
     \end{minipage}\hfill
     \begin{minipage}[t]{0.4\textwidth}
         % Coluna da direita com a imagem e a legenda
         \centering
         \begin{figure}[H]
             \centering
-            \begin{adjustbox}{valign=t, raise=-25pt} % Alinha o gráfico ao topo da caixa
+            \begin{adjustbox}{valign=t, raise=-55pt} % Alinha o gráfico ao topo da caixa
             \begin{tikzpicture}[scale=0.75]
             \begin{axis}[
                 xlabel={Chaves},
@@ -289,8 +294,8 @@ Vale ressaltar que se $e$ é o ancestral comum mais profundo de $a$ e $b$ em $T$
             };
 
             % Adiciona rótulos aos pontos
-            \node at (axis cs:1,1) [anchor=north east, fill=white, font=\small] {$a$};
-            \node at (axis cs:2,2) [anchor=south west, fill=white, font=\small] {$b$};
+            \node at (axis cs:1,1) [anchor=north east, fill=white, font=\small] {$p$};
+            \node at (axis cs:2,2) [anchor=south west, fill=white, font=\small] {$q$};
 
             \node at (axis cs:1,1.5) [anchor=east, font=\normalsize] {$\ell_1$};
             \node at (axis cs:1.5,2) [anchor=south, font=\normalsize] {$\ell_2$};
@@ -310,31 +315,49 @@ Vale ressaltar que se $e$ é o ancestral comum mais profundo de $a$ e $b$ em $T$
 
 Por contra-positiva das conclusões acima, temos:
 \begin{center}
-Se $\ell_3 = \emptyset \Rightarrow \ell_2 \neq \emptyset$. \\
-Se $\ell_1 = \emptyset \Rightarrow \ell_4 \neq \emptyset$.
+Se $\ell_3 = \emptyset$, então $\ell_2 \neq \emptyset$. \\
+Se $\ell_1 = \emptyset$, então $\ell_4 \neq \emptyset$.
 \end{center}
 
 Conclui-se então que $\ell_1 \cup \ell_4  \neq \emptyset$ e $\ell_2 \cup \ell_3  \neq \emptyset$, e assim chegamos numa contradição.
 
-Vale ressaltar que é conveniente que $\ell_1 \cup \ell_4  \neq \emptyset$ e $\ell_2 \cup \ell_3  \neq \emptyset$, uma vez que $\ell_1 \cup \ell_4$ representa os pontos pertencentes ao $\{a,b\}$-retângulo incidentes ao vértice $a$ e  $\ell_2 \cup \ell_3$ representa os pontos pertencentes ao $\{a,b\}$-retângulo incidentes ao vértice $b$. Assim, respeitando o Lema~\ref{lem:pontos_em_arestas_incidentes}.
+Vale ressaltar que, pelo Lema~\ref{lem:pontos_em_arestas_incidentes}, $\ell_1 \cup \ell_4  \neq \emptyset$ e $\ell_2 \cup \ell_3  \neq \emptyset$, uma vez que $\ell_1 \cup \ell_4$ representa os pontos pertencentes aos lados do $\{p,q\}$-retângulo incidentes ao vértice $p$ e  $\ell_2 \cup \ell_3$ representa os pontos pertencentes aos lados do $\{p,q\}$-retângulo incidentes ao vértice~$q$.
 \end{proof}
+
+A partir daqui, consideraremos apenas pontos $(x,y)$ em que $x$ e $y$ são inteiros, $1 \leq x \leq n$ e $1 \leq y \leq m$.
 
 \begin{lemma}Qualquer conjunto de pontos arboreamente satisfeito representa a execução de um algoritmo de busca em ABB no modelo de computação adotado.
 \end{lemma}
 
 \begin{proof}
+Usaremos um tipo de árvore binária de busca denominada \textit{treap}. Os nós de uma treap possuem dois campos, um chamado chave e outro chamado prioridade. A treap mantém duas propriedades: a propriedade de ordem de árvores binárias de busca em relação às chaves e a propriedade de heap em relação às prioridades. Assim, todo nó de uma treap possui chave maior que os nós da sua subárvore esquerda e chave menor que os nós da sua subárvore direita. Além disso, os nós da treap obedecem à propriedade de heap, que pode ser de dois tipos: se for um heap máximo, cada nó terá prioridade maior ou igual a de seus filhos; se for um heap mínimo, cada nó terá prioridade menor ou igual a de seus filhos.
 
-É possível criar uma treap com nós que possuem a coordenada $x$ como chave. Usaremos o campo prioridade dos nós da treap para representar o próximo instante de tempo que tal chave é visitada. Seja $N(x,i)$ a próximo visita à chave $x$ depois do instante de tempo $i$, ou seja, o ponto ($x$,p.y) do conjunto com menor p.y > $i$. Se não há mais visitas a chave $x$ depois do tempo $i$, ou seja, não há nenhum ponto no conjunto com coordenadas ($x$,p.y) com p.y > $i$, então definimos $N(x,i) = \infty$. Os nós (chave, prioridade) da treap são inicializadas como ($x$, $N(x,0)$) e no instante de tempo $t$ as chaves estão no formato ($x$, $N(x,t)$).
+Seja $P$ um conjunto de pontos arboreamente satisfeito. Denotaremos por $N(h,i)$ a coordenada $y$ do ponto mais baixo do conjunto que possui coordenadas $x = h$ e $y > i$. Caso não exista tal ponto, definiremos $N(h,i) = \infty$. Assim, 
+\[
+N(h,i) = 
+\begin{cases}
+    \min\{y : (h,y) \in P \text{ e } y > i\} & \text{se tal ponto existe,} \\
+    \infty & \text{caso contrário.}
+\end{cases}
+\]
 
-No instante de tempo $i$, os nós visitados, ou seja, todos os pontos do conjunto arboreamente satisfeito com coordenada $y=i$, formam uma subárvore que possui a raiz. Para reorganizar os nós de maneira a manter a propriedade heap da prioridade da treap para o instante de tempo $i+1$, é preciso reconfigurar os nós visitados de maneira a manter os nós que serão visitados mais , mais superficiais e os nós que serão visitados mais tarde, mais profundos. Na prática, basta manter a prioridade de heap mínimo da treap em relação ao $N(x,i)$.
+%(Denotaremos por $N(h,i)$ a coordenada $y$ do ponto $q$ com menor distância em relação ao ponto $(h,i)$ tal que $q \in P$ e $q \in r$, onde $r$ = \{$(x,y)$ | $x = h$ e $y > i$\}.) - Escrevi essa definição alternativa que é um pouco mais formal, apesar de ser menos clara. Não sei se ficou melhor.
 
-Se conseguirmos manter a estrutura da treap após cada busca apenas visitando os elementos dados pelo conjunto arboreamente satisfeito, então descrevemos um algoritmo offline que visita todos os elementos da sequência de entrada e evidentemente traduz um conjunto arboreamente satisfeito em um algoritmo de busca em ABB.
 
-Vamos supor por contradição que não é possível manter a estrutura da treap entre o instante de tempo $i$ e $i+1$. Se não é possível manter tal estrutura, isso significa que há duas chaves, nomeadas $a$ e $b$ ($a \neq b$), tal que $a$ está contida na subárvore das chaves visitas no instante de tempo $i$ e $b$ não é visitada no instante de tempo $i$ e não consegue ser visitada no instante de tempo $i+1$ apenas com os pontos do conjunto arboreamente satisfeito. Assim, $N(a,i) > N(b,i)$. Assumiremos sem perda de generalidade que $a < b$ e o nó de $b$ é filho do nó de $a$ na ABB durante o instante de tempo $i$. Veja a Figura~\ref{fig:representacao_grafica}.
+%Vale ressaltar que por conta da propriedade de heap em relação às prioridades dos nós, se uma subárvore conexa da treap com nós de mesma prioridade existir, então é possível realocar os nós dessa subárvore de maneira arbitraria em relação à prioridade sem desobedecer a propriedade de heap seguida pela treap. Assim, se for possível encontrar uma subárvore conexa com nós de mesma prioridade em uma treap, então existem mais de uma treap válida para este conjunto de nós e, portanto, essa treap não é única.
 
-De maneira informal, $a$ é uma chave que foi visitada no tempo $i$ e $b$ é filha de $a$ e não foi visitada no tempo $i$. O próximo acesso de $b$ é mais cedo que o próximo acesso de $a$. Para contradizer o lema, precisamos provar que um conjunto ser arboreamente satisfeito não é condição suficiente para garantir a manutenção da estrutura da treap de maneira adequada entre quaisquer instantes de tempo.
+É possível criar uma treap que é um heap mínimo nas prioridades a partir de $P$. Para cada $j$ no intervalo $[1,n]$, adicione um nó na forma ($j$, $N(j,0)$), ou seja, adicione um nó com chave $j$ e prioridade $N(j,0)$. Essa é a nossa treap inicial.
 
-\begin{figure}
+Com essa treap criada, nota-se que já temos uma ABB que possui $n$ nós. Se conseguirmos provar que, para cada instante de tempo $h$, variando de $1$ a $m$, visitamos todos os nós com chave $z$ tal que $(z,h) \in P$ e reestruturamos a treap de maneira a manter sua estrutura sem visitar nós extras, então descrevemos uma execução de um algoritmo offline de busca em uma ABB no modelo de computação adotado.
+
+Primeiramente, note que os nós com prioridade mínima induzem uma subárvore da treap que contém a raiz.
+Seja $i$ essa prioridade mínima. Os nós com prioridade $i$ serão visitados no instante $i$ e terão sua prioridade alterada apenas considerando essa subárvore. Queremos mostrar que, ao fazer tais alterações nas prioridades no instante $i$ e reorganizar a treap dessa maneira, a treap toda continua satisfazendo a propriedade de heap.
+
+Vamos supor, por contradição, que há um nó $q$ cuja prioridade é menor que de seu pai $p$ na treap após as modificações do instante $i$. Isso só pode ocorrer se $p$ estiver dentro da subárvore dos nós visitados no instante $i$ e $q$ não estiver nessa subárvore. Seja $a$ a chave de $p$ e $b$ a chave de $q$ e assumiremos sem perda de generalidade que $a < b$. Assim, $N(a,i) > N(b,i)$. Veja a Figura~\ref{fig:representacao_grafica}.
+
+%que há dois nós, $p$ com chave $a$ e $q$ com chave $b$ ($a \neq b$), tal que o nó $p$ está contido na subárvore dos nós visitados no instante de tempo $i$ e o nó $q$ não foi visitado no instante de tempo $i$ e sua prioridade é menor que . Assim, $N(a,i) > N(b,i)$. Assumiremos sem perda de generalidade que $a < b$ e que $p$ é pai de $q$ durante o instante de tempo $i$. Veja a Figura~\ref{fig:representacao_grafica}.
+
+\begin{figure}[H]
     \begin{tikzpicture}
         \coordinate (A) at (0, 0);
         \coordinate (B) at (3, 0);
@@ -359,21 +382,26 @@ De maneira informal, $a$ é uma chave que foi visitada no tempo $i$ e $b$ é fil
     
         \draw[red, thick] (x) -- (y);
 
-        \filldraw (x) circle (1.5pt) node[anchor=south] {a};
-        \filldraw (y) circle (1.5pt) node[anchor=north] {b};
+        \filldraw (x) circle (1.5pt) node[anchor=south] {$p$};
+        \filldraw (y) circle (1.5pt) node[anchor=north] {$q$};
 
-        \draw[->, black] (1.8,1.8) -- (2.5,2) node[pos=1, right] {Chaves visitadas no instante de tempo $i$};
+        \draw[->, black] (1.8,1.8) -- (2.5,2) node[pos=1, right] {Nós visitados no instante de tempo $i$};
     \end{tikzpicture}
-    \caption{Representação da situação descrita. Simplificação do formato de uma ABB por um triângulo, a área destacada representa todos os nós acessados no instante de tempo $i$. A chave $b$ não foi visitada nesse instante de tempo.}
+    \caption{Representação da situação descrita. O triângulo é uma representação simplificada de uma ABB. A área destacada representa todos os nós acessados no instante de tempo $i$. O nó $q$ não foi visitado nesse instante de tempo.}
 \label{fig:representacao_grafica}
 \end{figure}
 
-Os lados a seguir terão um papel na prova e estão representados na Figura~\ref{fig:area_delimitada}. \\
-$\ell_1$ = \{$(x,y)$ | $x = a$ e $i < y \leq i+1$\}, representando todas as visitas a chave $a$ entre os instantes de tempo $i$ e $i+1$. \\
-$\ell_2$ = \{$(x,y)$ | $a < x \leq b$ e $y = i$\}, representando todas as visitas a chaves entre $a$ e $b$ no instante de tempo $i$. \\
+De maneira informal, os nós $p$ e $q$ são nós pai-filho. Durante o instante de tempo $i$, $p$ será visitado pelo algoritmo de busca e o nó $q$ não. Após o instante $i$, queremos visitar o nó $q$ pela primeira vez no instante $j = N(b,i)$ antes de fazer qualquer outra visita ao nó $p$, porém isso é impossível. Vamos mostrar que, neste caso, $P$ não era um conjunto arboreamente satisfeito.
 
+Os lados a seguir terão um papel na prova e estão representados na Figura~\ref{fig:area_delimitada}. São eles:
+\begin{itemize}
+    \item $\ell_1$ = \{$(x,y)$ | $x = a$ e $i < y \leq j$\}, e
+    \item $\ell_2$ = \{$(x,y)$ | $a < x \leq b$ e $y = i$\},
+\end{itemize}
+onde $\ell_1 = \emptyset$, pois o nó $p$ não é visitado entre os instantes de tempo $i+1$ e $j$, e $\ell_2$ representa todas as visitas aos nós com chave no intervalo $(a,b]$ no instante de tempo $i$.
 
-\begin{figure}[H]
+Denotemos por $r$ o ponto com coordenadas $(a,i)$ e por $s$ o ponto com coordenadas $(b,j)$. De acordo com a suposição feita, ambos estes pontos pertencem a $P$.
+\begin{figure}
     \centering
     \begin{adjustbox}{valign=t, raise=-25pt} % Alinha o gráfico ao topo da caixa
     \begin{tikzpicture}[scale=0.7]
@@ -388,7 +416,7 @@ $\ell_2$ = \{$(x,y)$ | $a < x \leq b$ e $y = i$\}, representando todas as visita
         xlabel style={at={(axis description cs:0.5,-0.08)}, anchor=center}, % Ajusta a posição do rótulo do eixo x
         ylabel style={at={(axis description cs:-0.08,0.5)}, anchor=center},
         xticklabels={$a$,$b$}, % Define os rótulos do eixo x
-        yticklabels={$i$,$i+1$} % Define os rótulos do eixo y
+        yticklabels={$i$,$j$} % Define os rótulos do eixo y
     ]
 
     \addplot[only marks, mark=*] coordinates {
@@ -417,8 +445,8 @@ $\ell_2$ = \{$(x,y)$ | $a < x \leq b$ e $y = i$\}, representando todas as visita
     };
 
     % Adiciona rótulos aos pontos
-    \node at (axis cs:1,1) [anchor=north east, fill=white, font=\small] {$a$};
-    \node at (axis cs:2,2) [anchor=south west, fill=white, font=\small] {$b$};
+    \node at (axis cs:1,1) [anchor=north east, fill=white, font=\small] {$r$};
+    \node at (axis cs:2,2) [anchor=south west, fill=white, font=\small] {$s$};
 
     \node at (axis cs:1,1.5) [anchor=east, font=\normalsize] {$\ell_1$};
     \node at (axis cs:1.5,1) [anchor=north, font=\normalsize] {$\ell_2$};
@@ -426,16 +454,21 @@ $\ell_2$ = \{$(x,y)$ | $a < x \leq b$ e $y = i$\}, representando todas as visita
     \end{axis}
     \end{tikzpicture}
     \end{adjustbox}
-    \caption{$\{a,b\}$-retângulo.}
+    \caption{Representação no conjunto $P$ da situação descrita.}
 \label{fig:area_delimitada}
 \end{figure}
 
-De acordo com o Lema~\ref{lem:pontos_em_arestas_incidentes}, como $\{a,b\}$ representa um par de pontos arboreamente satisfeitos, então há pelo menos um outro ponto em alguma das arestas do $\{a,b\}$-retângulo que incide em $a$. Como $N(a,i) > N(b,i)$, então sabemos que a área $\ell_1$ não possui pontos no conjunto arboreamente satisfeito. Logo, para o Lema~\ref{lem:pontos_em_arestas_incidentes} ser verdadeiro, alguma chave entre $a$ e $b$ deve ter sido visitada no instante de tempo $i$, ou seja, $\ell_2 \neq \emptyset$. 
+Como $r,s \in P$, então $\{r,s\}$ representa um par de pontos arboreamente satisfeito. De acordo com o Lema~\ref{lem:pontos_em_arestas_incidentes}, há pelo menos um outro ponto de $P$ em alguma das arestas do $\{r,s\}$-retângulo que incide em $r$. Como o lado $\ell_1 = \emptyset$, pelo Lema~\ref{lem:pontos_em_arestas_incidentes} ser verdadeiro para $P$, $\ell_2 \neq \emptyset$, ou seja, é necessário ter um ponto de $P$ no lado $\ell_2$ e consequentemente, algum nó com chave no intervalo $(a,b]$ deve ter sido visitado durante o instante de tempo $i$.
 
-Como $b$ é filho direito de $a$, então para acessar qualquer chave no intervalo ($a,b$) no instante de tempo $i$, pela propriedade de ordenação de ABBs, é necessário acessar a chave $b$, pois as chaves neste intervalo são mais profundas que $a$ e $b$. 
+Como $q$ é filho direito de $p$, então qualquer nó de chave no intervalo ($a,b$) no instante de tempo $i$, pela propriedade da ordenação de ABBs, está na subárvore esquerda do nó $q$. Assim,
 
-Assim, para o par de pontos $\{a,b\}$ ser arboreamente satisfeito é preciso que alguma chave no intervalo ($a,b$) tenha sido visitada no instante de tempo $i$, porém para acessar alguma destas chave neste instante de tempo é preciso acessar a chave $b$, e a suposição inicial era que $b$ não era visitada neste instante de tempo. Chegamos numa contradição.
+é necessário acessar ambos os nós $p$ e $q$, pois esses nós são mais superficiais e estão no caminho entre a raiz da ABB e os nós de chave no intervalo ($a,b$).
 
-Assim, nota-se que a reestruturação da treap da maneira proposta é sempre válida em conjuntos de pontos arboreamente satisfeitos e tal reestruturação é um algoritmo offline que converte um conjunto de pontos arboreamente satisfeitos em uma execução de um algoritmo de busca em ABB.
+Assim, como o par de pontos $\{r,s\}$ é arboreamente satisfeito, algum nó com chave no intervalo ($a,b$) foi visitado no instante de tempo $i$, porém para acessar um nó com chave neste intervalo no instante de tempo $i$ é preciso acessar a chave $b$, e a suposição inicial era que $b$ não era visitada neste instante de tempo. Chegamos numa contradição.
+
+Assim, nota-se que a reestruturação da treap da maneira proposta é sempre válida em conjuntos de pontos arboreamente satisfeitos e tal reestruturação descreve um algoritmo offline que converte um conjunto de pontos arboreamente satisfeitos em uma execução de um algoritmo de busca em ABB dentro do modelo de computação adotado.
 \end{proof}
+
+
+% Basicamente é uma prova por indução. Precisamos provar que se era válida, se tornará válida. Assim, se tiver o problema de dois pontos estarem insatisfeitos, então a treap inicial tinha um elemento embaixo de q que deveria ter sido visitado no instante $i$, ou seja, a treap não era válida.
 
