@@ -6,7 +6,7 @@
 \chapter{Árvores splay}
 \label{cap:arvores-splay}
 
-Neste capítulo apresentaremos a estrutura Árvore Splay desenvolvida por \cite{selfadjustingbst}. Descreveremos a implementação e funcionamento das operações splay, acess, insert, delete, split e join e analisaremos o custo amortizado da árvore.
+Neste capítulo apresentaremos a estrutura Árvore Splay desenvolvida por \cite{selfadjustingbst}. Descreveremos a implementação e funcionamento das operações splay, access, insert, delete, split e join e analisaremos o custo amortizado da árvore.
 
 
 \section{Introdução}
@@ -35,7 +35,7 @@ A rotação zig acontece quando $x$ é descendente direto do nó raiz. Neste cas
 
 \begin{figure}[h]
     \centering
-    \includegraphics{images/zig.pdf}
+    \includegraphics{imagens/zig.pdf}
     \label{fig:zig}
 
 \caption{Caso zig com $x$ nó esquerdo da raiz.}
@@ -45,9 +45,9 @@ A rotação zig acontece quando $x$ é descendente direto do nó raiz. Neste cas
 
 A rotação zig-zig acontece quando $x$ e seu pai são ambos filhos direitos ou ambos filhos esquerdos. Neste caso, é necessário rotacionar o pai de $x$ primeiro e em seguida rotacionar $x$.
 
-\begin{figure}[h]
+\begin{figure}[ht]
     \centering
-    \includegraphics{images/zigzig.pdf}
+    \includegraphics{imagens/zigzig.pdf}
     \label{fig:zigzig}
 
 \caption{Caso zig-zig com $x$ e $y$ filhos esquerdos. A flecha preta e a vermelha representam respectivamente as rotações a serem realizadas em primeiro e por último.}
@@ -56,33 +56,44 @@ A rotação zig-zig acontece quando $x$ e seu pai são ambos filhos direitos ou 
 \subsection{Caso zig-zag}
 
 A rotação zig-zag acontece quando $x$ e seu pai não são ambos filhos direitos ou ambos filhos esquerdos. Neste caso, é necessário rotacionar $x$ duas vezes. Vale ressaltar que cada rotação será feita para um lado.
-%\begin{figure}[hbt!]
-%\centering
-%\begin{tikzpicture}[
-%ed/.style = {densely dashed, shorten >= 5pt},
-%alpha/.style = {regular polygon, regular polygon sides=3, draw, minimum size=1.1cm, inner sep=2pt, anchor=south},
-%level distance=1.5cm,
-%sibling distance=0.25cm 
-%]
-%\begin{scope}[local bounding box=scope1]
-%    \Tree [.$z$  [.$y$ \node[alpha]{a}; [.$x$ \node[alpha]{b}; \node[alpha]{c}; ]] \node[alpha]{d};]
-%\end{scope}
 
-%\begin{scope}[xshift=6cm, local bounding box=scope2, scale=1, level distance=2.25cm, sibling distance=0.25cm]
-%    \Tree [.$x$ [.$y$ \node[alpha]{a}; \node[alpha]{b};] [.$z$  \node[alpha]{c}; \node[alpha]{d};]]]
-%\end{scope}
 
-%\draw[->] ([yshift=-0.5*\ht\strutbox,xshift=0.5cm]scope1.east) -- node {} ([yshift=-0.5*\ht\strutbox,xshift=-0.1cm]scope2.west); 
 
-%\draw[->] ([yshift=-3.67cm, xshift=0.67cm]scope1.north) arc (-18:198:0.7cm);
-%\draw[->,red] ([yshift=-3.67cm, xshift=-0.78cm]scope1.north) arc (198:-18:0.82cm);
-
-%\end{tikzpicture}
-
-\begin{figure}[h]
+    
+    
+\tikzset{
+    nodes = {draw, circle, minimum size = 8mm},
+    edge from parent path = {(\tikzparentnode) -- (\tikzchildnode)},
+    sibling distance=20pt,
+    n/.style = {draw=none},
+    r/.style = {fill=white},
+    b/.style = {fill=gray},
+    edge from parent/.append style={-, shorten >= 0, shorten <= 0}
+    }
+    
+\begin{figure}[ht]
     \centering
-    \includegraphics{images/zigzag.pdf}
-    \label{fig:zigzag}
-
-\caption{Caso zig-zag com $x$ filho direito e $y$ filho esquerdo. A flecha preta e a vermelha representam respectivamente as rotações a serem realizadas em primeiro e por último.}
+    \begin{tikzpicture}[
+        ed/.style = {densely dashed, shorten >= 5pt},
+        alpha/.style = {regular polygon, regular polygon sides=3, draw, minimum size=1.2cm, inner sep=2pt, anchor=south},
+        level distance=1.5cm,
+        sibling distance=0.25cm
+        ]
+        
+        \begin{scope}[local bounding box=scope1]
+            \Tree [.$z$  [.$y$ \node[alpha]{a}; [.$x$ \node[alpha]{b}; \node[alpha]{c}; ]] \node[alpha]{d};]
+            \end{scope}
+            
+            \begin{scope}[xshift=6cm, local bounding box=scope2, scale=1, level distance=2.25cm, sibling distance=0.25cm]
+                \Tree [.$x$ [.$y$ \node[alpha]{a}; \node[alpha]{b};] [.$z$  \node[alpha]{c}; \node[alpha]{d};]]
+                \end{scope}
+                
+                \draw[->] ([yshift=-0.5*\ht\strutbox,xshift=0.3cm]scope1.east) -- node [n] {} ([yshift=-0.5*\ht\strutbox,xshift=-0.3cm]scope2.west);
+                
+                \draw[->] ([yshift=-3.67cm, xshift=0.67cm]scope1.north) arc (-18:198:0.7cm);
+                \draw[->,red] ([yshift=-3.69cm, xshift=-0.82cm]scope1.north) arc (198:-18:0.86cm);
+                
+    \end{tikzpicture}
+    \caption{Caso zig-zag com $x$ filho direito e $y$ filho esquerdo. A flecha preta e a vermelha representam respectivamente as rotações a serem realizadas em primeiro e por último.}
 \end{figure}
+                    

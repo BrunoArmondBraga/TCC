@@ -184,6 +184,9 @@
 %%%%%%%%%%%%%%%%%%%%%%% AQUI COMEÇA O CONTEÚDO DE FATO %%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\newtheorem{theorem}{Teorema}[chapter]
+\newtheorem{lemma}[theorem]{Lema}
+
 \begin{document}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%% CAPA E PÁGINAS INICIAIS %%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -246,6 +249,7 @@ texto texto texto texto. Texto opcional.
 % pode inserir quebras de página manualmente (com \clearpage, veja o exemplo
 % mais abaixo).
 %\newcommand\disablenewpage[1]{{\let\clearpage\par\let\cleardoublepage\par #1}}
+\newcommand{\tdots}{{\,.\,.\,}}
 
 % Nestas listas, é melhor usar "raggedbottom" (veja basics.tex). Colocamos
 % a opção correspondente e as listas dentro de um grupo para ativar
@@ -339,8 +343,8 @@ texto texto texto texto. Texto opcional.
 \input{conteudo/01-introducao}
 \pagestyle{mainmatter}
 \input{conteudo/02-problema-estatico}
-\input{conteudo/03-splay-tree}
-\input{conteudo/04-otimalidade-dinamica}
+%\input{conteudo/03-splay-tree}
+%\input{conteudo/04-otimalidade-dinamica}
 \input{conteudo/05-geometria}
 \input{conteudo/06-guloso}
 
@@ -414,8 +418,8 @@ texto texto texto texto. Texto opcional.
 % A bibliografia é obrigatória
 
 \printbibliography[
-  title=\refname\label{sec:bib}, % "Referências", recomendado pela ABNT
-  %title=\bibname\label{sec:bib}, % "Bibliografia"
+  %title=\refname\label{sec:bib}, % "Referências", recomendado pela ABNT
+  title=\bibname\label{sec:bib}, % "Bibliografia"
   heading=bibintoc, % Inclui a bibliografia no sumário
 ]
 
