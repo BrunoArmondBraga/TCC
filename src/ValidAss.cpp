@@ -1,9 +1,7 @@
 #include <iostream>
-#include <cstdlib>
-#include <string>
 #include <algorithm>
 #include <vector>
-#include <climits> // for INT_MAX
+#include <climits>
 
 using namespace std;
 
@@ -11,20 +9,18 @@ bool comparePairs(const std::pair<int, int>& a, const std::pair<int, int>& b) {
     return a.second < b.second;
 }
 
-class Node{
+class LinkedList{
     public:
     int data;
-    Node* next;
+    LinkedList* next;
 
-    Node(int value) : data(value), next(nullptr) {};
+    LinkedList(int value) : data(value), next(nullptr) {};
 
     void print() {
-        Node* current;
-        cout << data << " -> ";
-        current = next;
+        LinkedList* current = this;
         while (current) {
             if(current->data == INT_MAX){
-                cout << "+inf " << " -> ";
+                cout << "+inf" << " -> ";
             }
             else{
                 cout << current->data << " -> ";
@@ -35,85 +31,97 @@ class Node{
     }
 };
 
-class NodeTR{
-    private:
-        
+class Node{
     public:
         int val;
-        NodeTR *esq;
-        NodeTR *dir;
-        int priority; //NextAcess
+        Node *left;
+        Node *right;
+        int priority; //next_acess
         int LastAcess;
-        NodeTR() { 
-            esq = nullptr;
-            dir = nullptr;
-            priority = 0;
-            LastAcess = -1;
-        };
-        NodeTR(int val){
-            esq = nullptr;
-            dir = nullptr;
-            priority = rand();
-            this->val = val;
-            LastAcess = -1;
-        }
-        NodeTR(int val, int priority){
-            esq = nullptr;
-            dir = nullptr;
+        Node(int val, int priority){
+            left = nullptr;
+            right = nullptr;
             this->priority = priority;
             this->val = val;
             LastAcess = -1;
         }
-        ~NodeTR(){
-            if(esq != nullptr){
-                delete esq;
+        ~Node(){
+            if(left != nullptr){
+                delete left;
             }
-            if(dir != nullptr){
-                delete dir;
+            if(right != nullptr){
+                delete right;
             }
         }
 };
 
+bool is_left_child_lower(Node* u){
+    if(u->left == nullptr){
+        return false;
+    }
+    if(u->right == nullptr){
+        return true;
+    }
+    if(u->left->priority < u->right->priority){
+        return true;
+    }
+    return false;
+}
+
+Node* max_with_same_priority(Node* u){
+    if(u->right != nullptr && u->priority == u->right->priority){
+        return max_with_same_priority(u->right);
+    }
+    return u;
+}
+
+Node* min_with_same_priority(Node* u){
+    if(u->left != nullptr && u->priority == u->left->priority){
+        return min_with_same_priority(u->left);
+    }
+    return u;
+}
+
 class Treap {
     private: 
-        NodeTR *root;
+        Node *root;
 
-        NodeTR* put(NodeTR *node, int val, int priority){
+        Node* put(Node *node, int val, int priority){
             if(node == nullptr){
-                NodeTR *inserir = new NodeTR(val, priority); 
+                Node *inserir = new Node(val, priority); 
                 return inserir;
             }
             if(node->val > val){
-                node->esq = put(node->esq,val,priority);
-                if (node->esq != nullptr && node->esq->priority < node->priority){
+                node->left = put(node->left,val,priority);
+                if (node->left != nullptr && node->left->priority < node->priority){
                     node = right_rotation(node);
                 }
             } 
             else{
-                node->dir = put(node->dir,val,priority);
-                if (node->dir != nullptr && node->dir->priority < node->priority){
+                node->right = put(node->right,val,priority);
+                if (node->right != nullptr && node->right->priority < node->priority){
                     node = left_rotation(node);
                 }
             }
             return node;
         }
 
-        NodeTR* right_rotation(NodeTR *node){
-            NodeTR *new_root = node->esq;
-            NodeTR *son = new_root->dir;
+        Node* right_rotation(Node *node){
+            Node *new_root = node->left;
+            Node *son = new_root->right;
 
-            new_root->dir = node;
-            node->esq = son;
+            new_root->right = node;
+            node->left = son;
 
             return new_root;
         }
 
-        NodeTR* left_rotation(NodeTR *node){
-            NodeTR *new_root = node->dir;
-            NodeTR *son = new_root->esq;
+        Node* left_rotation(Node *node){
+            Node *new_root = node->right;
+            Node *son = new_root->left;
 
-            new_root->esq = node;
-            node->dir = son;
+            new_root->left = node;
+            node->right = son;
 
             return new_root;
         }
@@ -121,7 +129,6 @@ class Treap {
     public:
         Treap() {
             root = nullptr;
-            srand(time(0));
         }
 
         ~Treap() {
@@ -132,13 +139,13 @@ class Treap {
             root = put(root,val, priority);
         }
 
-        void debug_rec(NodeTR* node, int space){
+        void debug_rec(Node* node, int space){
             if(node == nullptr){
                 return;
             }
 
-            if(node != nullptr && node->dir != nullptr){
-                debug_rec(node->dir, space + 3);
+            if(node != nullptr && node->right != nullptr){
+                debug_rec(node->right, space + 3);
             }
             for(int j = 0; j < space; j++){
                 cout << " ";
@@ -153,10 +160,9 @@ class Treap {
             }
             cout << endl;
 
-            if(node != nullptr && node->esq != nullptr){
-                debug_rec(node->esq, space + 3);
+            if(node != nullptr && node->left != nullptr){
+                debug_rec(node->left, space + 3);
             }
-
         }
 
         void print(){
@@ -167,80 +173,74 @@ class Treap {
                 debug_rec(root, 3);
             }
             cout << endl;
-            cout << endl;
         }
-        
 
-        NodeTR* sink_node(vector<Node*>& nextAcess, NodeTR* root, int time){
+        Node* sink_node(vector<LinkedList*>& next_acess, Node* root, int time, bool& stop){
 
-            NodeTR* current = root;
-            if(current->priority < time){
+            Node* current = root;
+            if(current->priority < time){ //only change if it wasn't changed already
                 current->LastAcess = current->priority; //change LastAcess to now
-                current->priority = nextAcess[current->val]->data; //change N(x,now) to next access
-                nextAcess[current->val] = nextAcess[current->val]->next; //remove N(x,now) from the nextAcess table
+                current->priority = next_acess[current->val]->data; //change N(x,now) to next access
+                next_acess[current->val] = next_acess[current->val]->next; //remove N(x,now) from the next_acess table
             }
 
             
             //see if left is wrong!
-            NodeTR* left = current->esq;
+            Node* left = current->left;
             if(left != nullptr){
                 if(current->priority > left->priority && left->LastAcess != current->LastAcess && current->LastAcess != left->priority){
+                    Node* finalNode = max_with_same_priority(left); //get the correct point
                     cout << "The pair of points { (" << current->val << "," << current->LastAcess << ") , ";
-                    cout << "(" << left->val << "," << left->priority << ") } ";
+                    cout << "(" << finalNode->val << "," << finalNode->priority << ") } ";
                     cout << "is not arborally satisfied!" << endl;
-                    return nullptr;
+                    stop = true; //stop execution
+                    return current;
                 }
             }
 
-            NodeTR* right = current->dir;
+            //see if right is wrong!
+            Node* right = current->right;
             if(right != nullptr){
                 if(current->priority > right->priority && right->LastAcess != current->LastAcess && current->LastAcess != right->priority){
+                    Node* finalNode = min_with_same_priority(right); //get the correct point
                     cout << "The pair of points { (" << current->val << "," << current->LastAcess << ") , ";
-                    cout << "(" << right->val << "," << right->priority << ") } ";
+                    cout << "(" << finalNode->val << "," << finalNode->priority << ") } ";
                     cout << "is not arborally satisfied!" << endl;
-                    return nullptr;
+                    stop = true; //stop execution
+                    return current;
                 }
             }
 
-            if(left != nullptr && current->priority > left->priority){
-                /* if(left->LastAcess == current->LastAcess){
-                    return right_rotation(current);
-                } */
-                current = right_rotation(current);
-                current->dir = sink_node(nextAcess, current->dir, time);            
-            }
-            else if(right != nullptr){
-                if(current->priority > right->priority){
-                    /* if(right->LastAcess == current->LastAcess){
-                        return left_rotation(current);
-                    } */
+            if(is_left_child_lower(current)){ //if the left priority lower, start searching on the left child
+                if(left != nullptr && current->priority > left->priority){
+                    current = right_rotation(current);
+                    current->right = sink_node(next_acess, current->right, time, stop);            
+                }
+                else if(right != nullptr && current->priority > right->priority){
                     current = left_rotation(current);
-                    current->esq = sink_node(nextAcess, current->esq, time);
+                    current->left = sink_node(next_acess, current->left, time, stop);
+                }
+            }
+            else{ //if the right priority is lower, start searching on the right child
+                if(right != nullptr && current->priority > right->priority){
+                    current = left_rotation(current);
+                    current->left = sink_node(next_acess, current->left, time, stop);
+                }
+                else if(left != nullptr && current->priority > left->priority){
+                    current = right_rotation(current);
+                    current->right = sink_node(next_acess, current->right, time, stop);            
                 }
             }
             return current;
         }
 
-
-        int sink_root(vector<Node*>& nextAcess, int t){
-            if(root == nullptr){
+        int sink_root(vector<LinkedList*>& next_acess, int now, bool& stop){
+            if(isEmpty()){
                 return -1;
             }
-            if(root->priority > t){
-                print();
-                return 0;
-            }
-            if(root != nullptr && root->priority < t){
-                while(root != nullptr && root->priority < t){
-                    root = sink_node(nextAcess, root, t);
-                    print();
-                }
-                
-                if(root == nullptr){
-                    print();
-                    return -1;
-                }
-                return 0;
+
+            while(root != nullptr && root->priority < now && !stop){ //sink all roots with priority < now
+                root = sink_node(next_acess, root, now, stop);
             }
             print();
             return 0;
@@ -250,11 +250,12 @@ class Treap {
             if(root == nullptr){
                 return true;
             }
+            return false;
         }
 };
 
 int main(){
-    cout << "Informações sobre o problema:\nFale o número de pontos e, em seguida, os pontos na forma (x, y)." << endl;
+    cout << "Fale o número de pontos e, em seguida, os pontos na forma (x, y)." << endl;
 
     int n,u,v;
     int m = 0;
@@ -269,10 +270,10 @@ int main(){
     }
     n = 0;
 
-    sort(data.begin(), data.end(), comparePairs);
+    sort(data.begin(), data.end(), comparePairs); //sort based on the y-coordinaate
 
 
-    for(int i = 0; i < data.size(); i++){
+    for(int i = 0; i < data.size(); i++){ //get n and m values
         if(data[i].first > n){
             n = data[i].first;
         }
@@ -281,122 +282,72 @@ int main(){
         }
     }
 
-    /* std::cout << "Array ordenado:\n";
-    for (const auto& pair : data) {
-        std::cout << "(" << pair.first << ", " << pair.second << ")\n";
-    } */
+    cout << "\nn = " << n << ", e m = " << m << endl << endl; //print n and m values 
 
-    vector<Node*> nextAcess;
-    for(int i = 0; i < n + 1; i++){
-        //nextAcess.push_back(nullptr);
-        nextAcess.push_back(new Node(INT_MAX));
+    vector<LinkedList*> next_acess;
+
+    for(int i = 0; i < n + 1; i++){ //add +inf to all entries
+        next_acess.push_back(new LinkedList(INT_MAX));
     }
-    cout << "\nn = " << n << ", e m = " << m << endl << endl;; 
-    for(int i = data.size(); i >= 0; i--){
-        //cout << "Colocando " << data[i].second << " em " << data[i].first << endl;
-        if(nextAcess[data[i].first] != nullptr){
-            Node* newNode = new Node(data[i].second);
-            newNode->next = nextAcess[data[i].first];
-            nextAcess[data[i].first] = newNode;
+
+
+    for(int i = data.size(); i >= 0; i--){ //add data backwards
+        if(next_acess[data[i].first] != nullptr){
+            LinkedList* newNode = new LinkedList(data[i].second);
+            newNode->next = next_acess[data[i].first];
+            next_acess[data[i].first] = newNode;
         }
         else{
-            nextAcess[data[i].first] = new Node(data[i].second);
+            next_acess[data[i].first] = new LinkedList(data[i].second);
         }
     }
 
-    Treap* tr = new Treap();
+    Treap* tr = new Treap(); //create treap
 
-    for(int i = 1; i < nextAcess.size(); i++){
-        if(nextAcess[i] == nullptr){
-            tr->add(i,INT_MAX);
+    for(int i = 1; i < next_acess.size(); i++){ //build initial treap
+        if(next_acess[i] == nullptr){
+            tr->add(i, INT_MAX);
         }
         else{
-            tr->add(i,nextAcess[i]->data);
-            Node* deleted = nextAcess[i];
-            nextAcess[i] = nextAcess[i]->next;
+            tr->add(i,next_acess[i]->data);
+            LinkedList* deleted = next_acess[i];
+            next_acess[i] = next_acess[i]->next;
             delete deleted;
         }
     }
 
-    for(int i = 1; i < nextAcess.size(); i++){
+    cout << "Initial Treap:------------" << endl;
+    tr->print();
+    cout << "--------------------------" << endl;
+
+    for(int i = 1; i < next_acess.size(); i++){ //print data vector after initial treap
         cout << "i = " << i << ": ";
-        if(nextAcess[i] != nullptr){
-            nextAcess[i]->print();
+        if(next_acess[i] != nullptr){
+            next_acess[i]->print();
         }
         cout << endl;
     }
+    cout << endl;
 
-    tr->print();
-
-    
-    
     int time = 1;
+    
+    bool stop_signal = false;
 
-    cout << "m = " << m << endl;
-
-    while(time < m + 1){
-        cout << "Time = " << time  << "-------" << endl;
-        if(tr->sink_root(nextAcess, time) == -1){
+    while(time < m + 2 && !stop_signal){ //move time
+        cout << "Time = " << time;
+        if(time < 10){
+            cout << " -----------------" << endl;
+        }
+        else{
+            cout << " ----------------" << endl;
+        }
+        if(tr->sink_root(next_acess, time, stop_signal) == -1){
             break;
         }
         time = time + 1;
-        cout << "---------------" << endl;
-        for(int i = 1; i < nextAcess.size(); i++){
-            cout << "i = " << i << ": ";
-            if(nextAcess[i] != nullptr){
-                nextAcess[i]->print();
-            }
-            cout << endl;
-        }
-        cout << "---------------" << endl;
+        cout << "--------------------------" << endl;
     }
 
 
     delete tr;
 }
-
-
-/* 
-29
-1 9
-2 6
-2 9
-3 1
-3 2
-3 4
-3 6
-4 4
-4 5
-4 6
-4 7
-4 9
-4 10
-5 5
-5 7
-6 7
-6 10
-7 10
-8 2
-8 3
-8 4
-8 5
-8 7
-8 8
-8 9
-8 10
-9 8
-10 3
-10 8 
-*/
-
-/* 
-8
-3 1
-3 2
-3 4
-4 4
-8 2
-8 3
-8 4
-10 3
-*/
