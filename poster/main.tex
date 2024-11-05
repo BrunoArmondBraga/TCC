@@ -1,0 +1,340 @@
+%
+% Samuel Plaça de Paula, 2012
+% http://www.linux.ime.usp.br/~samuel/mac499/
+% samuplaza@gmail.com
+%
+% Baseado no exemplo disponibilizado por Jesús P. Mena-Chalco:
+%
+% poster-exemplo (versão minimalista)
+% http://www.vision.ime.usp.br/~jmena/stuff/poster-exemplo/
+%
+
+\documentclass[final]{beamer} 
+\usepackage[size=a1,scale=1.1, orientation=portrait]{beamerposter}
+%\usepackage[size=custom,width=70.7,height=100,scale=1.0]{beamerposter} % font scale factor=1.0
+
+\usepackage[brazil]{babel}
+\usepackage[utf8]{inputenc}
+
+% para poder usar imagens eps e psfrag
+
+%\usepackage{epstopdf} 
+%\usepackage{epsfig}
+\usepackage{graphicx}
+\newcommand{\tdots}{\,.\,.\,} % in place of \ldots
+
+\usepackage{tikz}
+\usepackage{tikz-qtree}
+\usetikzlibrary{matrix,backgrounds, decorations.pathreplacing, automata, arrows}
+\usepackage{subfig}
+
+
+
+\newcommand{\E}{\Sigma}
+\newcommand{\cS}{\mathcal{S}}
+\newcommand{\Oh}{\mathcal{O}}
+\renewcommand{\emph}[1]{\textbf{#1}}
+
+
+\newcommand{\PP}{\mbox{P}}
+\newcommand{\NP}{\mbox{NP}}
+\newcommand{\PL}{\mathit{PL}}
+\newcommand{\PLI}{\mathit{PLI}}
+\newcommand{\OPT}{\mbox{OPT}}
+
+\newtheorem{teo}{Teorema}[section]  % numerado por section
+\newtheorem{lema}[teo]{Lema}        % numerado como teo
+\newtheorem{cor}[teo]{Corolário}    % numerado como teo
+\newtheorem{fato}[teo]{Fato}        % numerado como teo
+\newtheorem{mdef}[teo]{Definição}   % numerado como teo
+
+%\newcommand{\OPT}{\mathrm}
+
+\newcommand{\emptystring}{\varepsilon}
+\renewcommand{\baselinestretch}{1.11}
+
+%cardinalidade
+\newcommand{\card}[1]
+{\left|#1\right|}
+
+\let\:=\colon
+\let\epsilon=\varepsilon
+
+\def\({\left(}
+\def\){\right)}
+\def\<{\langle}
+\def\>{\rangle}
+
+% valor (e.g., de uma solução)
+\newcommand{\Val}[1]
+{\mathrm{val}\(#1\)}
+
+
+% cores utilizadas para os algoritmos
+\usepackage{framed}
+\definecolor{azul}{rgb}{0.76471,0.81176,0.91373}  % c3cfe9 -> 195,207,233 -> 0.76471   0.81176   0.91373
+\definecolor{lilas}{rgb}{0.83529,0.80784,0.89804} % d5cee5 -> 213,206,229 -> 0.83529   0.80784   0.89804
+\definecolor{ops}{rgb}{0.9,0.9,0.9} % d5cee5 -> 213,206,229 -> 0.83529   0.80784   0.89804
+
+\urlstyle{same}
+
+%==The poster style============================================================
+\usetheme{poster-exemplo}            % our poster style
+%--set colors for blocks (without frame)---------------------------------------
+  \setbeamercolor{block title}{fg=dblue,bg=white}
+  \setbeamercolor{block body}{fg=black,bg=white}
+%--set colors for alerted blocks (with frame)----------------------------------
+%--textcolor = fg, backgroundcolor = bg, dblue is the jacobs blue
+  \setbeamercolor{block alerted title}{fg=dblue,bg=gray!50}%frame color
+  \setbeamercolor{block alerted body}{fg=black,bg=gray!20}%body color
+%
+%==Title, date and authors of the poster=======================================
+\title{Árvores binárias de busca e a Conjectura da Otimalidade Dinâmica}
+\author{Bruno Armond Braga \hspace{80pt} Orientadora: Cristina Gomes Fernandes}
+\institute{\vspace{3pt}Departamento de Ciência da Computação,
+Instituto de Matemática e Estatística, Universidade de São Paulo\vspace{-15pt}}
+%\date{\today}
+
+
+%==============================================================================
+%==the poster content==========================================================
+%==============================================================================
+\begin{document}
+%\vspace*{-15mm}
+%--the poster is one beamer frame, so we have to start with:
+\begin{frame}[t]
+%--to seperate the poster in columns we can use the columns environment
+\begin{columns}[t] % the [t] options aligns the columns content at the top
+%--the left column-------------------------------------------------------------
+\begin{column}{0.35\paperwidth}% the right size for a 3-column layout
+
+	\begin{alertblock}{Introdução}
+
+%Árvores Binárias de Busca (ABBs) são estruturas de dados que armazenam um conjunto de chaves de um universo estático, que possui uma ordem total, e dão suporte a buscas neste conjunto. Denotaremos por n o número de elementos do conjunto armazenado na ABB considerada.\vskip2ex
+
+%Árvore binária de busca é uma árvore binária onde cada nó possui uma chave comparável e possivelmente um valor associado. Além disso, os nós satisfazem a restrição de que a chave em qualquer nó é maior do que as chaves em todos os nós na subárvore esquerda desse nó e menor do que as chaves em todos os nós na subárvore direita desse nó.\vskip2ex
+
+Árvores binárias de busca (ABBs) são estruturas fundamentais no mundo da computação e rotações são muito utilizadas para melhorar a sua eficiência. 
+%Apesar desse amplo estudo em torno dessas estruturas e o extenso número de aplicações, a tarefa de estabelecer limites inferiores para os custos de algoritmos de busca que permitem rotações se mantém um grande desafio para os pesquisadores. 
+No contexto da Conjectura da Otimalidade Dinâmica, inserções e remoções não são consideradas: uma ABB armazena as chaves de $1$ a $n$ e é submetida a uma sequência de acessos. Um \textbf{acesso} é uma busca por uma chave de $1$ a $n$, sendo que o algoritmo de busca pode executar rotações. A árvore splay é uma ABB que faz rotações durante as buscas. A Conjectura da Otimalidade Dinâmica, de 1985, afirma que a árvore splay é \textbf{dinamicamente ótima}.
+\vskip2ex
+
+%Ainda pouco se sabe em relação ao custo ótimo de sequências de acesso. A pergunta que esse projeto se propõe a tratar é: existe uma ABB que é assintoticamente tão boa quanto todas as outras para qualquer sequência de acessos? Assim, defini-se que uma ABB online é \textbf{dinamicamente ótima} se, para todas as sequências de buscas $Z$, seu algoritmo de busca tem custo proporcional ao custo ótimo e não possui conhecimento prévio sobre essas sequências de buscas.
+
+
+	\end{alertblock}
+	\vskip2ex
+
+	\begin{block}{Modelo de Computação\vspace{5pt}}
+
+  %// definiremos abb como um modelo de computação\vskip2ex
+  Adotaremos o seguinte modelo de computação: Um algoritmo de busca em uma ABB mantém um único ponteiro chamado de nó corrente durante o acesso a uma chave. No início da execução de cada acesso, o ponteiro aponta para a raiz da árvore. Há quatro operações chamadas de primitivas:\vskip2ex
+  
+    \hspace{35pt}1. Mover o ponteiro para o filho esquerdo do nó corrente.
+
+    \hspace{35pt}2. Mover o ponteiro para o filho direito do nó corrente.
+
+    \hspace{35pt}3. Mover o ponteiro para o pai do nó corrente.
+
+    \hspace{35pt}4. Fazer uma rotação que troca a posição do nó corrente e do seu pai.\vskip2ex
+
+    %Sabemos que o número de rotações necessárias para transformar qualquer ABB com $n$ nós em qualquer outra ABB com os mesmos $n$ nós com uma disposição diferente é linear em $n$. 
+    %Assim, 
+    O custo de um acesso dentro deste modelo é o número total de nós visitados durante esse acesso. Seja $Z$ uma sequência de acessos. Denota-se por $\OPT(Z)$ o custo de um algoritmo de busca que tem custo mínimo para atender os acessos de $Z$.
+	\end{block}
+    \vskip1ex
+    \begin{block}{Árvores Splays\vspace{5pt}}
+
+    %Padrões de acesso do mundo real muitas vezes possuem estruturas repetitivas, como por exemplo bancos de dados que recebem solicitações frequentes para um pequeno número de elementos de alto tráfego. Nesses casos de acessos frequentes a chaves específicas é possível garantir uma eficiência maior se rotações forem utilizadas durante as buscas.\vskip2ex
+
+%Com isso em mente, 
+Sleator e Tarjan criaram, em 1985, a árvore splay. Essa estrutura segue a heurística “move to front” e assim, após cada acesso, a árvore se reestrutura por meio de rotações duplas até a raiz, trazendo o nó da chave acessada para a raiz da árvore.
+\vskip2ex
+\begin{figure}
+  \includegraphics[scale=1.05]{fullsplay2.pdf}
+  %\caption{Operação splay no nó com chave 4.}
+\end{figure}
+
+Essa reestruturação tende a balancear uma parte da árvore e eventualmente diminuir sua altura. De fato, Sleator e Tarjan provaram que o custo amortizado por acesso nessa estrutura é~$\Oh(\lg n)$.
+\vskip2ex
+
+
+%Há uma conjectura sobre essa estrutura que diz que as árvores splay são dinamicamente ótimas. Essa conjectura ficou conhecida como a Conjectura da Otimalidade Dinâmica.\vskip2ex
+
+A \textbf{Conjectura da Otimalidade Dinâmica} afirma que as árvores splay têm custo $\Oh(\OPT(Z))$ para toda sequência $Z$ de acessos. Da análise anterior, pode-se concluir que as árvores splay têm custo $\Oh(\lg n \cdot \OPT(Z))$. \vskip2ex
+
+\begin{block}{Conjuntos arboreamente satisfeitos\vspace{5pt}}
+
+  Um conceito essencial para entender a geometria por trás das buscas em ABBs é o de conjuntos arboreamente satisfeitos.
+    Um par de pontos $\{a,b\}$ de um conjunto $P$ é arboreamente satisfeito se $a$ e $b$ são ortogonalmente colineares ou se há pelo menos um ponto do conjunto $P \setminus \{a,b\}$ que está dentro da região delimitada pelo retângulo ortogonal que tem $a$ e $b$ como vértices.
+    Um conjunto é \textbf{arboreamente satisfeito} se todos os pares de pontos do conjunto são arboreamente satisfeitos. Abaixo estão exemplos de conjuntos de pontos com seus pares de pontos arboreamente insatisfeitos destacados.
+    \vskip2ex
+    
+
+    \begin{figure}
+    \includegraphics[scale=1.55]{ASS-ABB2.pdf}
+    %\caption{À esquerda, um conjunto $P$ de pontos arboreamente satisfeito. À direita, um conjunto $P$ de pontos com dois pares de pontos arboreamente insatisfeitos com seus retângulos destacados.}
+    \end{figure}
+
+\end{block}
+
+    \end{block}
+
+% ---------------------------------------------------------------------------- %
+\vskip2ex
+\vspace{-5pt}
+	\begin{block}{Informações\vspace{1pt}}
+        Para mais informações, acesse a página do trabalho:
+
+		\textcolor{jblue}{{\url{https://github.com/BrunoArmondBraga/TCC}}}
+    
+    \vskip1ex
+    Esse projeto contou com o financiamento da FAPESP (n° 2024/04708-2) que foi essencial para o estudo e preparo deste material.
+        %Endereço para contato: \textcolor{jblue}
+        %{{\url{abragabruno@usp.br}}}
+
+	\end{block}
+
+\end{column}
+
+
+% ---------------------------------------------------------------------------- %
+\begin{column}{0.60\paperwidth} 
+  \vspace{-5pt}
+  \begin{block}{Abordagem Geométrica de Algoritmos de Busca\vspace{5pt}}
+
+    Em 2009, Demaine, Harmon, Iacono, Kane e Pătraşcu desenvolveram uma maneira inovadora de encarar o problema. Eles provaram que toda execução de um algoritmo de busca em ABB representa um conjunto arboreamente satisfeito e que todo conjunto arboreamente satisfeito representa a execução de um algoritmo de busca em ABB.\vskip2ex
+
+    Para uma sequência $Z = (z_1, z_2, \ldots, z_m)$ de acessos, a \textbf{visão geométrica de $Z$} é o conjunto dos pontos $\{(i,z_i): i = 1,\ldots,m\}$. A \textbf{visão geométrica da execução de um algoritmo de busca} para atender $Z$ é o conjunto de pontos $(x,i)$ tal que $x$ é a chave de um dos nós visitados durante a busca pela chave $z_i$, para $i = 1,\ldots,m$. \vskip2ex
+
+    \begin{figure}
+    \includegraphics[scale=1.7]{conjuntoASS2.pdf}
+    \caption{À esquerda, a visão geométrica de $Z = (3,1,4,2,5)$. À direita, a visão geométrica da execução do algoritmo de busca que não efetua rotações na ABB ao centro. Os pontos vermelhos indicam as chaves do restante dos nós visitados durante os acessos.}
+    \end{figure}
+    
+    O custo de um algoritmo para atender $Z$ é o número de pontos da visão geométrica da sua execução. O valor de $\OPT(Z)$ é o número de pontos de um menor superconjunto arboreamente satisfeito da visão geométrica de $Z$. 
+        
+    
+      \end{block}
+
+      \begin{block}{Guloso Futurista\vspace{5pt}}
+        \begin{minipage}[t]{0.4\textwidth}
+          \vspace{3pt}
+
+          Considere a visão geométrica $P$ de uma sequência $Z$ de acessos. O algoritmo \textbf{guloso futurista} produz um conjunto arboreamente satisfeito $P' \supseteq P$ da seguinte maneira. Inicialmente $P' = P$. Deslize uma reta horizontal de baixo para cima e, ao passar por cada ponto de $P$, adicione pontos a $P'$ sobre a reta de modo que os pontos de $P'$ da reta para baixo formem um conjunto arboreamente satisfeito. 
+          \vskip2ex
+          No contexto de ABBs, o algoritmo correspondente visita apenas os nós no caminho do nó com a chave acessada e reorganiza esses nós para deixar mais perto da raiz os próximos nós a serem visitados.Veja na figura ao lado: à esquerda, o algoritmo guloso futurista, no meio, o acesso à chave buscada e à direita a reestruturação final da ABB após este acesso.
+        \end{minipage}%
+        \hfill
+        \begin{minipage}[t]{0.6\textwidth}
+            \begin{figure}[H]
+                \centering
+                \includegraphics[scale=1.3]{gulosoComABB.pdf}
+                %\caption{À esquerda, o algoritmo guloso futurista. No meio, o acesso a chave buscada e à direita a reestruturação final da ABB após este acesso.}
+            \end{figure}
+        \end{minipage}
+    \end{block}
+    \vskip1ex
+	\begin{block}{Delimitações de Wilber\vspace{5pt}}
+
+%R. Wilber deu os passos pioneiros na delimitação de algoritmos de busca que permitem rotações. O trabalho dele, de 1989, trouxe duas delimitações.
+		\begin{columns}[c,totalwidth=0.60\paperwidth]
+
+		\begin{column}{0.47\columnwidth}
+      
+		\begin{block}{Delimitação da Alternância\vspace{5pt}}
+
+      %Fixe uma árvore de busca binária completa e considera a sequência $Z$ de acessos. 
+      Considere a sequência $Z$ de acessos aplicada a uma árvore de busca binária completa estática.
+      O \textbf{filho preferido} de um nó é o filho mais recentemente visitado. Wilber provou que a somatória do número de vezes que um filho preferido se altera durante os acessos de $Z$ %durante a busca pela sequência de acessos $Z$ nesta ABB fixa, resulta em um número que 
+      é uma delimitação inferior para o custo de qualquer algoritmo de busca que atende $Z$.\vskip2ex
+
+      \begin{figure}[H]
+        \centering
+        \includegraphics[scale=1.28]{alternancia.pdf}
+        \caption{Delimitação para a sequência de acessos $Z = (1,5,3,7,2,6,4)$.}
+    \end{figure}
+
+        \vspace{33pt}
+
+        \end{block}
+        \end{column}
+
+		\begin{column}{0.5\columnwidth}
+      \vspace{-15pt}
+		\begin{block}{Delimitação do Funil\vspace{5pt}}
+
+      Seja $P$ a visão geométrica de uma sequência $Z$ de acessos. Para cada ponto, conte o número de alternâncias direita-esquerda dos pontos abaixo dele, indo de cima para baixo,
+       cuja coordenada $x$ se aproxima da coordenada $x$ do ponto analisado. 
+       A somatória desses números é uma delimitação inferior para o custo de qualquer algoritmo de busca que atende $Z$.\vskip2ex
+
+      \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.6]{funil.pdf}
+        \caption{Funil do ponto mais acima e suas alternâncias.}
+    \end{figure}
+
+
+        \end{block}
+		\end{column}
+		\end{columns}
+
+	\end{block}
+	%\vskip2ex
+
+\vskip1ex
+
+% ---------------------------------------------------------------------------- %
+\begin{block}{\vspace{-27pt}Árvores Tango\vspace{5pt}}
+
+  %A estrutura dentro do modelo de computação adotado que possui maior eficiência assintótica conhecida é a árvore tango. 
+  
+  Demaine et al., inspirados pela delimitação da alternância, desenvolveram, em 2007, a árvore tango cujo custo é $\Oh(\lg \lg n \cdot \OPT(Z))$ para toda sequência $Z$ de acessos. Essa é a melhor eficiência conhecida no modelo proposto. Um \textbf{caminho preferido} é o caminho maximal que passa apenas por filhos preferidos de um nó até a folha. A ideia central da árvore tango é armazenar os $\Oh(\lg n)$ nós de cada caminho preferido em uma ABB balanceada. Nosso próximo passo é implementar uma árvore tango.% e manter essa estrutura após cada acesso por meio de um número constante de operações conhecidas por split e concatenate que são bastante sofisticadas.
+  \vspace{5pt}
+
+  \begin{figure}[H]
+    \centering
+    \includegraphics[scale=1.3]{tangotree2.pdf}
+    \caption{À esquerda, a árvore de referência para a sequência $Z = (13,11,7,3)$. As cores representam caminhos preferidos. À direita, a própria árvore tango.}
+\end{figure}
+
+\vskip1ex
+
+
+\end{block}
+\vspace{-2ex}
+\vspace{-10pt}
+\begin{block}{Referências}
+	\scriptsize{\begin{thebibliography}{99}    
+    \vspace{-4pt}
+
+    \bibitem{geometry_of_bst}
+    Demaine, Erik and Harmon, Dion and Iacono, John and Kane, Daniel and Pătraşcu, Mihai,  
+    ``\textbf{The geometry of binary search trees}'',
+    in ACM-SIAM Symposium on Discrete Algorithms, 2009.
+
+    \bibitem{dynamicoptimality}
+    Demaine, Erik and Harmon, Dion and Iacono, John and Pătraşcu, Mihai,  
+    ``\textbf{Dynamic optimality\,---\,{A}lmost}'',
+    in SIAM Journal on Computing, 37(1):240–251, 2007.
+
+    \bibitem{selfadjustingbst}
+    Sleator, D. Dominic and Tarjan, R. Endre,
+    ``\textbf{Self-Adjusting Binary Search Trees}'',
+    in Journal of the ACM, 32(3):652-686, 1985.
+
+    \bibitem{lowerbound_wilber}
+    Wilber, Robert, 
+    ``\textbf{Lower bounds for accessing binary search trees with rotations}'',
+    in SIAM Journal on Computing, 18(1):56–67, 1989.
+
+	\end{thebibliography}}
+%\hfill{\includegraphics[height=6cm]{logo-ime.svg}}
+\end{block}
+
+\end{column}
+
+\end{columns}
+% ---------------------------------------------------------------------------- %
+\end{frame}
+\end{document}
