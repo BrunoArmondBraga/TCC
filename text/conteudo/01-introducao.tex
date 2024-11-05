@@ -54,19 +54,20 @@ Uma ABB é chamada de \textit{offline} se tem conhecimento da sequência $X$ de 
 
 Dada uma sequência $X$ de acessos, uma ABB é considerada \textit{ótima} se executa os acessos de $X$ com o menor custo possível. Podemos definir OPT$(X)$ como o número de nós acessados por uma ABB ótima para a sequência $X$. Em outras palavras, OPT$(X)$ é o número mínimo de visitas a nós necessário para uma ABB concluir todos os acessos de $X$. 
 
-ABBs balanceadas estabelecem que OPT$(X)$ = O$(m \lg n)$, onde $n$ é o número de chaves armazenadas na árvore e $m$ é o comprimento de $X$. Como já observado, $\text{OPT}(X) \geq m$. Wilber \cite{lowerbound_wilbert} provou que OPT$(X)$ = $\Theta$$(m \lg n)$ para algumas classes de sequências $X$. 
+ABBs balanceadas estabelecem que OPT$(X)$ = O$(m \log n)$, onde $n$ é o número de chaves armazenadas na árvore e $m$ é o comprimento de $X$. Como já observado, $\text{OPT}(X) \geq m$. Wilber \cite{lowerbound_wilbert} provou que OPT$(X)$ = $\Theta$$(m \log n)$ para algumas classes de sequências $X$. 
 
+% JÁ USEI ESSA FRASE!
 Uma ABB online é \textit{dinamicamente ótima} se, para todas as sequências $X$, seu algoritmo de busca tem custo O(OPT($X$)). De maneira mais geral, uma ABB online é \textit{$c$-competitiva} se executa todas as sequências $X$ suficientemente longas com custo no máximo $c$\,OPT($X$).
 
 Todo esse estudo foi feito para tentar responder à pergunta: ``\textit{Existe uma ABB online dinamicamente ótima?}".
 
 Uma das tentativas de responder tal pergunta foi a árvore splay de Sleator e Tarjan~\cite{selfadjustingbst}.Como já mencionamos, árvores splay são ABBs que seguem a heurística ``move to front". Mais precisamente, após cada acesso, a árvore se reestrutura de uma maneira particular, trazendo o nó da chave que foi acessada para a raiz da árvore.
 
-Apesar de existirem muitas ABBs muito bem documentadas com tempo por busca logarítmico em $n$, essas estruturas normalmente não conseguem alcançar uma eficiência superior a isso independentemente da entrada. Padrões de acesso do mundo real muitas vezes possuem estruturas repetitivas, como por exemplo bancos de dados que recebem solicitações frequentes para um pequeno número de elementos de alto tráfego. Em alguns desses casos, é possível ter uma performance melhor que O$(\lg n)$ por acesso utilizando árvore splay, uma vez que essa eventualmente ficaria com as chaves mais acessadas mais próximas à raiz da árvore. 
+Apesar de existirem muitas ABBs muito bem documentadas com tempo por busca logarítmico em $n$, essas estruturas normalmente não conseguem alcançar uma eficiência superior a isso independentemente da entrada. Padrões de acesso do mundo real muitas vezes possuem estruturas repetitivas, como por exemplo bancos de dados que recebem solicitações frequentes para um pequeno número de elementos de alto tráfego. Em alguns desses casos, é possível ter uma performance melhor que O$(\log n)$ por acesso utilizando árvore splay, uma vez que essa eventualmente ficaria com as chaves mais acessadas mais próximas à raiz da árvore. 
 
 Há uma conjectura não resolvida no artigo \cite{selfadjustingbst} que diz que as árvores splay são dinamicamente ótimas. Essa conjectura ficou conhecida como a Conjectura da Otimalidade Dinâmica.
 
-A árvore conhecida que mais se aproxima de uma árvore ótima é a árvores tango~\cite{dynamicoptimality}. Tal estrutura é O$(\lg \lg n)$-competitiva. Esta árvore, proposta em \cite{dynamicoptimality}, utiliza O$(\lg \lg n)$ bits a mais por nó e o custo para determinar a próxima operação primitiva a ser executada é amortizadamente constante.
+A árvore conhecida que mais se aproxima de uma árvore ótima é a árvores tango~\cite{dynamicoptimality}. Tal estrutura é O$(\log \log n)$-competitiva. Esta árvore, proposta em \cite{dynamicoptimality}, utiliza O$(\log \log n)$ bits a mais por nó e o custo para determinar a próxima operação primitiva a ser executada é amortizadamente constante.
 
 Nas árvores tango, há a definição de \textit{filho preferido}. O \textit{filho preferido} de um nó é o filho direito se ele foi o nó mais recentemente acessado em comparação com o nó esquerdo, e caso contrário (incluindo o caso em que nenhum dos dois filhos foi acessado ainda), definimos o nó esquerdo como \textit{filho preferido}.
 

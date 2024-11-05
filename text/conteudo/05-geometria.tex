@@ -26,7 +26,7 @@ Um par de pontos $\{a,b\}$ de um conjunto de pontos $P$ é \textit{arboreamente 
             xtick={0,1,2,3,4},
             ytick={0,1,2,3,4}
         ]
-        \addplot[only marks, mark=*] coordinates {
+        \addplot[only marks, mark=*, mark size=3pt] coordinates {
             (1,1)
             (1,2)
             (1,3)
@@ -47,7 +47,7 @@ Um par de pontos $\{a,b\}$ de um conjunto de pontos $P$ é \textit{arboreamente 
             xtick={0,1,2,3,4},
             ytick={0,1,2,3,4}
         ]
-        \addplot[only marks, mark=*] coordinates {
+        \addplot[only marks, mark=*, mark size=3pt] coordinates {
             (1,1)
             (1,2)
             (2,1)
@@ -55,7 +55,7 @@ Um par de pontos $\{a,b\}$ de um conjunto de pontos $P$ é \textit{arboreamente 
         };
         \addplot[
             color=red,
-            line width=0.7pt
+            line width=1.5pt
         ]
         coordinates {
             (2,1)
@@ -66,7 +66,7 @@ Um par de pontos $\{a,b\}$ de um conjunto de pontos $P$ é \textit{arboreamente 
         };
         \addplot[
             color=red,
-            line width=0.7pt
+            line width=1.5pt
         ]
         coordinates {
             (1,2)
@@ -103,7 +103,23 @@ Em um conjunto arboreamente satisfeito $P$, para todo par de pontos $\{a,b\}$ n�
     \caption{O $\{a,b\}$-retângulo. Em vermelho estão destacados os lados do retângulo que incidem em $a$ e em azul estão destacados os lados que incidem em $b$.}
 \end{figure}
 
-\begin{proof} Sejam $a$ e $b$ dois pontos não ortogonalmente colineares de um conjunto arboreamente satisfeito $P$. Como $\{a,b\}$ é um par de pontos arboreamente satisfeito não ortogonalmente colineares, então a região delimitada pelo $\{a,b\}$-retângulo possui pelo menos um ponto de $P$ diferente de $\{a,b\}$. Denotemos por $c$ tal ponto. Se $c$ não estiver em um lado do $\{a,b\}$-retângulo que incide em $a$, então $a$ e $c$ não são ortogonalmente colineares e o $\{a,c\}$-retângulo está contido no $\{a,b\}$-retângulo, logo é também arboreamente satisfeito e é possível recursivamente procurar tal ponto no $\{a,c\}$-retângulo. Analogamente, se $c$ não estiver em um lado do $\{a,b\}$-retângulo que incide em $b$, então é possível recursivamente procurar tal ponto no $\{b,c\}$-retângulo, que também é arboreamente satisfeito.
+%\begin{proof} Sejam $a$ e $b$ dois pontos não ortogonalmente colineares de um conjunto arboreamente satisfeito $P$. Como $\{a,b\}$ é um par de pontos arboreamente satisfeito não ortogonalmente colineares, então a região delimitada pelo $\{a,b\}$-retângulo possui pelo menos um ponto de $P$ diferente de $\{a,b\}$. Denotemos por $c$ tal ponto. Se $c$ não estiver em um lado do $\{a,b\}$-retângulo que incide em $a$, então $a$ e $c$ não são ortogonalmente colineares e o $\{a,c\}$-retângulo está contido no $\{a,b\}$-retângulo, logo é também arboreamente satisfeito e é possível recursivamente procurar tal ponto no $\{a,c\}$-retângulo. Analogamente, se $c$ não estiver em um lado do $\{a,b\}$-retângulo que incide em $b$, então é possível recursivamente procurar tal ponto no $\{b,c\}$-retângulo, que também é arboreamente satisfeito.
+%\end{proof}
+
+\begin{proof}
+    %Provaremos essa propriedade a partir de uma indução no número de pontos no interior dos retângulos. Seja $P$ o conjunto de pontos arboreamente satisfeito sendo analisado e sejam $a$ e $b$ dois pontos de $P$.
+    %O caso base da indução é quando não há pontos de $P$ no interior do $\{a,b\}$-retângulo. Se existir algum ponto de $P \setminus \{a,b\}$ em um dos vértices do $\{a,b\}$-retângulo, então a propriedade é valida. Caso contrário, é necessário analisar as arestas do $\{a,b\}$-retângulo. Assuma sem perda de generalidade que $b$ está acima e a direita de $a$. 
+    %Denotemos por $c$ o ponto de $P$ mais a esquerda na aresta horizontal superior. Denotemos por $d$ o ponto de $P$ mais abaixo na aresta vertical direita.
+    %Se $c$ for diferente de $b$, então obrigatoriamente existe um ponto de $P$ com mesma coordenada $x$ de $c$ na aresta horizontal inferior, pois, caso contrário, $c$ e o ponto com maior coordenada $x$ na aresta horizontal inferior que possua coordenada $x$ menor que $c$ formariam um par de pontos arboreamente insatisfeito.
+    %Se $c$ for igual a $b$, então obrigatoriamente $d$ é diferente de $b$, e pelo mesmo argumento geométrico, deve existir um ponto de $P$ com mesma coordenada $y$ na aresta vertical esquerda, pois caso contrário, o ponto $d$ e o ponto com maior coordenada $y$ na aresta vertical esquerda que possua coordenada $y$ menor que $d$ formariam um par de pontos arboreamente insatisfeito.
+
+    Vamos provar por indução em $k$ que, todo $\{a,b\}$-retângulo com $k$ pontos em seu interior satisfaz a propriedade do Lema.
+
+    Para $k = 0$, todo $\{a,b\}$-retângulo possui um ponto de $P \setminus \{a,b\}$ em um de seus vértices ou possui dois pontos de $P \setminus \{a,b\}$ alinhados verticalmente ou horizontalmente. Caso o $\{a,b\}$-retângulo possua um ponto de $P\{a,b\}$ em um de seus vértices, então a propriedade é válida. Caso o $\{a,b\}$-retângulo não possua 
+
+    Suponha agora que $k > 0$ e que a propriedade vale para todo retângulo com menos que $k$ pontos de $P$ em seu interior. Seja $e$ um ponto de $P$ no interior do $\{a,b\}$-retângulo. 
+
+    
 \end{proof}
 
 %Seja $\tau_i$ a subárvore // falar de subarvores?
@@ -119,13 +135,15 @@ Dada uma sequência $X = (x_{1},\ldots,x_{m})$ de $m$ acessos às chaves $1,2,\l
         \begin{axis}[
             xlabel={Chaves},
             ylabel={Buscas},
+            xlabel style={font=\large},
+            ylabel style={font=\large},
             grid=major,
             xmin=0, xmax=11,
             ymin=0, ymax=11,
             xtick={0,2,4,6,8,10},
             ytick={0,2,4,6,8,10}
         ]
-        \addplot[only marks, mark=*] coordinates {
+        \addplot[only marks, mark=*, mark size=2.5pt] coordinates {
             (1,9)
             (2,2)
             (3,6)
@@ -157,7 +175,7 @@ A \textit{visão geométrica da execução de um algoritmo de busca em ABB} para
             xtick={1,2,3,4,5},
             ytick={1,2,3,4,5}
         ]
-        \addplot[only marks, mark=*] coordinates {
+        \addplot[only marks, mark=*, mark size=3pt] coordinates {
             (3,1)
             (1,2)
             (4,3)
@@ -193,14 +211,14 @@ A \textit{visão geométrica da execução de um algoritmo de busca em ABB} para
                 xtick={1,2,3,4,5},
                 ytick={1,2,3,4,5}
             ]
-            \addplot[only marks, mark=*] coordinates {
+            \addplot[only marks, mark=*, mark size=3pt] coordinates {
                 (3,1)
                 (1,2)
                 (4,3)
                 (2,4)
                 (5,5)
             };
-            \addplot[color=red, only marks, mark=*] coordinates {
+            \addplot[color=red, only marks, mark=*, mark size=3pt] coordinates {
                 (2,1)
                 (4,1)
                 (2,2)
@@ -270,17 +288,17 @@ Sejam $c_1$ e $c_3$ respectivamente as chaves de dois nós $n_1$ e $n_3$ de uma 
                 yticklabels={$i$,$j$} % Define os rótulos do eixo y
             ]
 
-            \addplot[only marks, mark=*] coordinates {
+            \addplot[only marks, mark=*, mark size=2.5pt] coordinates {
                 (1,1)
                 (2,2)
             };
 
-            \addplot[red, thick] coordinates {
+            \addplot[red, very thick] coordinates {
                 (1,2)
                 (2,2)
             };
 
-            \addplot[red, thick] coordinates {
+            \addplot[red, very thick] coordinates {
                 (2,2)
                 (2,1)
             };
@@ -323,7 +341,7 @@ A partir daqui, consideraremos apenas pontos $(x,y)$ em que $x$ e $y$ são intei
 \begin{lemma}Qualquer conjunto de pontos arboreamente satisfeito representa a execução de um algoritmo de busca em ABB no modelo de computação adotado.
 \end{lemma}
 
-\begin{proof}
+\begin{proof}\label{prova:ASS}
 Usaremos um tipo de árvore binária de busca denominada \textit{treap}. Os nós de uma treap possuem dois campos, um chamado chave e outro chamado prioridade. A treap mantém duas propriedades: a propriedade de ordem de árvores binárias de busca em relação às chaves e a propriedade de heap em relação às prioridades. Assim, todo nó de uma treap possui chave maior que os nós da sua subárvore esquerda e chave menor que os nós da sua subárvore direita. Além disso, os nós da treap obedecem à propriedade de heap, que pode ser de dois tipos: se for um heap máximo, cada nó terá prioridade maior ou igual a de seus filhos; se for um heap mínimo, cada nó terá prioridade menor ou igual a de seus filhos.
 
 Seja $P$ um conjunto de pontos arboreamente satisfeito. Denotaremos por $N(h,i)$ a coordenada $y$ do ponto mais baixo de $P$ que possui coordenadas $x = h$ e $y > i$. Caso não exista tal ponto, definiremos $N(h,i) = \infty$. Assim, 
@@ -397,35 +415,27 @@ Denotemos por $r$ o ponto com coordenadas $(a,i)$ e por $s$ o ponto com coordena
         grid=major,
         xmin=0.3, xmax=2.7,
         ymin=0.3, ymax=2.7,
+        xlabel style={font=\large},
+        ylabel style={font=\large},
         xtick={1,2},
         ytick={1,2},
-        xlabel style={at={(axis description cs:0.5,-0.08)}, anchor=center}, % Ajusta a posição do rótulo do eixo x
-        ylabel style={at={(axis description cs:-0.08,0.5)}, anchor=center},
+        %xlabel style={at={(axis description cs:0.5,-0.08)}, anchor=center}, % Ajusta a posição do rótulo do eixo x
+        %ylabel style={at={(axis description cs:-0.08,0.5)}, anchor=center},
         xticklabels={$a$,$b$}, % Define os rótulos do eixo x
         yticklabels={$i$,$j$} % Define os rótulos do eixo y
     ]
 
-    \addplot[only marks, mark=*] coordinates {
+    \addplot[only marks, mark=*, mark size=2.5pt] coordinates {
         (1,1)
         (2,2)
     };
 
-    %\addplot[red, thick] coordinates {
-    %    (1,2)
-    %    (2,2)
-    %};
-
-    %\addplot[red, thick] coordinates {
-    %    (2,2)
-    %    (2,1)
-    %};
-
-    \addplot[red, thick] coordinates {
+    \addplot[red, very thick] coordinates {
         (1,1)
         (1,2)
     };
 
-    \addplot[red, thick] coordinates {
+    \addplot[red, very thick] coordinates {
         (1,1)
         (2,1)
     };
@@ -451,5 +461,12 @@ Como $q$ é filho direito de $p$, então qualquer nó de chave no intervalo ($a,
 Assim, nota-se que a reestruturação da treap da maneira proposta é sempre válida em conjuntos de pontos arboreamente satisfeitos e tal reestruturação descreve um algoritmo offline que converte um conjunto de pontos arboreamente satisfeitos em uma execução de um algoritmo de busca em ABB dentro do modelo de computação adotado.
 \end{proof}
 
+%Ao longo dessa pesquisa, uma série de conjuntos de pontos foram analisados. 
+Verificar se um conjunto de pontos é arboreamente satisfeito é demorado se feito à mão. Assim, com o intuito de automatizar e garantir que um conjunto de pontos sendo analisado é arboreamente satisfeito, implementamos a treap proposta na Demonstração~\ref{prova:ASS}. %Essa treap executa um desce heap na raiz múltiplas vezes em cada instante de tempo e detecta se a propriedade de heap mínimo foi violada em algum momento. 
+Se a propriedade não for violada, o código imprime a árvore correspondente a cada instante de tempo, caso a propriedade seja violada, o código imprime todas as árvores correspondentes aos instantes de tempo anteriores ao da violação e imprime o par de pontos que é arboreamente insatisfeito. A implementação pode ser vista \href{https://github.com/BrunoArmondBraga/TCC/blob/main/src/ValidAss.cpp}{aqui}.
+
+%de testes foram feitos para melhorar a intuição dos pesquisadores em relação a como os conjuntos de pontos arboreamente satisfeitos se comportam. Para automatizar e garantir que os conjuntos de pontos analisados eram arboreamente satisfeitos, fizemos a implementação da treap proposta na Demonstração~\ref{prova:ASS}.
+
+É importante notar que essa interpretação geométrica é muito útil para entender buscas em ABBs de maneira simplificada. Essa abordagem convenientemente oculta as rotações da ABB e leva em consideração apenas os nós visitados durante as buscas. É bastante impressionante que a disposição exata dos nós de uma ABB não é uma informação essencial para a análise e pode ser reconstruída a partir dos nós visitados.
 
 % Basicamente é uma prova por indução. Precisamos provar que se era válida, se tornará válida. Assim, se tiver o problema de dois pontos estarem insatisfeitos, então a treap inicial tinha um elemento embaixo de q que deveria ter sido visitado no instante $i$, ou seja, a treap não era válida.
