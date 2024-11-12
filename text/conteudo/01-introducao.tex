@@ -14,13 +14,14 @@ Adaptando a definição dada por \cite{Sedgewick}, \textit{árvore binária de b
 
 As ABBs também possuem um atributo \textit{raiz} que aponta para o nó raiz ou possui valor \textit{nulo}, caso a árvore esteja vazia.
 
-\textit{Rotações} são operações que trocam dois nós, pai-filho, entre si enquanto mantém a restrição vista acima. Veja a figura 1. Essa operação é fundamental para garantir performance em alguns algoritmos de ABBs e é muito utilizada para controlar a altura das árvores.
+\textit{Rotações} são operações que trocam dois nós, pai-filho, entre si enquanto mantém a restrição vista acima. Veja a Figura~\ref{fig:imagem}. Essa operação é fundamental para garantir performance em alguns algoritmos de ABBs e é muito utilizada para controlar a altura das árvores.
 
 
 % Arrumar figura!!
-\begin{figure}[htbp]
+\begin{figure}[h]
     \centering
     \includegraphics{imagens/zig2.pdf}
+    \caption{Esquema de rotações.}
     \label{fig:imagem}
 \end{figure}
 
@@ -38,13 +39,15 @@ O algoritmo tradicional de busca em ABB não executa a operação primitiva 4. E
 
 Em geral, durante a execução de um acesso, uma série de nós distintos são apontados pelo ponteiro do algoritmo de busca. Ao fim da execução de uma busca bem sucedida, o nó corrente é o nó procurado. Assim, dizemos que o nó procurado foi \textit{acessado} e que todos os nós que foram apontados pelo ponteiro durante a busca foram \textit{visitados}. O nó acessado também é considerado um nó visitado.
 
-O pior caso acontece quando a chave procurada está em um nó folha mais profundo. Nesse caso o algoritmo tem que passar por toda a altura da árvore até chegar a essa folha. Assim o custo do pior caso é proporcional a altura da árvore, que pode ser em princípio linear em $n$.
+O pior caso acontece quando a chave procurada está em um nó folha mais profundo. Nesse caso o algoritmo tem que passar por toda a altura da árvore até chegar a essa folha. Assim o custo do pior caso é proporcional à altura da árvore, que pode ser em princípio linear em $n$.
 
-Com intuito de mitigar o custo do pior caso, algumas ABBs estrategicamente utilizam da operação primitiva 4 (rotação) para balancear o tamanho das subárvores e assim diminuir a altura da árvore. Um exemplo famoso, que daremos mais detalhes a frente, é a árvore splay. Essa ABB executa rotações baseando-se na heurística ``move to front" e assim balanceia a árvore durante as buscas. Essa árvore não utiliza armazenamento adicional para isso.
+Com intuito de mitigar o custo do pior caso, algumas ABBs estrategicamente utilizam da operação primitiva 4 (rotação) para balancear o tamanho das subárvores e assim diminuir a altura da árvore. Um exemplo famoso, sobre o qual daremos mais detalhes à frente, é a árvore splay. Essa ABB executa rotações baseando-se na heurística ``move to front'' e assim balanceia a árvore durante as buscas. Essa árvore não utiliza armazenamento adicional para isso, ou seja, seus nós não têm campos extra.
 
-No artigo~\cite{rotation_distance}, é demonstrada a seguinte propriedade sobre ABBs. É possível transformar qualquer ABB com $n$ nós em qualquer outra ABB com os mesmos $n$ nós com no máximo $2n$ - 6 rotações. O número preciso não é tão relevante para a análise desse texto, o importante é notar que o número de rotações necessárias para transformar uma ABB $T$ com $n$ nós em uma ABB $T'$ com os mesmos $n$ nós disposta de qualquer outra maneira é \( \mathcal{O}(n) \), ou seja, linear no número de nós da ABB.
+O custo para executar um acesso nesse modelo está relacionado com o número de operações primitivas executadas até encontrar a chave procurada durante um acesso. 
 
-Assim, o custo para executar um acesso nesse modelo está relacionado com o número de operações primitivas executadas até encontrar a chave procurada. Porém, sabemos que o número de rotações é linear no número de nós visitados, assim definiremos o custo para executar um acesso nesse modelo como o número de nós visitados durante esse acesso.
+No artigo~\cite{rotation_distance}, é demonstrada a seguinte propriedade sobre ABBs. É possível transformar qualquer ABB com $t$ nós em qualquer outra ABB com os mesmos $t$ nós com no máximo $2t - 6$ rotações. O número preciso não é tão relevante para a análise desse texto. O importante é notar que o número de rotações necessárias para transformar uma ABB $T$ com $t$ nós em uma ABB $T'$ com os mesmos $t$ nós disposta de qualquer outra maneira é %$\Oh(t)$, ou seja, linear no número de nós da ABB.
+
+Porém, sabemos que o número de rotações é linear no número de nós visitados, assim definiremos o custo para executar um acesso nesse modelo como o número de nós visitados durante esse acesso.
 
 Como o conjunto armazenado nas ABBs que consideraremos não sofre alterações, podemos assumir que esse conjunto é \{1,2,\ldots,$n$\}.
 
@@ -54,7 +57,7 @@ Uma ABB é chamada de \textit{offline} se tem conhecimento da sequência $X$ de 
 
 Dada uma sequência $X$ de acessos, uma ABB é considerada \textit{ótima} se executa os acessos de $X$ com o menor custo possível. Podemos definir OPT$(X)$ como o número de nós acessados por uma ABB ótima para a sequência $X$. Em outras palavras, OPT$(X)$ é o número mínimo de visitas a nós necessário para uma ABB concluir todos os acessos de $X$. 
 
-ABBs balanceadas estabelecem que OPT$(X)$ = O$(m \log n)$, onde $n$ é o número de chaves armazenadas na árvore e $m$ é o comprimento de $X$. Como já observado, $\text{OPT}(X) \geq m$. Wilber \cite{lowerbound_wilbert} provou que OPT$(X)$ = $\Theta$$(m \log n)$ para algumas classes de sequências $X$. 
+ABBs balanceadas estabelecem que OPT$(X)$ = O$(m \log n)$, onde $n$ é o número de chaves armazenadas na árvore e $m$ é o comprimento de $X$. Como já observado, $\text{OPT}(X) \geq m$. Wilber \cite{lowerbound_wilber} provou que OPT$(X)$ = $\Theta$$(m \log n)$ para algumas classes de sequências $X$. 
 
 % JÁ USEI ESSA FRASE!
 Uma ABB online é \textit{dinamicamente ótima} se, para todas as sequências $X$, seu algoritmo de busca tem custo O(OPT($X$)). De maneira mais geral, uma ABB online é \textit{$c$-competitiva} se executa todas as sequências $X$ suficientemente longas com custo no máximo $c$\,OPT($X$).

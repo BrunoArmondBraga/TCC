@@ -6,7 +6,7 @@
 \chapter{Algoritmo Guloso}
 \label{cap:algoritmo-guloso}
 
-Neste capítulo entenderemos como a visão geométrica de um algoritmo de busca em ABB para uma sequência de acessos $X$ se relaciona com o custo ótimo OPT(X). Além disso, será apresentado um algoritmo guloso offline que transforma um conjunto arboreamente insatisfeito em um conjunto arboreamente satisfeito adicionando uma série de pontos, tentando adicionar o menor número possível de pontos ao conjunto. Por fim, argumentaremos como esse algoritmo pode ser adaptado para um algoritmo online em ABBs dentro do modelo de computação adotado.
+Neste capítulo entenderemos como a visão geométrica de um algoritmo de busca em ABB para uma sequência de acessos $X$ se relaciona com o custo ótimo $OPT(X)$. Além disso, será apresentado um algoritmo guloso offline que transforma um conjunto arboreamente insatisfeito em um conjunto arboreamente satisfeito adicionando uma série de pontos, tentando adicionar o menor número possível de pontos ao conjunto. Por fim, argumentaremos como esse algoritmo pode ser adaptado para um algoritmo online em ABBs dentro do modelo de computação adotado.
 
 \section{Otimalidade} 
 
@@ -297,56 +297,9 @@ O algoritmo mantém o invariante que ao final da iteração do algoritmo para a 
 
 %De maneira prática, o algoritmo analisa os pontos de $P$ na reta horizontal $r$ com $y = i$, com $i \in \{1,\ldots,m\}$ de maneira crescente. Assim, após satisfazer todos os pontos com coordenada $y = i$, sabemos que todos os pares de pontos que estão abaixo ou na reta $r$ estão satisfeitos. Assim, por construção, o resultado do algoritmo é um conjunto arboreamente satisfeito.
 
-O comportamento desse algoritmo é caracterizado por uma abordagem gulosa local. Veremos que esse algoritmo quando refletido no contexto de ABBs visita apenas as chaves que estão no caminho da chave buscada e reorganiza todos os nós visitados de maneira a deixar mais perto da raiz, as próximas chaves a serem visitados, e consequentemente, mais longe da raiz as chaves a serem visitados mais tarde. 
+O comportamento desse algoritmo é caracterizado por uma abordagem gulosa local. Esse algoritmo, quando refletido no contexto de ABBs, visita apenas os nós que estão no caminho do nó com chave buscada e reorganiza todos os nós visitados de maneira a deixar mais perto da raiz, os nó que serão visitados mais cedo, e consequentemente, mais longe da raiz os nós que serão visitados mais tarde. 
 
-Embora o algoritmo garanta encontrar uma solução válida, ou seja, um conjunto $P$ arboreamente satisfeito, o Guloso futurista não garante que $|P| = minASS$. Veja a Figura~\ref{fig:greedy_subotimo}.
-
-\begin{figure}
-    \centering
-    
-    \begin{tikzpicture}[scale=0.7]
-        \draw[very thin, gray] (0,0) grid (4,9);
-
-        \filldraw[black] (2,1) circle (7pt);
-        \filldraw[black] (3,2) circle (7pt);
-        \filldraw[black] (1,3) circle (7pt);
-        \filldraw[black] (3,4) circle (7pt);
-        \filldraw[black] (1,5) circle (7pt);
-        \filldraw[black] (3,6) circle (7pt);
-        \filldraw[black] (1,7) circle (7pt);
-        \filldraw[black] (3,8) circle (7pt);
-        \filldraw[red] (2,2) circle (7pt);
-        \filldraw[red] (2,3) circle (7pt);
-        \filldraw[red] (2,4) circle (7pt);
-        \filldraw[red] (2,5) circle (7pt);
-        \filldraw[red] (2,6) circle (7pt);
-        \filldraw[red] (2,7) circle (7pt);
-        \filldraw[red] (2,8) circle (7pt);
-        
-        \draw[black, line width=0.5pt] (0,0) rectangle (4,9);
-    \end{tikzpicture}
-    \begin{tikzpicture}[scale=0.7]
-        \draw[very thin, gray] (0,0) grid (4,9);
-        
-        \filldraw[black] (2,1) circle (7pt);
-        \filldraw[black] (3,2) circle (7pt);
-        \filldraw[black] (1,3) circle (7pt);
-        \filldraw[black] (3,4) circle (7pt);
-        \filldraw[black] (1,5) circle (7pt);
-        \filldraw[black] (3,6) circle (7pt);
-        \filldraw[black] (1,7) circle (7pt);
-        \filldraw[black] (3,8) circle (7pt);
-        \filldraw[red] (1,1) circle (7pt);
-        \filldraw[red] (3,1) circle (7pt);
-        \filldraw[red] (3,3) circle (7pt);
-        \filldraw[red] (3,5) circle (7pt);
-        \filldraw[red] (3,7) circle (7pt);
-        
-        \draw[black, line width=0.5pt] (0,0) rectangle (4,9);
-    \end{tikzpicture}
-    \caption{Em preto, os pontos de $P_X$ para uma sequência $X$ de acessos. À esquerda, o conjunto de pontos produzidos pelo Guloso futurista. À direita, o menor conjunto arboreamente satisfeito para $P_X$, de tamanho minASS($P_X$).}
-\label{fig:greedy_subotimo}
-\end{figure}
+A Figura~\ref{fig:greedy_em_ABB} evidencia este comportamento. A primeira coluna é uma cópia da Figura~\ref{fig:GreedyFuture-funcionamento}. A segunda coluna representa a busca pela chave da sequência de acessos e a terceira coluna representa a disposição da ABB após as rotações após a busca serem realizadas. A ABB da segunda e terceira coluna está propositalmente invertida para evidenciar o caminho utilizado para buscar cada nó. Perceba que o número de nós visitados em cada busca é exatamente o número de pontos na reta $r$.
 
 \begin{figure}
     \centering
@@ -1028,5 +981,56 @@ Embora o algoritmo garanta encontrar uma solução válida, ou seja, um conjunto
         \end{tikzpicture}
     \end{minipage}
     \caption{Imagem nova.}
-\label{fig:greedy_em_ ABB}
+\label{fig:greedy_em_ABB}
 \end{figure}
+
+Embora o algoritmo garanta encontrar uma solução válida, ou seja, um conjunto $P$ arboreamente satisfeito, o Guloso futurista não garante que $|P| = minASS$. Veja a Figura~\ref{fig:greedy_subotimo}.
+
+
+\begin{figure}
+    \centering
+    
+    \begin{tikzpicture}[scale=0.7]
+        \draw[very thin, gray] (0,0) grid (4,9);
+
+        \filldraw[black] (2,1) circle (7pt);
+        \filldraw[black] (3,2) circle (7pt);
+        \filldraw[black] (1,3) circle (7pt);
+        \filldraw[black] (3,4) circle (7pt);
+        \filldraw[black] (1,5) circle (7pt);
+        \filldraw[black] (3,6) circle (7pt);
+        \filldraw[black] (1,7) circle (7pt);
+        \filldraw[black] (3,8) circle (7pt);
+        \filldraw[red] (2,2) circle (7pt);
+        \filldraw[red] (2,3) circle (7pt);
+        \filldraw[red] (2,4) circle (7pt);
+        \filldraw[red] (2,5) circle (7pt);
+        \filldraw[red] (2,6) circle (7pt);
+        \filldraw[red] (2,7) circle (7pt);
+        \filldraw[red] (2,8) circle (7pt);
+        
+        \draw[black, line width=0.5pt] (0,0) rectangle (4,9);
+    \end{tikzpicture}
+    \begin{tikzpicture}[scale=0.7]
+        \draw[very thin, gray] (0,0) grid (4,9);
+        
+        \filldraw[black] (2,1) circle (7pt);
+        \filldraw[black] (3,2) circle (7pt);
+        \filldraw[black] (1,3) circle (7pt);
+        \filldraw[black] (3,4) circle (7pt);
+        \filldraw[black] (1,5) circle (7pt);
+        \filldraw[black] (3,6) circle (7pt);
+        \filldraw[black] (1,7) circle (7pt);
+        \filldraw[black] (3,8) circle (7pt);
+        \filldraw[red] (1,1) circle (7pt);
+        \filldraw[red] (3,1) circle (7pt);
+        \filldraw[red] (3,3) circle (7pt);
+        \filldraw[red] (3,5) circle (7pt);
+        \filldraw[red] (3,7) circle (7pt);
+        
+        \draw[black, line width=0.5pt] (0,0) rectangle (4,9);
+    \end{tikzpicture}
+    \caption{Em preto, os pontos de $P_X$ para uma sequência $X$ de acessos. À esquerda, o conjunto de pontos produzidos pelo Guloso futurista. À direita, o menor conjunto arboreamente satisfeito para $P_X$, de tamanho minASS($P_X$).}
+\label{fig:greedy_subotimo}
+\end{figure}
+

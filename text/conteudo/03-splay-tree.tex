@@ -8,20 +8,20 @@
 
 \newtheorem{caso}{Caso}
 
-Neste capítulo apresentaremos a estrutura Árvore Splay desenvolvida por \cite{selfadjustingbst}. Descreveremos o funcionamento da operação splay, analisaremos seu custo amortizado e introduziremos a Conjectura da Otimalidade Dinâmica.  
+Neste capítulo apresentaremos as árvores splay, desenvolvidas por \cite{selfadjustingbst}. As árvores splay são uma ABB que, além das rotinas usuais de busca, inserção e remoção, possuem uma rotina extra, chamada splay. Essa rotina deve ser acionada ao final de cada operação feita numa árvore splay, aplicada ao nó mais profundo que foi visitado durante a operação Descreveremos o funcionamento da operação splay, analisaremos o custo amortizado de operações em árvores splay e introduziremos a Conjectura da Otimalidade Dinâmica.
 
 
 \section{Introdução}
-O algoritmo tradicional de busca em ABB inicia a execução de um acesso na raiz e desce para o filho apropriado até alcançar a chave procurada. O pior caso é quando a chave procurada está em um nó folha mais profundo. Nesse caso, o algoritmo tem que passar por toda a altura da árvore até chegar a essa folha. Assim, o custo do pior caso é proporcional à altura da árvore que, no pior dos casos é linear $\mathcal{O}(n)$ e no melhor dos casos, tem custo $\mathcal{O}(\log{}n)$.
+A altura de uma árvore binária de busca é o comprimento de um caminho mais longo da raiz da árvore a uma de suas folhas. É sabido que a altura de uma ABB com $n$ nós é um valor entre $\log_2 n$ e $n-1$. O pior caso das operações de busca, inserção, remoção e outros em árvores binárias de busca é exatamente a altura da árvore. Por isso, surgiram na literatura várias propostas de implementações de ABBs que mantém alguma propriedade que implica que a altura da árvore se mantém logarítmica no número de nós da ABB. Tais implementações, em geral, carregam informação extra nos nós da árvore e executam rotações durante as inserções e remoções porém não alteram a árvore durante as buscas.
 
-Com base neste limitante inferior de custo $\Omega(\log{}n)$ para pior caso de buscas em ABBs, foram desenvolvidas uma série de estruturas conhecidas como \textit{árvores binárias de busca balanceadas}. Essas árvores têm o intuito de minimizar a própria altura por meio de rotações e consequentemente mitigar o custo de acessos de pior caso. Muitas dessas estruturas se utilizam de armazenamento de memória adicional por nó para manter informações essenciais para a lógica de balanceamento proposta. 
+Uma alternativa a essas estratégias é a árvore splay. Árvore Splay é uma árvore binária de busca balanceada proposta por \cite{selfadjustingbst}. Diferentemente das árvores binárias balanceadas citadas anteriormente, a árvore splay se reestrutura após qualquer operação, inclusive após as buscas e não utiliza armazenamento adicional.
 
-Apesar dessas estruturas garantirem custo do delimitante inferior $\Theta(\log{}n)$ para o pior caso de busca, elas não conseguem alcançar uma eficiência para um conjunto de buscas superior a essa independente da entrada. Padrões de acesso do mundo real muitas vezes possuem tendências ou estruturas repetitivas, como por exemplo bancos de dados que recebem solicitações frequentes para um pequeno número de elementos de alto tráfego. Em alguns desses casos, é possível ter uma performance melhor que $\mathcal{O}(\log{}n)$ por busca.
-
-Uma alternativa para uma performance melhor é a árvore splay. Árvore Splay é uma árvore binária de busca balanceada proposta por \cite{selfadjustingbst}. Diferentemente das árvores binárias balanceadas citadas anteriormente, a árvore splay se reestrutura após cada operação, inclusive após acessos e não utiliza armazenamento adicional.
-
+% ESTÁ RUIM!
 A árvore splay é uma ABB que segue a heurística “move to front”, ou seja, a ideia central é que a medida que operações são realizadas na estrutura, os elementos são movidos para perto da raiz de uma maneira particular com intuito de manter na raiz o nó que guarda a última chave acessada.
 Com a tendência dos nós com chave mais recentemente acessadas estarem próximos da raiz, o custo de sequências de acessos repetitivos tende a diminuir e essas reestruturações também auxiliam a árvore splay a dispor seus nós de maneira mais balanceada, reduzindo a altura total da árvore em alguns casos.
+
+%Mostre o código da busca com a chamada à rotina splay
+%Mostre o código do splay
 
 {
     \tikzset{
@@ -279,8 +279,8 @@ Faremos uma análise amortizada da estrutura. Seja $S$ a árvore splay sendo ana
     \begin{align*}
         \hat{c}_{\textit{splay}} &= \sum_{i = 1}^{n} \hat{c}_{\textit{rotação}}(i), \\
         &< \sum_{i = 1}^{n} {3(r^{i+1}(x) - r^{i}(x)) + 1}, \\
-        &= 3(r^{n+1}(x) - r^{n}(x)) + 1 \quad & \text{$r^{n+1}(x) = \log_2(n)$}, \\ 
-        &\leq 3\log_2n + 1, \\ 
+        &= 3(r^{n+1}(x) - r^{1}(x)) + 1, \\ 
+        &\leq 3\log_2n + 1 \quad & \text{pois $r^{n+1}(x) = \log_2(n)$}, \\ 
         &= \mathcal{O}(\log n).
     \end{align*}
 \end{proof}
