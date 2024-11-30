@@ -52,7 +52,7 @@ De maneira sucinta, é esperado que o custo de acessos mais caros, ou seja, aces
       specialidentifiers={},
       escapeinside={(*@}{@*)},
   ]
-  (*@\bfseries\scshape{Função}@*) guloso_ABB(n,e)
+  (*@\bfseries\scshape{Função}@*) guloso_ABB(n, e)
     Q := fila_de_prioridade(e, n) (*@ \hfill @*) // Cria uma fila de prioridade para o vetor e[1\tdots$n$]
     abb := abb() (*@ \hfill @*) // Cria uma ABB vazia
     enquanto Q != (*@$\varnothing$@*) 
@@ -210,11 +210,11 @@ O Programa~\ref{prog:abb-otima} produz uma ABB estática com custo mínimo dado 
 
 Como o Programa~\ref{prog:abb-construcao} é utilizado pelo Programa~\ref{prog:abb-otima}, então é necessário analisar a construção antes do algoritmo de Knuth.
 
-O Programa~\ref{prog:abb-construcao} recursivamente constrói a ABB. Isso é feito por meio de uma estratégia recursiva de baixo para cima. Assim, a função será executada uma vez para cada nó da ABB e mais uma vez para cada intervalo vazio. Como há exatamente $n$ nós no intervalo de $[1 \tdots n]$, e há $n+1$ intervalos vazios (que correspondem a chamadas da função com $i<j$) produzidos recursivamente, então o custo total do algoritmo é \( \mathcal{O}(n) \).
+O Programa~\ref{prog:abb-construcao} recursivamente constrói a ABB. Isso é feito por meio de uma estratégia recursiva de baixo para cima. Assim, a função será executada uma vez para cada nó da ABB e mais uma vez para cada intervalo vazio. Como há exatamente $n$ nós no intervalo de $[1 \tdots n]$, e há $n+1$ intervalos vazios (que correspondem a chamadas da função com $i<j$) produzidos recursivamente, então o custo total do algoritmo é $\Oh(n)$.
 
 O Programa~\ref{prog:abb-otima}, por sua vez, adota uma estratégia de programação dinâmica. Esse tipo de estratégia se utiliza de espaço adicional de memória. Neste caso uma matriz, para armazenar computações já executadas. Dessa maneira, evita-se cálculos repetidos e maximiza-se a eficiência do programa.
 
-Para preencher os elementos necessários da matriz para alcançar o custo final, o código itera por metade da matriz. Então serão necessárias \( \mathcal{O}(n^2) \) iterações. A iteração que preenche a posição $[i,j]$ das matrizes $c$ e $r$ representa o cálculo do custo mínimo para uma ABB que contenha todos os elementos do intervalo $[i \tdots j]$. Esse cálculo verifica todas as possíveis raízes, o que é feito nas linhas 12-15 do Programa~\ref{prog:abb-otima}, então tem custo \( \mathcal{O}(n) \). Como há \( \mathcal{O}(n^2) \) iterações de custo \( \mathcal{O}(n) \), o custo total do algoritmo é \( \mathcal{O}(n^3) \). 
+Para preencher os elementos necessários da matriz para alcançar o custo final, o código itera por metade da matriz. Então serão necessárias $\Oh(n^2)$ iterações. A iteração que preenche a posição $[i,j]$ das matrizes $c$ e $r$ representa o cálculo do custo mínimo para uma ABB que contenha todos os elementos do intervalo $[i \tdots j]$. Esse cálculo verifica todas as possíveis raízes, o que é feito nas linhas 12-15 do Programa~\ref{prog:abb-otima}, então tem custo $\Oh(n)$. Como há $\Oh(n^2)$ iterações de custo $\Oh(n)$, o custo total do algoritmo é $\Oh(n^3)$. 
 
 
 
