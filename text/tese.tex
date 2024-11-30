@@ -48,6 +48,7 @@
 % também define os comandos para capa, folha de rosto etc.
 \usepackage{imegoodies}
 \usepackage[thesis]{imelooks}
+\usepackage{xcolor}
 
 %\nocolorlinks % para impressão em P&B
 
@@ -145,8 +146,8 @@
 %      Aperfeiçoamento\\ de Pessoal de Nível Superior -- Brasil
 %      (CAPES) -- Finance Code 001} % o código é sempre 001
 %
-%\apoio{Durante o desenvolvimento deste trabalho, o autor recebeu\\
-%      auxílio financeiro da FAPESP -- processo nº aaaa/nnnnn-d}
+\apoio{Durante o desenvolvimento deste trabalho, o autor recebeu\\
+      auxílio financeiro da FAPESP -- processo nº 2024/04708-2}
 %
 %\apoio{During the development if this work, the author received\\
 %      financial support from FAPESP -- grant \#aaaa/nnnnn-d}
@@ -186,6 +187,9 @@
 
 \newtheorem{theorem}{Teorema}[chapter]
 \newtheorem{lemma}[theorem]{Lema}
+\newcommand{\Oh}{\mathrm{O}}
+%\newcommand{\Oh}{\mathcal{O}}
+
 
 \begin{document}
 
@@ -205,10 +209,10 @@
 
 %%%%%%%%%%%%%%%% DEDICATÓRIA, AGRADECIMENTOS, RESUMO/ABSTRACT %%%%%%%%%%%%%%%%%%
 
-\begin{dedicatoria}
-Esta seção é opcional e fica numa página separada; ela pode ser usada para
-uma dedicatória ou epígrafe.
-\end{dedicatoria}
+%\begin{dedicatoria}
+%Esta seção é opcional e fica numa página separada; ela pode ser usada para
+%uma dedicatória ou epígrafe.
+%\end{dedicatoria}
 
 % Reinicia o contador de páginas (a próxima página recebe o número "i") para
 % que a página da dedicatória não seja contada.
@@ -302,7 +306,7 @@ texto texto texto texto. Texto opcional.
 %\disablenewpage{\listof{program}{\programlistname}}
 
 % Sumário (obrigatório)
-%\tableofcontents
+\tableofcontents
 
 %\egroup % Final de "raggedbottom"
 
@@ -343,10 +347,12 @@ texto texto texto texto. Texto opcional.
 \input{conteudo/01-introducao}
 \pagestyle{mainmatter}
 \input{conteudo/02-problema-estatico}
-%\input{conteudo/03-splay-tree}
-%\input{conteudo/04-otimalidade-dinamica}
-\input{conteudo/05-geometria}
-\input{conteudo/06-guloso}
+\input{conteudo/03-splay-tree}
+\input{conteudo/04-geometria}
+\input{conteudo/05-guloso}
+\input{conteudo/06-bound-IR}
+%\input{conteudo/07-imagensPoster}
+\input{conteudo/07-wilber}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%% APÊNDICES E ANEXOS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
