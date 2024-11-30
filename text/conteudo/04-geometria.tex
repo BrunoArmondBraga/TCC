@@ -6,7 +6,7 @@
 \chapter{Interpretação geométrica de buscas em ABBs}
 \label{cap:geometria}
 
-Neste capítulo explicaremos a visão geométrica proposta por \cite{geometry_of_bst}, o que são conjuntos de pontos arboreamente satisfeitos e como interpretar de maneira geométrica algoritmos de busca em ABBs.
+Neste capítulo explicaremos a visão geométrica proposta por Demaine, Harmon, Iacono e Pătrașcu \cite{geometry_of_bst}, o que são conjuntos de pontos arboreamente satisfeitos e como interpretar de maneira geométrica algoritmos de busca em ABBs.
 
 \section{Conjuntos arboreamente satisfeitos}
 
@@ -87,7 +87,6 @@ Um par de pontos $\{a,b\}$ de um conjunto de pontos $P$ é \textit{arboreamente 
 Em um conjunto arboreamente satisfeito $P$, para todo par de pontos $\{a,b\}$ não ortogonalmente colineares, há sempre pelo menos um ponto de \( P \setminus \{a,b\} \) que está em um dos lados do $\{a,b\}$-retângulo que incide em $a$, e há sempre também pelo menos um ponto de \( P \setminus \{a,b\} \) que está em um dos lados do $\{a,b\}$-retângulo que incide em $b$.
 \end{lemma}
 
-
 \begin{figure}
     \begin{tikzpicture}[scale=1.5]
         \draw[blue, thick] (0,0) rectangle (2,1);
@@ -103,9 +102,6 @@ Em um conjunto arboreamente satisfeito $P$, para todo par de pontos $\{a,b\}$ n�
     \caption{O $\{a,b\}$-retângulo. Em vermelho estão destacados os lados do retângulo que incidem em $a$ e em azul estão destacados os lados que incidem em $b$.}
 \end{figure}
 
-%\begin{proof} Sejam $a$ e $b$ dois pontos não ortogonalmente colineares de um conjunto arboreamente satisfeito $P$. Como $\{a,b\}$ é um par de pontos arboreamente satisfeito não ortogonalmente colineares, então a região delimitada pelo $\{a,b\}$-retângulo possui pelo menos um ponto de $P$ diferente de $\{a,b\}$. Denotemos por $c$ tal ponto. Se $c$ não estiver em um lado do $\{a,b\}$-retângulo que incide em $a$, então $a$ e $c$ não são ortogonalmente colineares e o $\{a,c\}$-retângulo está contido no $\{a,b\}$-retângulo, logo é também arboreamente satisfeito e é possível recursivamente procurar tal ponto no $\{a,c\}$-retângulo. Analogamente, se $c$ não estiver em um lado do $\{a,b\}$-retângulo que incide em $b$, então é possível recursivamente procurar tal ponto no $\{b,c\}$-retângulo, que também é arboreamente satisfeito.
-%\end{proof}
-
 \begin{proof}
     %Provaremos essa propriedade a partir de uma indução no número de pontos no interior dos retângulos. Seja $P$ o conjunto de pontos arboreamente satisfeito sendo analisado e sejam $a$ e $b$ dois pontos de $P$.
     %O caso base da indução é quando não há pontos de $P$ no interior do $\{a,b\}$-retângulo. Se existir algum ponto de $P \setminus \{a,b\}$ em um dos vértices do $\{a,b\}$-retângulo, então a propriedade é valida. Caso contrário, é necessário analisar as arestas do $\{a,b\}$-retângulo. Assuma sem perda de generalidade que $b$ está acima e a direita de $a$. 
@@ -115,14 +111,10 @@ Em um conjunto arboreamente satisfeito $P$, para todo par de pontos $\{a,b\}$ n�
 
     Vamos provar por indução em $k$ que, todo $\{a,b\}$-retângulo com $k$ pontos em seu interior satisfaz a propriedade do Lema.
 
-    Para $k = 0$, todo $\{a,b\}$-retângulo possui um ponto de $P \setminus \{a,b\}$ em um de seus vértices ou possui dois pontos de $P \setminus \{a,b\}$ alinhados verticalmente ou horizontalmente. Caso o $\{a,b\}$-retângulo possua um ponto de $P\{a,b\}$ em um de seus vértices, então a propriedade é válida. Caso o $\{a,b\}$-retângulo não possua 
+    Para $k = 0$, todo $\{a,b\}$-retângulo possui um ponto de $P \setminus \{a,b\}$ em um de seus vértices ou possui dois pontos de $P \setminus \{a,b\}$ em seu perímetro alinhados verticalmente ou horizontalmente. Caso o $\{a,b\}$-retângulo possua um ponto de $P \setminus \{a,b\}$ em um de seus vértices, então a propriedade é válida. Caso o $\{a,b\}$-retângulo possua dois pontos de $P \setminus \{a,b\}$ em seu perímetro alinhados verticalmente ou horizontalmente, então um desses pontos está em um dos lados do $\{a,b\}$-retângulo que incide em $a$ e o outro está em um dos lados do $\{a,b\}$-retângulo que incide em $b$, satisfazendo a propriedade do lema.
 
-    Suponha agora que $k > 0$ e que a propriedade vale para todo retângulo com menos que $k$ pontos de $P$ em seu interior. Seja $e$ um ponto de $P$ no interior do $\{a,b\}$-retângulo. 
-
-    
+    Suponha agora que $k > 0$ e que a propriedade vale para todo retângulo com menos que $k$ pontos de $P$ em seu interior. Seja $e$ um ponto de $P$ no interior do $\{a,b\}$-retângulo. O $\{a,e\}$-retângulo e o $\{e,b\}$-retângulo são retângulos de $P$ com menos que $k$ pontos, logo a propriedade vale para esses retângulos. Como os lados do $\{a,b\}$-retângulo que incidem em $a$ contém os lados do $\{a,e\}$-retângulo que incidem $a$ e os lados do $\{a,b\}$-retângulo que incidem em $b$ contém os lados do $\{e,b\}$-retângulo que incidem $b$, então se a propriedade vale também para o $\{a,b\}$-retângulo.    
 \end{proof}
-
-%Seja $\tau_i$ a subárvore // falar de subarvores?
 
 \section{Visão geométrica de buscas}
 
@@ -161,7 +153,7 @@ Dada uma sequência $X = (x_{1},\ldots,x_{m})$ de $m$ acessos às chaves $1,2,\l
 \label{fig:busca_padrao}
 \end{figure}
 
-A \textit{visão geométrica da execução de um algoritmo de busca em ABB} para uma sequência $X = (x_{1},\ldots,x_{m})$ de buscas, de maneira similar, é o conjunto $P$ de pontos na forma ($x$,$i$) tal que $x$ foi uma das chaves visitadas durante a busca pela chave $x_i$. Para cada $i \in \{1,\ldots,m\}$, o conjunto de pontos de $P$ pertencentes a reta $y = i$ representa os nós visitados durante a busca por $x_i$. Veja a Figura~\ref{fig:traducao-busca-em-ASS}.
+A \textit{visão geométrica da execução de um algoritmo de busca em ABB} para uma sequência $X = (x_{1},\ldots,x_{m})$ de buscas, de maneira similar, é o conjunto $P$ de pontos na forma ($x$,$i$) tal que $x$ foi uma das chaves visitadas durante a busca pela chave $x_i$. Para cada $i \in \{1,\ldots,m\}$, os pontos de $P$ pertencentes a reta $y = i$ representam as chaves dos nós visitados durante a busca por $x_i$. Veja a Figura~\ref{fig:traducao-busca-em-ASS}.
 
 \begin{figure}[h!]
     \centering
@@ -254,91 +246,63 @@ Como $\{p,q\}$ é um par de pontos arboreamente insatisfeito, nota-se que não h
 
 Sejam $c_1$ e $c_3$ respectivamente as chaves de dois nós $n_1$ e $n_3$ de uma ABB com $c_1 \leq c_3$. Se $n_2$ é o ancestral comum mais profundo dos nós $n_1$ e $n_3$ e sua chave é $c_2$, então sabemos que $c_1 \leq c_2 \leq c_3$ e, mais importante, $n_2$ é ancestral dos nós $n_1$ e $n_3$ nesta ABB, e assim os nós $n_1$ e $n_3$ têm profundidade maior ou igual a $n_2$. Logo, $n_2$ está no caminho da raiz desta ABB até qualquer nó com chave no intervalo $[c_1,c_3]$. Em outras palavras, para visitar qualquer nó da ABB com chave no intervalo $[c_1,c_3]$, é necessário visitar o ancestral comum mais profundo entre $n_1$ e $n_3$, que neste caso é $n_2$.
 
-%No que segue, abusaremos da notação e usaremos um valor $x$ em $[1,n]$ para nos referimos tanto a uma chave $x$ como ao nó de $T$ que armazena $x$.
-
-%\begin{figure}[H]
-    %\centering
-    %\vfill % Adiciona espaço acima da figura para centralização vertical
-    %\parbox
-    \begin{center}
-    \begin{minipage}[t]{0.6\textwidth}
-        Seja $c$ a chave do ancestral comum mais profundo de $r$ e $s$ em $T$ imediatamente antes da busca $i$. Seja $d$ a chave do ancestral comum mais profundo de $r$ e $s$ em $T$ imediatamente antes da busca $j$.
-        
-        Como $\ell_1 \cap P = \emptyset$, então obrigatoriamente $d = b$. Por outro lado, como $\ell_2 \cap P = \emptyset$, temos que $c \neq b$ e, em algum instante de tempo $h$, com $i \leq h < j$, o nó com chave $b$ teve que ser visitado para ser rotacionado e se tornar o ancestral comum mais profundo entre $a$ e $b$ no instante~$j$, logo $\ell_2 \cap P \neq \emptyset$, uma contradição.
-    \end{minipage}\hfill
-    \begin{minipage}[t]{0.4\textwidth}
-        % Coluna da direita com a imagem e a legenda
+\begin{center}
+\begin{minipage}[t]{0.6\textwidth}
+    Seja $c$ a chave do ancestral comum mais profundo de $r$ e $s$ em $T$ imediatamente antes da busca $i$. Seja $d$ a chave do ancestral comum mais profundo de $r$ e $s$ em $T$ imediatamente antes da busca $j$.
+    
+    Como $\ell_1 \cap P = \emptyset$, então obrigatoriamente $d = b$. Por outro lado, como $\ell_2 \cap P = \emptyset$, temos que $c \neq b$ e, em algum instante $h$, com $i \leq h < j$, o nó $s$ teve que ser visitado para ser rotacionado e se tornar o ancestral comum mais profundo entre $r$ e $s$ no instante imediatamente antes de $j$, logo $\ell_2 \cap P \neq \emptyset$, uma contradição.
+\end{minipage}\hfill
+\begin{minipage}[t]{0.4\textwidth}
+    \centering
+    \vspace{-0.65cm}
+    \begin{figure}[H]
         \centering
-        \vspace{-0.65cm}
-        \begin{figure}[H]
-            \centering
-            \begin{adjustbox}{valign=t}
-            \begin{tikzpicture}[scale=0.75]
-            \begin{axis}[
-                %xlabel={Chaves},
-                %ylabel={Tempo},
-                grid=major,
-                xmin=0.3, xmax=2.7,
-                ymin=0.3, ymax=2.7,
-                xtick={1,2},
-                ytick={1,2},
-                xlabel style={at={(axis description cs:0.5,-0.08)}, anchor=center}, % Ajusta a posição do rótulo do eixo x
-                ylabel style={at={(axis description cs:-0.08,0.5)}, anchor=center},
-                xticklabels={$a$,$b$}, % Define os rótulos do eixo x
-                yticklabels={$i$,$j$} % Define os rótulos do eixo y
-            ]
+        \begin{adjustbox}{valign=t}
+        \begin{tikzpicture}[scale=0.75]
+        \begin{axis}[
+            grid=major,
+            xmin=0.3, xmax=2.7,
+            ymin=0.3, ymax=2.7,
+            xtick={1,2},
+            ytick={1,2},
+            xlabel style={at={(axis description cs:0.5,-0.08)}, anchor=center}, % Ajusta a posição do rótulo do eixo x
+            ylabel style={at={(axis description cs:-0.08,0.5)}, anchor=center},
+            xticklabels={$a$,$b$}, % Define os rótulos do eixo x
+            yticklabels={$i$,$j$} % Define os rótulos do eixo y
+        ]
 
-            \addplot[only marks, mark=*, mark size=2.5pt] coordinates {
-                (1,1)
-                (2,2)
-            };
+        \addplot[only marks, mark=*, mark size=2.5pt] coordinates {
+            (1,1)
+            (2,2)
+        };
 
-            \addplot[red, very thick] coordinates {
-                (1,2)
-                (2,2)
-            };
+        \addplot[red, very thick] coordinates {
+            (1,2)
+            (2,2)
+        };
 
-            \addplot[red, very thick] coordinates {
-                (2,2)
-                (2,1)
-            };
-
-            %\addplot[red, thick] coordinates {
-            %    (1,1)
-            %    (1,2)
-            %};
-
-            %\addplot[red, thick] coordinates {
-            %    (1,1)
-            %    (2,1)
-            %};
-
-            % Adiciona rótulos aos pontos
-            \node at (axis cs:1,1) [anchor=north east, fill=white, font=\small] {$p$};
-            \node at (axis cs:2,2) [anchor=south west, fill=white, font=\small] {$q$};
-
-            %\node at (axis cs:1,1.5) [anchor=east, font=\normalsize] {$\ell_1$};
-            \node at (axis cs:1.5,2) [anchor=south, font=\normalsize] {$\ell_1$};
-            \node at (axis cs:2,1.5) [anchor=west, font=\normalsize] {$\ell_2$};
-            %\node at (axis cs:1.5,1) [anchor=north, font=\normalsize] {$\ell_4$};
-            %\node at (axis cs:1.5,1.5) [anchor=center, font=\normalsize] {5};
-
-            \end{axis}
-            \end{tikzpicture}
-            \end{adjustbox}
-            \label{fig:tikz-captions}
-        \end{figure}
-    \end{minipage}
-    \end{center}
-    %\vfill % Adiciona espaço abaixo da figura para centralização vertical
-    %\label{fig:chaves-buscas}
-%\end{figure}
+        \addplot[red, very thick] coordinates {
+            (2,2)
+            (2,1)
+        };
+        \node at (axis cs:1,1) [anchor=north east, fill=white, font=\small] {$p$};
+        \node at (axis cs:2,2) [anchor=south west, fill=white, font=\small] {$q$};
+        \node at (axis cs:1.5,2) [anchor=south, font=\normalsize] {$\ell_1$};
+        \node at (axis cs:2,1.5) [anchor=west, font=\normalsize] {$\ell_2$};
+        \end{axis}
+        \end{tikzpicture}
+        \end{adjustbox}
+        \label{fig:tikz-captions}
+    \end{figure}
+\end{minipage}
+\end{center}
 \vspace{-0.7cm}
 \end{proof}
 
 A partir daqui, consideraremos apenas pontos $(x,y)$ em que $x$ e $y$ são inteiros, $1 \leq x \leq n$ e $1 \leq y \leq m$.
 
 \begin{lemma}Qualquer conjunto de pontos arboreamente satisfeito representa a execução de um algoritmo de busca em ABB no modelo de computação adotado.
+\label{lema:ASS_vira_visao_geometrica}
 \end{lemma}
 
 \begin{proof}\label{prova:ASS}
@@ -362,7 +326,7 @@ Vamos supor, por contradição, que há um nó $q$ cuja prioridade é menor que 
 %que há dois nós, $p$ com chave $a$ e $q$ com chave $b$ ($a \neq b$), tal que o nó $p$ está contido na subárvore dos nós visitados no instante de tempo $i$ e o nó $q$ não foi visitado no instante de tempo $i$ e sua prioridade é menor que . Assim, $N(a,i) > N(b,i)$. Assumiremos sem perda de generalidade que $a < b$ e que $p$ é pai de $q$ durante o instante de tempo $i$. Veja a Figura~\ref{fig:representacao_grafica}.
 
 \begin{figure}[H]
-    \begin{tikzpicture}
+    \begin{tikzpicture}[scale=1.1]
         \coordinate (A) at (0, 0);
         \coordinate (B) at (3, 0);
         \coordinate (C) at (1.5, 2.6);
@@ -394,7 +358,6 @@ Vamos supor, por contradição, que há um nó $q$ cuja prioridade é menor que 
     \caption{Representação da situação descrita. O triângulo é uma representação simplificada de uma ABB. A área destacada representa todos os nós acessados no instante de tempo $i$. O nó $q$ não foi visitado nesse instante de tempo.}
 \label{fig:representacao_grafica}
 \end{figure}
-
 De maneira informal, os nós $p$ e $q$ são nós pai-filho. Durante o instante de tempo $i$, $p$ será visitado pelo algoritmo de busca e $q$ não. Após o instante $i$, queremos visitar o nó $q$ pela primeira vez no instante $j = N(b,i)$ antes de fazer qualquer outra visita ao nó $p$, porém isso é impossível. Vamos mostrar que, neste caso, $P$ não era um conjunto arboreamente satisfeito.
 
 Os lados a seguir terão um papel na prova e estão representados na Figura~\ref{fig:area_delimitada}. São eles:
@@ -465,8 +428,6 @@ Assim, nota-se que a reestruturação da treap da maneira proposta é sempre vá
 Verificar se um conjunto de pontos é arboreamente satisfeito é demorado se feito à mão. Assim, com o intuito de automatizar e garantir que um conjunto de pontos sendo analisado é arboreamente satisfeito, implementamos a treap proposta na Demonstração~\ref{prova:ASS}. %Essa treap executa um desce heap na raiz múltiplas vezes em cada instante de tempo e detecta se a propriedade de heap mínimo foi violada em algum momento. 
 Se a propriedade não for violada, o código imprime a árvore correspondente a cada instante de tempo, caso a propriedade seja violada, o código imprime todas as árvores correspondentes aos instantes de tempo anteriores ao da violação e imprime o par de pontos que é arboreamente insatisfeito. A implementação pode ser vista \href{https://github.com/BrunoArmondBraga/TCC/blob/main/src/ValidAss.cpp}{aqui}.
 
-%de testes foram feitos para melhorar a intuição dos pesquisadores em relação a como os conjuntos de pontos arboreamente satisfeitos se comportam. Para automatizar e garantir que os conjuntos de pontos analisados eram arboreamente satisfeitos, fizemos a implementação da treap proposta na Demonstração~\ref{prova:ASS}.
-
 É importante notar que essa interpretação geométrica é muito útil para entender buscas em ABBs de maneira simplificada. Essa abordagem convenientemente oculta as rotações da ABB e leva em consideração apenas os nós visitados durante as buscas. É bastante impressionante que a disposição exata dos nós de uma ABB não é uma informação essencial para a análise e pode ser reconstruída a partir dos nós visitados.
 
-% Basicamente é uma prova por indução. Precisamos provar que se era válida, se tornará válida. Assim, se tiver o problema de dois pontos estarem insatisfeitos, então a treap inicial tinha um elemento embaixo de q que deveria ter sido visitado no instante $i$, ou seja, a treap não era válida.
+Os resultados desse capítulo implicam que o tamanho do menor conjunto de pontos arboreamente satisfeito que contém $P_X$ é exatamente OPT($X$). No próximo capítulo apresentaremos um algoritmo guloso que dada uma sequência de buscas $X$ produz um conjunto arboreamente satisfeito que contém $P_X$ tentando minimizar o tamanho desse conjunto. Esse algoritmo é online.
