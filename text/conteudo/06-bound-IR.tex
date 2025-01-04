@@ -43,7 +43,7 @@ Neste capítulo entenderemos como utilizar a visão geométrica da execução de
 
 Para construção de provas mais sofisticadas, é necessário entender melhor características da geometria dos retângulos formados por pontos de um conjunto. Lembre-se que todos os retângulos aqui considerados são ortogonais aos eixos cartesianos. Por conveniência das provas, todas as sequências de acessos desse capítulo possuem tamanho $n$ e todas as chaves são buscadas exatamente uma vez, ou seja, a sequência de busca é uma permutação de 1 a $n$.
 
-Dividiremos os retângulos formados por um par de pontos de um conjunto $P$ em dois grupos, os $\rectpos$-retângulos e os $\rectneg$-retângulos. Denotamos por $\rectpos$\textit{-retângulo} os retângulos que possuem o vértice à esquerda mais abaixo que o vértice à direita. Denotamos por $\rectneg$\textit{-retângulo} os retângulos que possuem o vértice à esquerda mais acima que o vértice à direita.
+Dividiremos os retângulos formados por um par de pontos de um conjunto $P$ em dois grupos, os $\rectpos$-retângulos e os $\rectneg$-retângulos. Denotamos por $\rectpos$\textit{-retângulo} os retângulos que possuem o vértice de $P$ à esquerda mais abaixo que o vértice de $P$ à direita. Denotamos por $\rectneg$\textit{-retângulo} os retângulos que possuem o vértice de $P$ à esquerda mais acima que o vértice de $P$ à direita.
 
 Assim, definimos que um conjunto de pontos $P$ é $\rectpos$\textit{-satisfeito} se todos os $\rectpos$-retângulos formados por dois pontos de $P$ não ortogonalmente colineares são arboreamente satisfeitos. O conceito de $\rectneg$-satisfeito é definido simetricamente.
 
@@ -828,12 +828,12 @@ De acordo com o Teorema~\ref{teorema_retangulos_independentes}, conjuntos indepe
 Denotemos por maxIRB$(P_X)$ como o maior conjunto independente de retângulos para o conjunto de pontos $P_X$ que representa uma sequência $X$ de buscas. Não se sabe se há uma maneira de encontrar o valor de $|$maxIRB$(P_X)|$ em tempo polinomial, muito menos se há uma maneira de encontrar o próprio conjunto independente de retângulos.
 %Uma maneira conhecida de encontrar conjuntos independentes de retângulos são as delimitações propostas por Wilber \cite{lowerbound_wilber}. Esse tema será explorado com profundidade no próximo capítulo, por ora basta saber que Alt$(P_X)$ e Funil$(P_X)$ são maneiras de encontrar conjuntos independentes de retângulos em tempo polinomial.
 \begin{align*}
-    \frac{1}{2}maxIRB + |P_X| &\leq minASS_{\recttotal}(P_X) \quad & \text{pelo Teorema~\ref{teorema_retangulos_independentes}},\\
+    \frac{1}{2}maxIRB(P_X) + |P_X| &\leq minASS_{\recttotal}(P_X) \quad & \text{pelo Teorema~\ref{teorema_retangulos_independentes}},\\
     &\leq minASS_{\rectpos}(P_X) + minASS_{\rectneg}(P_X) \quad & \text{pela Equação~\ref{eq:minASStotal_menorouigual_soma_de_minASSs}},\\
     &= |Fut_{\rectpos}(P_X)| + |Fut_{\rectneg}(P_X)| + 2|P_X| \quad & \text{pelo Lema~\ref{lema_minASS_para_Fut}},\\
     &= |\text{IRB}_{\rectpos}(P_X)| + |\text{IRB}_{\rectneg}(P_X)| + 2|P_X| \quad & \text{pelo Lema~\ref{lema_6.1}},\\
-    &\leq 2maxIRB + 2|P_X|,\\
-    &< 2maxIRB + 4|P_X|,\\
+    &\leq 2maxIRB(P_X) + 2|P_X|,\\
+    &< 2maxIRB(P_X) + 4|P_X|,\\
     &\leq 4minASS_{\recttotal}(P_X) \quad & \text{pelo Teorema~\ref{teorema_retangulos_independentes}},\\
     &\leq 4minASS(P_X) \quad & \text{pela Equação~\ref{eq:minASS_orientado_menor_ou_igual_minASS}}.
 \end{align*}
@@ -844,6 +844,6 @@ Uma maneira de encontrar um conjunto independente de retângulos é utilizando o
     &\geq \frac{1}{4}maxIRB + \frac{1}{2}|P_X|.
 \end{align*}
 
-Dessa maneira, o tamanho do conjunto independente de retângulos encontrado pelo melhor algoritmo guloso futurista orientado para um determinado conjunto de pontos $P_X$ está em um fator constante do tamanho maior conjunto independente de retângulos.
+Dessa maneira, o tamanho do conjunto independente de retângulos encontrado pelo melhor algoritmo guloso futurista orientado para um determinado conjunto de pontos $P_X$ está em um fator constante do tamanho do maior conjunto independente de retângulos.
 
 No próximo capítulo, veremos as delimitações inferiores de Wilber. Estas delimitações são algoritmos para delimitar custos em sequências de entradas e que conseguem encontrar conjuntos de retângulos independentes de outras maneiras. 
