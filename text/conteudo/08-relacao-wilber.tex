@@ -239,7 +239,7 @@ Primeiramente, é necessário entender como a inversão temporal de um ponto inf
         \label{fig:funis}
     \end{figure}
 
-    Ao somarmos $f(P_X,p)$ e $F(\widebar{P_X},\widebar{p})$ para todo $p \in P_X$, temos
+    Ao somarmos $f(P_X,p)$ para todo $p \in P_X$, temos
     \begin{align}
         \text{Funil}(P_X) &= \sum_{p \, \in \, P_X}f(P_X,p), \notag\\
         &\geq \sum_{p \, \in \, P_E}f(P_E,p) + \sum_{p \, \in \, P_D}f(P_D,p), \notag \\
@@ -271,7 +271,7 @@ Primeiramente, é necessário entender como a inversão temporal de um ponto inf
     \end{enumerate}
 
     Vamos enumerar os pontos de $P_X$ de maneira cronológica com y-coordenada crescente como $p_1,\ldots,p_m$ e dividiremos a análise em 6 casos.
-    Como $a(P_X,\cT) = intercala(P_E.y,P_D.y)$ e $P_E$ e $P_D$ não são vazios, então $a(P_X,\cT) \geq 2$. Assim, quando analisamos cronologicamente os pontos de $P_X$, há $a(P_X,\cT) - 1 \geq 1$ alternações entre pontos de $P_E$ e pontos de $P_D$. Logo, há exatamente $a(P_X,\cT) - 2$ pares de índices $(i,j)$ tal que $i + 1 < j$ que 
+    Como $a(P_X,\cT) = intercala(P_E.y,P_D.y)$ e $P_E$ e $P_D$ não são vazios, então $a(P_X,\cT) \geq 2$. Assim, quando analisamos cronologicamente os pontos de $P_X$, há $a(P_X,\cT) - 1 \geq 1$ alternações entre pontos de $P_E$ e pontos de $P_D$. Logo, há exatamente $a(P_X,\cT) - 2$ pares de pontos consecutivos em relação ao seu funil orientado (funil esquerdo ou direito) que possuem diferença no eixo $y$ de mais de 1 unidade. Formalmente, há exatamente $a(P_X,\cT) - 2$ pares de índices $(i,j)$ tal que $i + 1 < j$ que 
     \begin{center}
         caso 1: $p_i,p_j \in P_E$ e $p_{i+1},\ldots,p_{j-1} \in P_D$,\\
         caso 2: $p_i,p_j \in P_D$ e $p_{i+1},\ldots,p_{j-1} \in P_E$.
@@ -288,6 +288,64 @@ Primeiramente, é necessário entender como a inversão temporal de um ponto inf
         caso 5: $p_{j^{*}} \in P_E$ e $p_{j^{*} + 1},\ldots,p_m \in P_D$,\\
         caso 6: $p_{j^{*}}  \in P_D$ e $p_{j^{*} + 1},\ldots,p_m \in P_E$.
     \end{center} 
+
+    \begin{figure}
+        \begin{tikzpicture}[scale=0.7]
+            \draw[very thin, gray!70] (0,0) grid (10,10);
+            
+            \draw[fill=gray!90, gray!90] (0,0) rectangle (1,8);
+            \draw[fill=gray!90, gray!90] (0,0) rectangle (2,6);
+            \draw[fill=gray!90, gray!90] (0,0) rectangle (3,4);
+            \draw[fill=gray!90, gray!90] (0,0) rectangle (4,2);
+            \draw[fill=gray!90, gray!90] (10,0) rectangle (9,7);
+            \draw[fill=gray!90, gray!90] (10,0) rectangle (8,5);
+            \draw[fill=gray!90, gray!90] (10,0) rectangle (7,3);
+            \draw[fill=gray!90, gray!90] (10,0) rectangle (6,1);
+    
+              
+            \draw[red!90, line width=2pt] (5,9) -- (1,8) -- (9,7) -- (2,6) -- (8,5) -- (3,4) -- (7,3) -- (4,2) -- (6,1);  
+
+            \filldraw[red] (6,1) circle (6pt);
+            \filldraw[red] (4,2) circle (6pt);
+            \filldraw[red] (7,3) circle (6pt);
+            \filldraw[red] (3,4) circle (6pt);
+            \filldraw[red] (8,5) circle (6pt);
+            \filldraw[red] (2,6) circle (6pt);
+            \filldraw[red] (9,7) circle (6pt);
+            \filldraw[red] (1,8) circle (6pt);
+            \filldraw[blue] (5,9) circle (6pt);
+    
+            \draw[black, line width=0.5pt] (0,0) rectangle (10,10);
+        \end{tikzpicture}
+        \begin{tikzpicture}[scale=0.7]
+            \draw[very thin, gray!70] (0,0) grid (10,10);       
+              
+            %\draw[red!90, line width=2pt] (5,9) -- (1,8) -- (9,7) -- (2,6) -- (8,5) -- (3,4) -- (7,3) -- (4,2) -- (6,1);  
+
+            \filldraw[red] (6,1) circle (6pt);
+            \filldraw[red] (4,2) circle (6pt);
+            \filldraw[red] (7,3) circle (6pt);
+            \filldraw[red] (3,4) circle (6pt);
+            \filldraw[red] (8,5) circle (6pt);
+            \filldraw[red] (2,6) circle (6pt);
+            \filldraw[red] (9,7) circle (6pt);
+            \filldraw[red] (1,8) circle (6pt);
+            \filldraw[blue] (5,9) circle (6pt);
+
+            \node at (6.5,0.5) {\textbf{\Large 1}};
+            \node at (7.5,2.5) {\textbf{\Large 3}};
+            \node at (8.5,4.5) {\textbf{\Large 5}};
+            \node at (9.5,6.5) {\textbf{\Large 7}};
+            \node at (3.5,1.5) {\textbf{\Large 2}};
+            \node at (2.5,3.5) {\textbf{\Large 4}};
+            \node at (1.5,5.5) {\textbf{\Large 6}};
+            \node at (0.5,7.5) {\textbf{\Large 8}};
+    
+            \draw[black, line width=0.5pt] (0,0) rectangle (10,10);
+        \end{tikzpicture}
+        \caption{À esquerda, está destacada a delimitação do funil para o ponto $(5,9)$ da visão geométrica da sequência de acesso $X = (6,4,7,3,8,2,9,1,5)$ e, à direita, estão numerados de $1$ a $8$ os pontos desse funil. Perceba que os pares de índices $(2,4),(4,6),(6,8)$ representam o caso 1. Os pares de índices $(1,3),(3,5),(5,7)$ representam o caso 2. Além disso, o caso 3 acontece com índice $i^{*} = 2$ e também o caso 6 com índice $j^{*} = 7$.}
+    \label{fig:espelhamento-de-funil}
+    \end{figure}
 
     Assim, percebemos que os caso 3 e 4 são complementares assim como os casos 5 e 6. Logo, sempre acontece exatamente 1 caso de cada um desses pares. Como os primeiros dois casos acontecem $a(P_X,\cT) - 2$ vezes, então somados temos $a(P_X,\cT)$ ocorrência de todos os 6 casos.
 
@@ -317,6 +375,121 @@ Primeiramente, é necessário entender como a inversão temporal de um ponto inf
     Assim, terminamos a prova indutiva.
 \end{proof}
 
-Apesar do Lema~\ref{lemma-relacao-alt-com-funil} relacionar as duas delimitações com a ajuda da inversão temporal de $P_X$, não é de grande utilidade isolada, pois não sabemos como funil$(P)$ e funil$(\widebar{P})$ se relacionam.
+Apesar do Lema~\ref{lemma-relacao-alt-com-funil} relacionar as duas delimitações com a ajuda da inversão temporal de $P_X$, não é de grande utilidade isolada, pois não sabemos como Funil$(P)$ e Funil$(\widebar{P})$ se relacionam.
 
 \section{Relacionando o funil e sua inversão temporal}
+
+Precisamos entender agora como transformações geométricas afetam a delimitação do funil. A delimitação não é afetada por espelhamentos no eixo $Y$. Isso acontece pois o número de intercalações entre os funis se mantém igual e assim a função $intercala$ para cada ponto não tem seu valor alterado. Veja a Figura~\ref{fig:espelhamento-de-funil}.
+
+\begin{figure}
+    \begin{tikzpicture}[scale=0.85]
+        \draw[very thin, gray!70] (0,0) grid (6,6);
+        
+        \draw[fill=gray!90, gray!90] (6,0) rectangle (6,5);
+        \draw[fill=gray!90, gray!90] (6,0) rectangle (5,3);
+        \draw[fill=gray!90, gray!90] (6,0) rectangle (4,1);
+        \draw[fill=gray!90, gray!90] (0,0) rectangle (2,2);
+        \draw[fill=gray!90, gray!90] (0,0) rectangle (1,4);
+
+          
+        \draw[red!90, line width=2pt] (3,5) -- (1,4) -- (5,3) -- (2,2) -- (4,1);  
+
+        \filldraw[red] (4,1) circle (6pt);
+        \filldraw[red] (2,2) circle (6pt);
+        \filldraw[red] (5,3) circle (6pt);
+        \filldraw[red] (1,4) circle (6pt);
+        \filldraw[blue] (3,5) circle (6pt);
+
+        \draw[black, line width=0.5pt] (0,0) rectangle (6,6);
+    \end{tikzpicture}
+    \begin{tikzpicture}[scale=0.85]
+        \draw[very thin, gray!70] (0,0) grid (6,6);
+        
+        \draw[fill=gray!90, gray!90] (0,0) rectangle (0,5);
+        \draw[fill=gray!90, gray!90] (0,0) rectangle (1,3);
+        \draw[fill=gray!90, gray!90] (0,0) rectangle (2,1);
+        \draw[fill=gray!90, gray!90] (6,0) rectangle (4,2);
+        \draw[fill=gray!90, gray!90] (6,0) rectangle (5,4);
+
+          
+        \draw[red!90, line width=2pt] (3,5) -- (5,4) -- (1,3) -- (4,2) -- (2,1);  
+
+        \filldraw[red] (2,1) circle (6pt);
+        \filldraw[red] (4,2) circle (6pt);
+        \filldraw[red] (1,3) circle (6pt);
+        \filldraw[red] (5,4) circle (6pt);
+        \filldraw[blue] (3,5) circle (6pt);
+
+        \draw[black, line width=0.5pt] (0,0) rectangle (6,6);
+    \end{tikzpicture}
+    \caption{À esquerda, está destacado o funil do ponto azul. À direita, está destacado o funil do ponto de mesma altura no conjunto de pontos espelhados em relação ao eixo $Y$. Perceba que em ambos os casos há o mesmo número de intercalações entre os funis esquerdo e direito do ponto azul.}
+\label{fig:espelhamento-de-funil}
+\end{figure}
+
+Porém o valor da delimitação pode alterar com a inversão temporal. Veja a Figura~\ref{fig:espelhamento-de-funil-2}.
+
+\begin{figure}
+    \begin{tikzpicture}[scale=1]
+        \draw[very thin, gray!70] (0,0) grid (4,4);
+
+        \filldraw[black] (1,1) circle (6pt);
+        \filldraw[black] (3,2) circle (6pt);
+        \filldraw[black] (2,3) circle (6pt);
+
+        \node at (1,1.5) {\textbf{\Large 0}};
+        \node at (3,2.5) {\textbf{\Large 1}};
+        \node at (2,3.5) {\textbf{\Large 2}};
+
+        \draw[black, line width=0.5pt] (0,0) rectangle (4,4);
+    \end{tikzpicture}
+    \begin{tikzpicture}[scale=1]
+        \draw[very thin, gray!70] (0,0) grid (4,4);
+
+        \filldraw[black] (2,1) circle (6pt);
+        \filldraw[black] (3,2) circle (6pt);
+        \filldraw[black] (1,3) circle (6pt);
+
+        \node at (2,1.5) {\textbf{\Large 0}};
+        \node at (3,2.5) {\textbf{\Large 1}};
+        \node at (1,3.5) {\textbf{\Large 1}};
+
+        \draw[black, line width=0.5pt] (0,0) rectangle (4,4);
+    \end{tikzpicture}
+    \caption{À esquerda, a visão geométrica da sequência de acessos $X = (1,3,2)$. À direita, a inversão temporal de $P_X$. Acima de cada ponto está o valor de sua delimitação do funil. Assim, Funil$(P_X) = 0 + 1 + 2 = 3$, enquanto que Funil$(\protect \widebar{P_X}) = 0 + 1 + 1 = 2$.}
+\label{fig:espelhamento-de-funil-2}
+\end{figure}
+
+\begin{lemma}
+    Para qualquer conjunto $P$ de pontos, $zRet(P) = zRet(P^{\perp})$.
+\end{lemma}
+
+\begin{proof}
+\end{proof}
+
+\begin{lemma}
+    Para qualquer conjunto $P$ de pontos, $zRet(P) = Funil(P)/2 - \Oh(m)$.
+\end{lemma}
+
+\begin{proof}
+\end{proof}
+
+\begin{lemma}
+    Para qualquer conjunto $P$ de pontos, $\text{Funil}(P) \geq 2 \, zRet(P)$.
+\end{lemma}
+
+\begin{proof}
+\end{proof}
+
+\begin{lemma} %COROLÁRIO!!!
+    Para qualquer conjunto $P$ de pontos, $\text{Funil}(P) \geq \text{Funil}(\widebar{P}) - \Oh(m)$.
+\end{lemma}
+
+\begin{proof}
+\end{proof}
+
+\begin{theorem}
+    Para toda sequência de acessos $X$ sem repetições e para toda árvore de referência $\cT$ em relação à $P_X$, $\text{Alt}(P_X) \leq \Oh(\text{Funil}(P_X) + m)$.
+\end{theorem}
+
+\begin{proof}
+\end{proof}
