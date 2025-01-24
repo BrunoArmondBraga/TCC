@@ -8,18 +8,18 @@
 
 \newcommand{\cT}{\mathcal{T}}
 
-Nesse capítulo buscaremos entender o comportamento do custo $OPT(X)$ para diferentes sequências de acesso $X$. Compreenderemos o funcionamento das delimitações propostas por Wilber \cite{lowerbound_wilber} e relacionaremos essas delimitações com a delimitação dos retângulos independentes do capítulo anterior.
+Nesse capítulo buscaremos entender o comportamento do custo $OPT(X)$ para diferentes sequências de acesso $X$. Compreenderemos o funcionamento das delimitações propostas por Wilber~\cite{lowerbound_wilber} e relacionaremos essas delimitações com a delimitação dos retângulos independentes do capítulo anterior.
 
 \section{Visão geral}
 
 Wilber foi o pioneiro na área de buscar delimitações inferiores de custo em algoritmos de busca em ABBs que permitem rotações. Durante sua pesquisa, Wilber desenvolveu duas delimitações que ficaram conhecidas como Wilber I e Wilber II. Posteriormente, essas delimitações foram denominadas, respectivamente, delimitação da alternância e delimitação do funil. 
 
-Essas delimitações foram propostas se utilizando de nomenclatura, definições e provas bastante complicadas. Nesse trabalho, ao invés de mostrar tais provas, mostraremos que essas delimitações podem ser interpretadas como ferramentas para encontrar conjuntos de retângulos independentes. Assim, ficará evidente que a delimitação de retângulos independentes é pelo menos tão boa quanto ambas as delimitações propostas por Wilber.
+Essas delimitações foram propostas se utilizando de nomenclatura, definições e provas bastante complicadas. Nesse trabalho, ao invés de mostrar tais provas, mostraremos que essas delimitações podem ser interpretadas como ferramentas para encontrar conjuntos de retângulos independentes. Assim, ficará evidente que a delimitação de retângulos independentes é assintoticamente pelo menos tão boa quanto ambas as delimitações propostas por Wilber.
 
 Inicialmente, será necessário definir uma série de conceitos que serão usados posteriormente.
-Dados dois conjuntos $L$ e $R$ finitos e disjuntos de pontos. Denotaremos por $mix(L,R)$ a string em $\{$\textbf{L},\textbf{R}$\}^{*}$ obtida pela união $L \cup R$ em ordem crescente, substituindo cada elemento de $L$ por \textbf{L} e cada elemento de $R$ por \textbf{R}. Para os conjuntos $L = \{2,3,6\}$ e $R = \{1,4,5\}$, $mix(L,R)$ = \textbf{RLLRRL}. Essa string final é uma representação das posições relativas dos pontos em ordem crescente.
+Dados dois conjuntos $E$ e $D$ finitos e disjuntos de pontos. Denotamos por $mix(E,D)$ a string em $\{$\textbf{E},\textbf{D}$\}^{*}$ obtida pela união $E \cup D$ em ordem crescente, substituindo cada elemento de $E$ por \textbf{E} e cada elemento de $D$ por \textbf{D}. Para os conjuntos $E = \{2,3,6\}$ e $D = \{1,4,5\}$, $mix(E,D)$ = \textbf{DEEDDE}. Essa string final é uma representação das posições relativas dos pontos em ordem crescente.
 
-Dada uma string $s \in \{$\textbf{L},\textbf{R}$\}^{*}$, definimos $blocos(s)$ como o número de blocos contíguos do mesmo símbolo em $s$. Assim,
+Dada uma string $s \in \{$\textbf{E},\textbf{D}$\}^{*}$, definimos $blocos(s)$ como o número de blocos contíguos do mesmo símbolo em $s$. Assim,
 
 \[
 blocos(s) = 
@@ -29,15 +29,15 @@ blocos(s) =
 \end{cases}
 \]
 
-Por exemplo, blocos(\textbf{RLLRRL}) = 4.
+Por exemplo, blocos(\textbf{DEEDDE}) = 4.
 
-Para finalizar, definimos $intercala(L,R) = blocos(mix(L,R))$. Assim, compactamos as definições acima para produzir a função $intercala$ que recebe dois conjuntos de pontos e retornar um inteiro que representa o número de blocos contíguos do mesmo símbolo da string resultante de $mix(L,R)$. Assim, para o exemplo acima $intercala(L,R) = 4$.
+Para finalizar, definimos $intercala(E,D) = blocos(mix(E,D))$. Assim, compactamos as definições acima para produzir a função $intercala$ que recebe dois conjuntos de pontos e retorna um inteiro que representa o número de blocos contíguos do mesmo símbolo da string resultante de $mix(E,D)$. Assim, para o exemplo acima $intercala(E,D) = 4$.
 
 %precisa falar que os conjuntos possuem y-coordenadas distintas?
 
 \section{Delimitação da Alternância}
 
-Seja $P$ um conjunto de pontos. Uma \textit{árvore de referência} $\cT$ em relação à $P$ é uma árvore binária em que todo nó não-folha possui dois filhos e as folhas são rotuladas com os valores de $P$\hspace{-0.05cm}$.x$ em ordem crescente. Veja a Figura~\ref{fig:arvore_de_referencia_exemplo_inicial}. Note que para conjuntos de pontos com $|P| > 2$, há múltiplas árvores de referência em relação à $P$.
+Seja $P$ um conjunto de pontos. Uma \textit{árvore de referência} $\cT$ em relação à $P$ é uma árvore binária em que todo nó não-folha possui dois filhos e as folhas são rotuladas com os valores de $P$\hspace{-0.05cm}$.x$ em ordem crescente. Veja a Figura~\ref{fig:arvore_de_referencia_exemplo_inicial}. Note que para conjuntos com mais de dois pontos com x-coordenadas distintas, há múltiplas árvores de referência em relação à $P$.
 \begin{figure}
     \begin{tikzpicture}
         [node/.style={circle,draw,minimum size=2em, thick, font=\large},
@@ -67,55 +67,15 @@ Seja $P$ um conjunto de pontos. Uma \textit{árvore de referência} $\cT$ em rel
 \label{fig:arvore_de_referencia_exemplo_inicial}
 \end{figure}
 
-Definimos Alt$_{\cT}$ de maneira recursiva. Se $\cT$ for um nó único, então Alt$_{\cT} = 0$. Caso contrário, seja $\cT_{L}$ e $\cT_{R}$ respectivamente a subárvore esquerda e a subárvore direita da raiz de $\cT$. Denotamos por $P_L = \{p \in P \mid p.x \in \cT_L\}$ e $P_R = \{p \in P \mid p.x \in \cT_R\}$. 
+Definimos Alt$_{\cT}$ de maneira recursiva. Se $\cT$ for um nó único, então Alt$_{\cT} = 0$. Caso contrário, seja $\cT_{E}$ e $\cT_{D}$ respectivamente a subárvore esquerda e a subárvore direita da raiz de $\cT$. Denotamos por $P_E = \{p \in P \mid p.x \in \cT_E\}$ e $P_D = \{p \in P \mid p.x \in \cT_D\}$. 
 
-Definimos $a(P,\cT) = intercala(P_L.y, P_R.y)$, que mostra como se intercalaram os pontos em $P_L$ e $P_R$ de maneira cronológica. Por fim, definimos a delimitação da alternância para um conjunto de pontos $P$ em relação à árvore de referência $\cT$ como:
+Definimos $a(P,\cT) = intercala(P_E.y, P_D.y)$, que mostra como se intercalaram os pontos em $P_E$ e $P_D$ de maneira cronológica. Por fim, definimos a delimitação da alternância para um conjunto de pontos $P$ em relação à árvore de referência $\cT$ como:
 
-Alt$_\cT(P) = a(P,\cT) +$ Alt$_{\cT_L}(P_L) + $ Alt$_{\cT_R}(P_R)$.
+Alt$_\cT(P) = a(P,\cT) +$ Alt$_{\cT_E}(P_E) + $ Alt$_{\cT_D}(P_D)$.
 
 Note que a delimitação da alternância de um conjunto de pontos $P$ pode ter valores diferentes dependendo da escolha da árvore de referência. Veja a Figura~\ref{fig:alternancia_diferente}. Assim, definimos a delimitação da alternância para uma sequência de acessos $X$ como o valor da maior delimitação da alternância para a visão geométrica de $X$ em relação à uma árvore de referência. Formalmente: 
 
 Alt$(X) = max_\cT$ Alt$_\cT(P_X)$.
-
-\begin{comment}
-    \begin{figure}
-        \begin{minipage}[b]{0.45\textwidth}
-            \begin{tikzpicture}
-                [node/.style={circle,draw,minimum size=2em, thick, font=\large},
-        nodeGray/.style={circle,draw,minimum size=2em, thick, font=\large, fill=gray!55}]
-                \node[node] (D) at (0,0) {$b$};
-                \node[node] (B) at (-1.5,-1.5) {$a$};
-                \node[node] (A) at (-2.3,-3) {$1$};
-                \node[node] (C) at (-0.8,-3) {$2$};
-                \node[node] (E) at (0.8,-3) {$3$};
-                \node[node] (F) at (1.5,-1.5) {$c$};
-                \node[node] (G) at (2.3,-3) {$4$};
-                
-                \draw[thick, ->] (D) -- (B) node[midway, left, yshift=0.15cm, xshift=0.08cm] {\textbf{E}};
-                \draw[thick, ->] (B) -- (A) node[midway, left, yshift=0.15cm, xshift=0.08cm] {\textbf{E}};
-                \draw[thick, ->] (B) -- (C) node[midway, right, yshift=0.15cm, xshift=-0.08cm] {\textbf{D}};
-                
-                \draw[thick, ->] (D) -- (F) node[midway, right, yshift=0.15cm, xshift=-0.08cm] {\textbf{D}};
-                \draw[thick, ->] (F) -- (E) node[midway, left, yshift=0.15cm, xshift=0.08cm] {\textbf{E}};
-                \draw[thick, ->] (F) -- (G) node[midway, right, yshift=0.15cm, xshift=-0.08cm] {\textbf{D}};
-            \end{tikzpicture}
-        \end{minipage} \hfill
-        \begin{minipage}[b]{0.45\textwidth}
-            \vfill
-            \begin{tabular}{>{\centering\arraybackslash}p{0.7cm} >{\centering\arraybackslash}p{5cm} p{0.3cm}} % Define as larguras das colunas
-                Nó & Alternância de filhos & \# \\
-                \hline
-                a & D, E, D  & 3 \\
-                b & D, E, E, D, E, D  & 5  \\
-                c & E, D, E  & 3  \\
-                \hline
-                Total  &   & 11  \\
-            \end{tabular}
-            \vfill
-        \end{minipage}
-        \caption{3,2,1,4,2,3}
-    \end{figure}
-\end{comment}
 
 \begin{figure}
     \begin{minipage}[c]{0.3\textwidth} % Alinhar ao centro
@@ -191,19 +151,19 @@ Alt$(X) = max_\cT$ Alt$_\cT(P_X)$.
 \label{fig:alternancia_diferente}
 \end{figure}
 
-%Alt$_{\cT_L}(P_L)
+%Alt$_{\cT_E}(P_E)
 
 Para contribuir com a intuição do leitor, a seguir mostraremos uma maneira alternativa e bem mais informal de entender essa delimitação. Apesar de árvores de referência não serem árvores binárias de busca, uma vez que os nós não possuem atributo chave, é possível contabilizar essa delimitação simulando buscas pelos rótulos das folhas nessa árvore. Para todo nó não-folha de $\cT$, definimos como \textit{filho preferido} deste nó o filho mais recentemente visitado, podendo ser o filho esquerdo, o filho direito ou, se nenhum dos dois filhos tiver sido visitado ainda, o valor nulo.
 
-Assim, dado um sequência de acessos $X$ e uma árvore de referência $\cT$ em relação à $P_X$, se simularmos as buscas de $X$ em $\cT$, ou seja, simular um algoritmo de busca que sempre inicializa na raiz de $\cT$ e para cada busca o algoritmo visita apenas os nós intermediários de $\cT$ que estão no caminho da raiz de $\cT$ a folha com rótulo buscado. Essa árvore é fixa, ou seja, o algoritmo de busca não pode realizar rotações. Veja a Figura~\ref{fig:alternancia_abordagem_informal}.
+Assim, dado um sequência de acessos $X$ e uma árvore de referência $\cT$ em relação à $P_X$, se simularmos as buscas de $X$ em $\cT$, ou seja, simular um algoritmo de busca que sempre inicializa na raiz de $\cT$ e para cada busca o algoritmo visita apenas os nós de $\cT$ que estão no caminho da raiz de $\cT$ a folha com rótulo buscado. Essa árvore é fixa, ou seja, o algoritmo de busca não pode realizar rotações. Veja a Figura~\ref{fig:alternancia_abordagem_informal}.
 
-Assim, Alt$_\cT(X)$ é o somatório do número de vezes que o filho preferido de cada nó intermediário foi alterado. Analogamente, Alt$(X) = max_\cT$ Alt$_\cT(X)$. Então, Alt$(X)$ é o somatório do número de vezes que o filho preferido de cada nó intermediário foi alterado em uma árvore de referência que maximiza esse número.
+Assim, Alt$_\cT(X)$ é o somatório do número de vezes que o filho preferido de cada nó intermediário for alterado. Analogamente, Alt$(X) = max_\cT$ Alt$_\cT(X)$. Então, Alt$(X)$ é o somatório do número de vezes que o filho preferido de cada nó intermediário for alterado em uma árvore de referência que maximiza esse número.
 
-Infelizmente essa delimitação não é justa se permitirmos repetições na sequência $X$ de acessos. Uma maneira facil de perceber que $OPT(X)$ pode ser muito maior que Alt$(X)$ é observando como a delimitação se comporta quando $X$ possui repetições do mesmo acesso consecutivamente. Quando simulamos a mesma busca em sequência em uma árvore de referência nenhum filho preferido é alterado, então a delimitação não aumenta.
+Infelizmente essa delimitação não é justa se permitirmos repetições na sequência $X$. Uma maneira facil de perceber que $OPT(X)$ pode ser muito maior que Alt$(X)$ é observando como a delimitação se comporta quando $X$ possui repetições do mesmo acesso consecutivamente. Quando simulamos a mesma busca consecutivas vezes em uma árvore de referência nenhum filho preferido é alterado, então a delimitação não aumenta.
 
 Sabemos que todo acesso tem custo maior ou igual a 1 e assim $OPT(X) \geq m$, mas devido a essas repetições, é possível que $m$ seja arbitrariamente maior que Alt$(X)$. Para entender o argumento acima, se atente às últimas duas simulações de busca na Figura~\ref{fig:alternancia_abordagem_informal}.
 
-\begin{figure}[H]
+\begin{figure}
     \begin{tikzpicture}
         [node/.style={circle,draw,minimum size=2em, thick, font=\large},
         nodeGray/.style={circle,draw,minimum size=2em, thick, font=\large, fill=gray!55}]
@@ -411,11 +371,191 @@ Sabemos que todo acesso tem custo maior ou igual a 1 e assim $OPT(X) \geq m$, ma
 \label{fig:alternancia_abordagem_informal}
 \end{figure}
 
-\section{Alternância em retângulos independentes}
+\section{Conjunto independente de retângulos a partir da alternância}
 
-Dada uma sequência $X$ de acessos e uma árvore de referência $\cT$ em relação à $P_X$, é possível encontrar os retângulos independentes relacionados à esta delimitação a partir do seguinte algoritmo: Inicialize o algoritmo verificando o nó raiz de $\cT$, seja $u$ o maior rótulo de um nó da subárvore esquerda da raiz e $v$ o menor rótulo de um nó da subárvore direita da raiz. Trace uma reta vertical na visão 2D de $P_X$ na coordenada $x = \frac{u + v}{2}$. Desenhe um retângulo para cada par de pontos consecutivos que possuem a propriedade que um dos pontos está a esquerda da reta traçada e o outro a direita. Assim, recursivamente analise o vértice filho esquerdo da raiz de $\cT$ porém considerando apenas os pontos à esquerda da reta traçada anteriormente e também analise o vértice filho direito da raiz de $\cT$ porém considerando apenas os pontos à direita da reta traçada.
+Dada uma sequência $X$ de acessos e uma árvore de referência $\cT$ em relação à $P_X$, é possível encontrar o conjunto independente de retângulos associado à esta delimitação a partir do seguinte algoritmo: Inicialize o algoritmo verificando o nó raiz de $\cT$, seja $u$ o maior rótulo de um nó da subárvore esquerda da raiz e $v$ o menor rótulo de um nó da subárvore direita da raiz. Trace uma reta vertical na visão 2D de $P_X$ na coordenada $x = \frac{u + v}{2}$. Desenhe um retângulo para cada par de pontos consecutivos que possuem a propriedade que um dos pontos está a esquerda da reta traçada e o outro a direita. Assim, recursivamente analise o vértice filho esquerdo da raiz de $\cT$ porém considerando apenas os pontos à esquerda da reta traçada anteriormente e também analise o vértice filho direito da raiz de $\cT$ porém considerando apenas os pontos à direita da reta traçada. Veja a Figura~\ref{fig:alternancia-retangulos} para uma visão gráfica desse algoritmo.
 
-O algoritmo recursivamente encontra pares de pontos. Esses pares de pontos têm a propriedade que um deles está à esquerda da linha vertical analisada e o outro à direita. Por serem pontos consecutivos com essa propriedade, então sabemos que não há nenhum outro ponto dentro da área deste par de pontos e por serem pontos diferentes
+O algoritmo recursivamente encontra pares de pontos. Esses pares de pontos têm a propriedade que um deles está à esquerda da linha vertical analisada e o outro à direita. Por serem pontos consecutivos com essa propriedade, então sabemos que não há nenhum outro ponto dentro da área deste par de pontos e por serem pontos distintos sabemos que não encontramos retângulos repetidos. Seja $n_\cT$ o número de nós de $\cT$. O número de retângulos encontrados por esse algoritmo é no mínimo $(n_\cT + 1)/2$. É necessário retirar de $Alt(P_X)$ o número de nós não-folha de $\cT$ que foram visitados em algum momento das simulações de buscas. Isso acontece, pois alterações de filhos preferidos de valor nulo para qualquer outro valor caracteriza a presença de um único ponto na sequência de acessos, assim apenas as próximas alterações do filho preferido desse nó que corresponderão a um par de pontos que representa um retângulo. Assim, para $m = \Omega(n)$, essa perda é assintoticamente desprezível.
+
+\begin{figure}
+    \begin{tikzpicture}[scale=0.75,
+        node/.style={circle,draw,minimum size=2em, thick, font=\large},
+        nodeGray/.style={circle,draw,minimum size=2em, thick, font=\large, fill=gray!55}]
+        
+        \node[node, fill=orange] (H) at (0,0) {};
+        \node[node, fill=Brown] (D) at (-2.6,-1.5) {};
+        \node[node, fill=Purple] (B) at (-3.9,-3) {};
+        \node[node] (A) at (-4.55,-4.5) {$1$};
+        \node[node] (C) at (-3.25,-4.5) {$2$};
+        \node[node, fill=magenta] (F) at (-1.3,-3) {};
+        \node[node] (E) at (-1.95,-4.5) {$3$};
+        \node[node] (G) at (-0.65,-4.5) {$4$};
+
+
+        \node[node, fill=LimeGreen!90] (L) at (2.6,-1.5) {};
+        \node[node, fill=cyan!35] (J) at (3.9,-3) {};
+        \node[node] (I) at (4.55,-4.5) {$8$};
+        \node[node] (K) at (3.25,-4.5) {$7$};
+        \node[node, fill=NavyBlue!70] (N) at (1.3,-3) {};
+        \node[node] (M) at (1.95,-4.5) {$6$};
+        \node[node] (O) at (0.65,-4.5) {$5$};
+        
+        \draw[thick, ->] (H) -- (D);
+        \draw[thick, ->] (H) -- (L);
+        \draw[thick, ->] (D) -- (B);
+        \draw[thick, ->] (D) -- (F);
+        \draw[thick, ->] (B) -- (A);
+        \draw[thick, ->] (B) -- (C);
+        \draw[thick, ->] (F) -- (E);
+        \draw[thick, ->] (F) -- (G);
+
+        \draw[thick, ->] (L) -- (J);
+        \draw[thick, ->] (L) -- (N);
+        \draw[thick, ->] (J) -- (I);
+        \draw[thick, ->] (J) -- (K);
+        \draw[thick, ->] (N) -- (M);
+        \draw[thick, ->] (N) -- (O);
+    
+    \end{tikzpicture}
+    \\
+    \vspace{0.3cm}
+    \begin{tikzpicture}[scale=0.41]
+        \draw[very thin, gray!70] (0,0) grid (9,9);
+
+        \draw[red, line width=1pt] (5,1) rectangle (1,2);
+        \draw[red, line width=1pt] (4,4) rectangle (8,5);
+        \draw[red, line width=1pt] (6,6) rectangle (2,7);
+        \draw[red, line width=1pt] (7,8) rectangle (2,7);
+
+        \draw[orange, line width=1pt] (4.5,0) -- (4.5,9);
+        
+        \filldraw[black] (5,1) circle (7pt);
+        \filldraw[black] (1,2) circle (7pt);
+        \filldraw[black] (3,3) circle (7pt);
+        \filldraw[black] (4,4) circle (7pt);
+        \filldraw[black] (8,5) circle (7pt);
+        \filldraw[black] (6,6) circle (7pt);
+        \filldraw[black] (2,7) circle (7pt);
+        \filldraw[black] (7,8) circle (7pt);
+        \draw[black, line width=0.5pt] (0,0) rectangle (9,9);
+    \end{tikzpicture}
+    \\
+    \begin{tikzpicture}[scale=0.41]
+        \draw[very thin, gray!70] (0,0) grid (9,9);
+        \draw[fill=gray!90, gray!90] (9,9) rectangle (4.5,0);
+
+        \draw[red, line width=1pt] (1,2) rectangle (3,3);
+        \draw[red, line width=1pt] (4,4) rectangle (2,7);
+
+        \draw[Brown, line width=1pt] (2.5,0) -- (2.5,9);
+        
+        \filldraw[black] (5,1) circle (7pt);
+        \filldraw[black] (1,2) circle (7pt);
+        \filldraw[black] (3,3) circle (7pt);
+        \filldraw[black] (4,4) circle (7pt);
+        \filldraw[black] (8,5) circle (7pt);
+        \filldraw[black] (6,6) circle (7pt);
+        \filldraw[black] (2,7) circle (7pt);
+        \filldraw[black] (7,8) circle (7pt);
+        \draw[black, line width=0.5pt] (0,0) rectangle (9,9);
+    \end{tikzpicture}
+    \begin{tikzpicture}[scale=0.41]
+        \draw[very thin, gray!70] (0,0) grid (9,9);
+        \draw[fill=gray!90, gray!90] (0,9) rectangle (4.5,0);
+
+        \draw[red, line width=1pt] (5,1) rectangle (8,5);
+        \draw[red, line width=1pt] (6,6) rectangle (8,5);
+        \draw[red, line width=1pt] (6,6) rectangle (7,8);
+
+        \draw[LimeGreen!90, line width=1pt] (6.5,0) -- (6.5,9);
+        
+        \filldraw[black] (5,1) circle (7pt);
+        \filldraw[black] (1,2) circle (7pt);
+        \filldraw[black] (3,3) circle (7pt);
+        \filldraw[black] (4,4) circle (7pt);
+        \filldraw[black] (8,5) circle (7pt);
+        \filldraw[black] (6,6) circle (7pt);
+        \filldraw[black] (2,7) circle (7pt);
+        \filldraw[black] (7,8) circle (7pt);
+        \draw[black, line width=0.5pt] (0,0) rectangle (9,9);
+    \end{tikzpicture}
+    \\
+    \begin{tikzpicture}[scale=0.41]
+        \draw[very thin, gray!70] (0,0) grid (9,9);
+        \draw[fill=gray!90, gray!90] (9,9) rectangle (2.5,0);
+
+        \draw[red, line width=1pt] (1,2) rectangle (2,7);
+
+        \draw[Purple, line width=1pt] (1.5,0) -- (1.5,9);
+        
+        \filldraw[black] (5,1) circle (7pt);
+        \filldraw[black] (1,2) circle (7pt);
+        \filldraw[black] (3,3) circle (7pt);
+        \filldraw[black] (4,4) circle (7pt);
+        \filldraw[black] (8,5) circle (7pt);
+        \filldraw[black] (6,6) circle (7pt);
+        \filldraw[black] (2,7) circle (7pt);
+        \filldraw[black] (7,8) circle (7pt);
+        \draw[black, line width=0.5pt] (0,0) rectangle (9,9);
+    \end{tikzpicture}
+    \begin{tikzpicture}[scale=0.41]
+        \draw[very thin, gray!70] (0,0) grid (9,9);
+        \draw[fill=gray!90, gray!90] (9,9) rectangle (4.5,0);
+        \draw[fill=gray!90, gray!90] (0,9) rectangle (2.5,0);
+
+        \draw[red, line width=1pt] (3,3) rectangle (4,4);
+
+        \draw[magenta, line width=1pt] (3.5,0) -- (3.5,9);
+        
+        \filldraw[black] (5,1) circle (7pt);
+        \filldraw[black] (1,2) circle (7pt);
+        \filldraw[black] (3,3) circle (7pt);
+        \filldraw[black] (4,4) circle (7pt);
+        \filldraw[black] (8,5) circle (7pt);
+        \filldraw[black] (6,6) circle (7pt);
+        \filldraw[black] (2,7) circle (7pt);
+        \filldraw[black] (7,8) circle (7pt);
+        \draw[black, line width=0.5pt] (0,0) rectangle (9,9);
+    \end{tikzpicture}
+    \begin{tikzpicture}[scale=0.41]
+        \draw[very thin, gray!70] (0,0) grid (9,9);
+        \draw[fill=gray!90, gray!90] (9,9) rectangle (6.5,0);
+        \draw[fill=gray!90, gray!90] (0,9) rectangle (4.5,0);
+
+        \draw[red, line width=1pt] (5,1) rectangle (6,6);
+
+        \draw[NavyBlue!70, line width=1pt] (5.5,0) -- (5.5,9);
+        
+        \filldraw[black] (5,1) circle (7pt);
+        \filldraw[black] (1,2) circle (7pt);
+        \filldraw[black] (3,3) circle (7pt);
+        \filldraw[black] (4,4) circle (7pt);
+        \filldraw[black] (8,5) circle (7pt);
+        \filldraw[black] (6,6) circle (7pt);
+        \filldraw[black] (2,7) circle (7pt);
+        \filldraw[black] (7,8) circle (7pt);
+        \draw[black, line width=0.5pt] (0,0) rectangle (9,9);
+    \end{tikzpicture}
+    \begin{tikzpicture}[scale=0.41]
+        \draw[very thin, gray!70] (0,0) grid (9,9);
+        \draw[fill=gray!90, gray!90] (0,9) rectangle (6.5,0);
+        \draw[red, line width=1pt] (8,5) rectangle (7,8);
+        
+        \draw[cyan!35, line width=1pt] (7.5,0) -- (7.5,9);
+        
+        \filldraw[black] (5,1) circle (7pt);
+        \filldraw[black] (1,2) circle (7pt);
+        \filldraw[black] (3,3) circle (7pt);
+        \filldraw[black] (4,4) circle (7pt);
+        \filldraw[black] (8,5) circle (7pt);
+        \filldraw[black] (6,6) circle (7pt);
+        \filldraw[black] (2,7) circle (7pt);
+        \filldraw[black] (7,8) circle (7pt);
+        \draw[black, line width=0.5pt] (0,0) rectangle (9,9);
+    \end{tikzpicture}
+    \caption{Em cima, uma árvore de referência em relação à visão geométrica da sequência de acessos $X = (5,1,3,4,8,6,2,7)$. Cada nó intermediário está colorido com uma cor diferente. Abaixo, está descrita a execução do algoritmo recursivo que encontra os $\text{Alt}_\protect\cT(P_X) - (n - 1)$ retângulos. Cada linha possui a cor do nó intermediário correspondente.}
+\label{fig:alternancia-retangulos}
+\end{figure}
 
 \section{Delimitação do Funil}
 
@@ -427,7 +567,9 @@ De maneira simétrica definimos o \textit{funil direito},
 
 $F_D(P,p) = \{q \in P \mid q.y > p.y \; \land \; q.x < p.x \; \land \; \{p,q\}\text{-retângulo é arboreamente insatisfeito}\}$
 
-Por fim, definimos o \textit{funil} de $p$ como a união do funil esquerdo e do funil direito de $p$, ou seja, $F_E(P,p) \cup F_D(P,p)$.
+Por fim, definimos o \textit{funil} de $p$ como a união do funil esquerdo e do funil direito de $p$, ou seja, $F_E(P,p) \cup F_D(P,p)$. Veja a Figura~\ref{fig:funil-apresentacao}.
+
+É importante notar que cronologicamente os pontos do funil esquerdo de qualquer ponto $p$ possuem x-coordenada decrescente. De maneira análoga, cronologicamente os pontos do funil direito de qualquer ponto $p$ possuem x-coordenada crescente. Isso acontece por conta da propriedade insatisfação arbórea do ponto $p$ e os pontos de seu funil.
 
 \begin{comment}
     \begin{tikzpicture}[scale=1]
@@ -465,14 +607,14 @@ Por fim, definimos o \textit{funil} de $p$ como a união do funil esquerdo e do 
     \end{tikzpicture}
 \end{comment}
 
-\definecolor{color_of_analysed_point}{named}{blue}
+\definecolor{blue}{named}{blue}
 
 \begin{figure}
     \centering
     \begin{tikzpicture}[scale=0.62]
         \draw[very thin, gray!70] (0,0) grid (8,8);
 
-        \draw[color_of_analysed_point, dashed, line width=1.5pt] (4,0) -- (4,8);
+        \draw[blue, dashed, line width=1.5pt] (4,0) -- (4,8);
         
         %\draw[red, line width=1.2pt] (1,5) rectangle (4,7);
         %\draw[red, line width=1.2pt] (3,3) rectangle (4,7);
@@ -483,12 +625,12 @@ Por fim, definimos o \textit{funil} de $p$ como a união do funil esquerdo e do 
         \filldraw[black] (7,4) circle (7pt);
         \filldraw[red] (1,5) circle (7pt);
         \filldraw[black] (6,6) circle (7pt);
-        \filldraw[color_of_analysed_point] (4,7) circle (7pt);
+        \filldraw[blue] (4,7) circle (7pt);
         \draw[black, line width=0.5pt] (0,0) rectangle (8,8);
     \end{tikzpicture}
     \begin{tikzpicture}[scale=0.62]
         \draw[very thin, gray!70] (0,0) grid (8,8);
-        \draw[color_of_analysed_point, dashed, line width=1.5pt] (4,0) -- (4,8);
+        \draw[blue, dashed, line width=1.5pt] (4,0) -- (4,8);
         
         %\draw[red, line width=1.2pt] (5,2) rectangle (4,7);
         %\draw[red, line width=1.2pt] (6,6) rectangle (4,7);
@@ -499,12 +641,12 @@ Por fim, definimos o \textit{funil} de $p$ como a união do funil esquerdo e do 
         \filldraw[black] (7,4) circle (7pt);
         \filldraw[black] (1,5) circle (7pt);
         \filldraw[red] (6,6) circle (7pt);
-        \filldraw[color_of_analysed_point] (4,7) circle (7pt);
+        \filldraw[blue] (4,7) circle (7pt);
         \draw[black, line width=0.5pt] (0,0) rectangle (8,8);
     \end{tikzpicture}
     \begin{tikzpicture}[scale=0.62]
         \draw[very thin, gray!70] (0,0) grid (8,8);
-        %\draw[color_of_analysed_point, dashed, line width=1.5pt] (4,0) -- (4,8);
+        %\draw[blue, dashed, line width=1.5pt] (4,0) -- (4,8);
         
         \filldraw[black] (2,1) circle (7pt);
         \filldraw[red] (3,3) circle (7pt);
@@ -512,210 +654,211 @@ Por fim, definimos o \textit{funil} de $p$ como a união do funil esquerdo e do 
         \filldraw[black] (7,4) circle (7pt);
         \filldraw[red] (1,5) circle (7pt);
         \filldraw[red] (6,6) circle (7pt);
-        \filldraw[color_of_analysed_point] (4,7) circle (7pt);
+        \filldraw[blue] (4,7) circle (7pt);
         \draw[black, line width=0.5pt] (0,0) rectangle (8,8);
     \end{tikzpicture}
     %\caption{Nesta visão geométrica de uma sequência de acessos, está destacado de azul o ponto (4,7). À esquerda, estão destacados de vermelho os pontos do Funil esquerdo do ponto azul. Ao meio, estão destacados os pontos do Funil direito do ponto azul. À direita, estão destacados os pontos pertencentes ao funil do ponto azul.}
     \caption{O ponto (4,7) está destacado. À esquerda, os pontos vermelhos pertencem ao funil esquerdo do ponto azul. Ao meio, os pontos vermelhos pertencem ao funil direito do ponto azul. À direita, estão destacados de vermelho os pontos do funil do ponto azul, que são a união dos dois conjuntos anteriores.}
+\label{fig:funil-apresentacao}
 \end{figure}
 
-A delimitação do funil para um ponto conta o número de alternâncias entre o funil esquerdo e o funil direito desse ponto, assim para cada ponto $p$ de $P$, definimos $f(P,p) = intercala(F_L(P,p).y, F_R(P,p).y)$. A delimitação do funil para uma sequência $X$ de acessos é a somatória desse valor para todos os pontos da visão geométrica de $X$, ou seja, Funil$(X) = \sum_{p \in P_X}^{f(P_X,p)}$.
+A delimitação do funil para um ponto conta o número de intercalações entre o funil esquerdo e o funil direito desse ponto, assim para cada ponto $p$ de $P$, definimos $f(P,p) = intercala(F_E(P,p).y, F_D(P,p).y)$. A delimitação do funil para uma sequência~$X$ de acessos é a somatória desse valor para todos os pontos da visão geométrica de $X$, ou seja, Funil$(X) = \sum_{p \in P_X}^{f(P_X,p)}$.
 
 De maneira informal, a ideia central dessa delimitação é somar o valor de $f(P_X,p)$ para cada ponto $p \in P_X$. Assim, para cada ponto de $P_X$, calcule o número de intercalações direita-esquerda dos pontos abaixo dele, indo de cima para baixo, cujas x-coordenadas se aproximam da x-coordenada do ponto analisado.
 
 \begin{comment}
-\begin{figure}
-    \centering
-    \begin{tikzpicture}[scale=0.62]
-        \draw[very thin, gray!70] (0,0) grid (8,9);
-        
-        \draw[fill=gray!90, gray!90] (0,0) rectangle (3,2);
-        \draw[fill=gray!90, gray!90] (1,0) rectangle (5,1);
+    \begin{figure}
+        \centering
+        \begin{tikzpicture}[scale=0.62]
+            \draw[very thin, gray!70] (0,0) grid (8,9);
+            
+            \draw[fill=gray!90, gray!90] (0,0) rectangle (3,2);
+            \draw[fill=gray!90, gray!90] (1,0) rectangle (5,1);
 
-        \draw[red!90, line width=2pt] (7,3) -- (3,2);  
+            \draw[red!90, line width=2pt] (7,3) -- (3,2);  
 
-        \filldraw[red] (5,1) circle (6pt);
-        \filldraw[red] (3,2) circle (6pt);
-        \filldraw[blue] (7,3) circle (6pt);
-        \filldraw[black] (1,4) circle (6pt);
-        \filldraw[black] (6,5) circle (6pt);
-        \filldraw[black] (3,6) circle (6pt);
-        \filldraw[black] (4,7) circle (6pt);
-        \filldraw[black] (2,8) circle (6pt);
-
-
-        %\node at (1,9.5) {\textbf{\Large E}};
-        %\node at (2,8.5) {\textbf{\Large E}};
-        %\node at (4,5.5) {\textbf{\Large E}};
-        %\node at (5,1.5) {\textbf{\Large E}};
-
-        %\node at (10,7.5) {\textbf{\Large D}};
-        %\node at (8,6.5) {\textbf{\Large D}};
-        %\node at (7,2.5) {\textbf{\Large D}};
+            \filldraw[red] (5,1) circle (6pt);
+            \filldraw[red] (3,2) circle (6pt);
+            \filldraw[blue] (7,3) circle (6pt);
+            \filldraw[black] (1,4) circle (6pt);
+            \filldraw[black] (6,5) circle (6pt);
+            \filldraw[black] (3,6) circle (6pt);
+            \filldraw[black] (4,7) circle (6pt);
+            \filldraw[black] (2,8) circle (6pt);
 
 
-        \draw[black, line width=0.5pt] (0,0) rectangle (8,9);
-    \end{tikzpicture}
-    \begin{tikzpicture}[scale=0.62]
-        \draw[very thin, gray!70] (0,0) grid (8,9);
-        
-        \draw[fill=gray!90, gray!90] (8,0) rectangle (3,2);
-        \draw[fill=gray!90, gray!90] (8,0) rectangle (7,3);
+            %\node at (1,9.5) {\textbf{\Large E}};
+            %\node at (2,8.5) {\textbf{\Large E}};
+            %\node at (4,5.5) {\textbf{\Large E}};
+            %\node at (5,1.5) {\textbf{\Large E}};
 
-        \draw[red!90, line width=2pt] (1,4) -- (7,3); 
-
-        \filldraw[black] (5,1) circle (6pt);
-        \filldraw[red] (3,2) circle (6pt);
-        \filldraw[red] (7,3) circle (6pt);
-        \filldraw[blue] (1,4) circle (6pt);
-        \filldraw[black] (6,5) circle (6pt);
-        \filldraw[black] (3,6) circle (6pt);
-        \filldraw[black] (4,7) circle (6pt);
-        \filldraw[black] (2,8) circle (6pt);
+            %\node at (10,7.5) {\textbf{\Large D}};
+            %\node at (8,6.5) {\textbf{\Large D}};
+            %\node at (7,2.5) {\textbf{\Large D}};
 
 
-        %\node at (1,9.5) {\textbf{\Large E}};
-        %\node at (2,8.5) {\textbf{\Large E}};
-        %\node at (4,5.5) {\textbf{\Large E}};
-        %\node at (5,1.5) {\textbf{\Large E}};
+            \draw[black, line width=0.5pt] (0,0) rectangle (8,9);
+        \end{tikzpicture}
+        \begin{tikzpicture}[scale=0.62]
+            \draw[very thin, gray!70] (0,0) grid (8,9);
+            
+            \draw[fill=gray!90, gray!90] (8,0) rectangle (3,2);
+            \draw[fill=gray!90, gray!90] (8,0) rectangle (7,3);
 
-        %\node at (10,7.5) {\textbf{\Large D}};
-        %\node at (8,6.5) {\textbf{\Large D}};
-        %\node at (7,2.5) {\textbf{\Large D}};
+            \draw[red!90, line width=2pt] (1,4) -- (7,3); 
 
-
-        \draw[black, line width=0.5pt] (0,0) rectangle (8,9);
-    \end{tikzpicture}
-    \begin{tikzpicture}[scale=0.62] %3
-        \draw[very thin, gray!70] (0,0) grid (8,9);
-        
-        \draw[fill=gray!90, gray!90] (0,0) rectangle (5,1);
-        \draw[fill=gray!90, gray!90] (0,0) rectangle (3,2);
-        \draw[fill=gray!90, gray!90] (8,0) rectangle (7,3);
-        \draw[fill=gray!90, gray!90] (0,0) rectangle (1,4);
-
-        \draw[red!90, line width=2pt] (6,5) -- (1,4) -- (7,3) -- (3,2);
-
-        \filldraw[red] (5,1) circle (6pt);
-        \filldraw[red] (3,2) circle (6pt);
-        \filldraw[red] (7,3) circle (6pt);
-        \filldraw[red] (1,4) circle (6pt);
-        \filldraw[blue] (6,5) circle (6pt);
-        \filldraw[black] (3,6) circle (6pt);
-        \filldraw[black] (4,7) circle (6pt);
-        \filldraw[black] (2,8) circle (6pt);
+            \filldraw[black] (5,1) circle (6pt);
+            \filldraw[red] (3,2) circle (6pt);
+            \filldraw[red] (7,3) circle (6pt);
+            \filldraw[blue] (1,4) circle (6pt);
+            \filldraw[black] (6,5) circle (6pt);
+            \filldraw[black] (3,6) circle (6pt);
+            \filldraw[black] (4,7) circle (6pt);
+            \filldraw[black] (2,8) circle (6pt);
 
 
-        %\node at (1,9.5) {\textbf{\Large E}};
-        %\node at (2,8.5) {\textbf{\Large E}};
-        %\node at (4,5.5) {\textbf{\Large E}};
-        %\node at (5,1.5) {\textbf{\Large E}};
+            %\node at (1,9.5) {\textbf{\Large E}};
+            %\node at (2,8.5) {\textbf{\Large E}};
+            %\node at (4,5.5) {\textbf{\Large E}};
+            %\node at (5,1.5) {\textbf{\Large E}};
 
-        %\node at (10,7.5) {\textbf{\Large D}};
-        %\node at (8,6.5) {\textbf{\Large D}};
-        %\node at (7,2.5) {\textbf{\Large D}};
-
-
-        \draw[black, line width=0.5pt] (0,0) rectangle (8,9);
-    \end{tikzpicture}
-    \begin{tikzpicture}[scale=0.62] %4
-        \draw[very thin, gray!70] (0,0) grid (8,9);
-        
-        \draw[fill=gray!90, gray!90] (0,0) rectangle (1,4);
-        \draw[fill=gray!90, gray!90] (8,0) rectangle (6,5);
-        \draw[fill=gray!90, gray!90] (0,0) rectangle (3,2);
-        \draw[fill=gray!90, gray!90] (8,0) rectangle (3,2);
-
-        \draw[red!90, line width=2pt] (3,6) -- (6,5) -- (1,4);
-
-        %\draw[fill=gray!90, gray!90] (10,7) rectangle (11,0);
-        %\draw[fill=gray!90, gray!90] (8,6) rectangle (10,0);
-        %\draw[fill=gray!90, gray!90] (7,2) rectangle (8,0);    
-
-        \filldraw[black] (5,1) circle (6pt);
-        \filldraw[black] (3,2) circle (6pt);
-        \filldraw[black] (7,3) circle (6pt);
-        \filldraw[red] (1,4) circle (6pt);
-        \filldraw[red] (6,5) circle (6pt);
-        \filldraw[blue] (3,6) circle (6pt);
-        \filldraw[black] (4,7) circle (6pt);
-        \filldraw[black] (2,8) circle (6pt);
+            %\node at (10,7.5) {\textbf{\Large D}};
+            %\node at (8,6.5) {\textbf{\Large D}};
+            %\node at (7,2.5) {\textbf{\Large D}};
 
 
-        %\node at (1,9.5) {\textbf{\Large E}};
-        %\node at (2,8.5) {\textbf{\Large E}};
-        %\node at (4,5.5) {\textbf{\Large E}};
-        %\node at (5,1.5) {\textbf{\Large E}};
+            \draw[black, line width=0.5pt] (0,0) rectangle (8,9);
+        \end{tikzpicture}
+        \begin{tikzpicture}[scale=0.62] %3
+            \draw[very thin, gray!70] (0,0) grid (8,9);
+            
+            \draw[fill=gray!90, gray!90] (0,0) rectangle (5,1);
+            \draw[fill=gray!90, gray!90] (0,0) rectangle (3,2);
+            \draw[fill=gray!90, gray!90] (8,0) rectangle (7,3);
+            \draw[fill=gray!90, gray!90] (0,0) rectangle (1,4);
 
-        %\node at (10,7.5) {\textbf{\Large D}};
-        %\node at (8,6.5) {\textbf{\Large D}};
-        %\node at (7,2.5) {\textbf{\Large D}};
+            \draw[red!90, line width=2pt] (6,5) -- (1,4) -- (7,3) -- (3,2);
 
-
-        \draw[black, line width=0.5pt] (0,0) rectangle (8,9);
-    \end{tikzpicture}
-    \begin{tikzpicture}[scale=0.62] %5
-        \draw[very thin, gray!70] (0,0) grid (8,9);
-        
-        \draw[fill=gray!90, gray!90] (0,0) rectangle (3,6);
-        \draw[fill=gray!90, gray!90] (8,0) rectangle (5,1);
-        \draw[fill=gray!90, gray!90] (8,0) rectangle (6,5);
-        %\draw[fill=gray!90, gray!90] (1,0) rectangle (2,8);
-        %\draw[fill=gray!90, gray!90] (2,0) rectangle (4,5);
-        %\draw[fill=gray!90, gray!90] (4,0) rectangle (5,1);
-
-        \draw[red!90, line width=2pt] (4,7) -- (3,6) -- (6,5);
-        %\draw[red!90, line width=2pt] (8,6) -- (4,5) -- (7,2) -- (5,1);
-
-        %\draw[fill=gray!90, gray!90] (10,7) rectangle (11,0);
-        %\draw[fill=gray!90, gray!90] (8,6) rectangle (10,0);
-        %\draw[fill=gray!90, gray!90] (7,2) rectangle (8,0);    
-
-        \filldraw[red] (5,1) circle (6pt);
-        \filldraw[black] (3,2) circle (6pt);
-        \filldraw[black] (7,3) circle (6pt);
-        \filldraw[black] (1,4) circle (6pt);
-        \filldraw[red] (6,5) circle (6pt);
-        \filldraw[red] (3,6) circle (6pt);
-        \filldraw[blue] (4,7) circle (6pt);
-        \filldraw[black] (2,8) circle (6pt);
+            \filldraw[red] (5,1) circle (6pt);
+            \filldraw[red] (3,2) circle (6pt);
+            \filldraw[red] (7,3) circle (6pt);
+            \filldraw[red] (1,4) circle (6pt);
+            \filldraw[blue] (6,5) circle (6pt);
+            \filldraw[black] (3,6) circle (6pt);
+            \filldraw[black] (4,7) circle (6pt);
+            \filldraw[black] (2,8) circle (6pt);
 
 
-        %\node at (1,9.5) {\textbf{\Large E}};
-        %\node at (2,8.5) {\textbf{\Large E}};
-        %\node at (4,5.5) {\textbf{\Large E}};
-        %\node at (5,1.5) {\textbf{\Large E}};
+            %\node at (1,9.5) {\textbf{\Large E}};
+            %\node at (2,8.5) {\textbf{\Large E}};
+            %\node at (4,5.5) {\textbf{\Large E}};
+            %\node at (5,1.5) {\textbf{\Large E}};
 
-        %\node at (10,7.5) {\textbf{\Large D}};
-        %\node at (8,6.5) {\textbf{\Large D}};
-        %\node at (7,2.5) {\textbf{\Large D}};
+            %\node at (10,7.5) {\textbf{\Large D}};
+            %\node at (8,6.5) {\textbf{\Large D}};
+            %\node at (7,2.5) {\textbf{\Large D}};
 
 
-        \draw[black, line width=0.5pt] (0,0) rectangle (8,9);
-    \end{tikzpicture}
-    \begin{tikzpicture}[scale=0.62] %6
-        \draw[very thin, gray!70] (0,0) grid (8,9);
-        
-        \draw[fill=gray!90, gray!90] (0,0) rectangle (1,4);
-        \draw[fill=gray!90, gray!90] (8,0) rectangle (3,6);
-        \draw[fill=gray!90, gray!90] (8,0) rectangle (4,7);
+            \draw[black, line width=0.5pt] (0,0) rectangle (8,9);
+        \end{tikzpicture}
+        \begin{tikzpicture}[scale=0.62] %4
+            \draw[very thin, gray!70] (0,0) grid (8,9);
+            
+            \draw[fill=gray!90, gray!90] (0,0) rectangle (1,4);
+            \draw[fill=gray!90, gray!90] (8,0) rectangle (6,5);
+            \draw[fill=gray!90, gray!90] (0,0) rectangle (3,2);
+            \draw[fill=gray!90, gray!90] (8,0) rectangle (3,2);
 
-        \draw[red!90, line width=2pt] (2,8) -- (4,7);
-        \draw[red!90, line width=2pt] (3,6) -- (1,4);
+            \draw[red!90, line width=2pt] (3,6) -- (6,5) -- (1,4);
 
-        \filldraw[black] (5,1) circle (6pt);
-        \filldraw[black] (3,2) circle (6pt);
-        \filldraw[black] (7,3) circle (6pt);
-        \filldraw[red] (1,4) circle (6pt);
-        \filldraw[black] (6,5) circle (6pt);
-        \filldraw[red] (3,6) circle (6pt);
-        \filldraw[red] (4,7) circle (6pt);
-        \filldraw[blue] (2,8) circle (6pt);
+            %\draw[fill=gray!90, gray!90] (10,7) rectangle (11,0);
+            %\draw[fill=gray!90, gray!90] (8,6) rectangle (10,0);
+            %\draw[fill=gray!90, gray!90] (7,2) rectangle (8,0);    
 
-        \draw[black, line width=0.5pt] (0,0) rectangle (8,9);
-    \end{tikzpicture}
-\caption{Para a sequência de acessos $X = (5,3,7,1,3,4,2)$, o cálculo de $f(P_X,p)$ para todo $p \in P_X$ é o número de linhas vermelhas. Cada imagem representa o cálculo para o ponto azul, os pontos vermelhos são os pontos pertencentes ao funil do ponto azul e cada linha vermelha representa uma intercalação dos funis esquerdo-direto desse ponto. A imagem dos primeiros dois pontos foi omitida}
-\end{figure}
+            \filldraw[black] (5,1) circle (6pt);
+            \filldraw[black] (3,2) circle (6pt);
+            \filldraw[black] (7,3) circle (6pt);
+            \filldraw[red] (1,4) circle (6pt);
+            \filldraw[red] (6,5) circle (6pt);
+            \filldraw[blue] (3,6) circle (6pt);
+            \filldraw[black] (4,7) circle (6pt);
+            \filldraw[black] (2,8) circle (6pt);
+
+
+            %\node at (1,9.5) {\textbf{\Large E}};
+            %\node at (2,8.5) {\textbf{\Large E}};
+            %\node at (4,5.5) {\textbf{\Large E}};
+            %\node at (5,1.5) {\textbf{\Large E}};
+
+            %\node at (10,7.5) {\textbf{\Large D}};
+            %\node at (8,6.5) {\textbf{\Large D}};
+            %\node at (7,2.5) {\textbf{\Large D}};
+
+
+            \draw[black, line width=0.5pt] (0,0) rectangle (8,9);
+        \end{tikzpicture}
+        \begin{tikzpicture}[scale=0.62] %5
+            \draw[very thin, gray!70] (0,0) grid (8,9);
+            
+            \draw[fill=gray!90, gray!90] (0,0) rectangle (3,6);
+            \draw[fill=gray!90, gray!90] (8,0) rectangle (5,1);
+            \draw[fill=gray!90, gray!90] (8,0) rectangle (6,5);
+            %\draw[fill=gray!90, gray!90] (1,0) rectangle (2,8);
+            %\draw[fill=gray!90, gray!90] (2,0) rectangle (4,5);
+            %\draw[fill=gray!90, gray!90] (4,0) rectangle (5,1);
+
+            \draw[red!90, line width=2pt] (4,7) -- (3,6) -- (6,5);
+            %\draw[red!90, line width=2pt] (8,6) -- (4,5) -- (7,2) -- (5,1);
+
+            %\draw[fill=gray!90, gray!90] (10,7) rectangle (11,0);
+            %\draw[fill=gray!90, gray!90] (8,6) rectangle (10,0);
+            %\draw[fill=gray!90, gray!90] (7,2) rectangle (8,0);    
+
+            \filldraw[red] (5,1) circle (6pt);
+            \filldraw[black] (3,2) circle (6pt);
+            \filldraw[black] (7,3) circle (6pt);
+            \filldraw[black] (1,4) circle (6pt);
+            \filldraw[red] (6,5) circle (6pt);
+            \filldraw[red] (3,6) circle (6pt);
+            \filldraw[blue] (4,7) circle (6pt);
+            \filldraw[black] (2,8) circle (6pt);
+
+
+            %\node at (1,9.5) {\textbf{\Large E}};
+            %\node at (2,8.5) {\textbf{\Large E}};
+            %\node at (4,5.5) {\textbf{\Large E}};
+            %\node at (5,1.5) {\textbf{\Large E}};
+
+            %\node at (10,7.5) {\textbf{\Large D}};
+            %\node at (8,6.5) {\textbf{\Large D}};
+            %\node at (7,2.5) {\textbf{\Large D}};
+
+
+            \draw[black, line width=0.5pt] (0,0) rectangle (8,9);
+        \end{tikzpicture}
+        \begin{tikzpicture}[scale=0.62] %6
+            \draw[very thin, gray!70] (0,0) grid (8,9);
+            
+            \draw[fill=gray!90, gray!90] (0,0) rectangle (1,4);
+            \draw[fill=gray!90, gray!90] (8,0) rectangle (3,6);
+            \draw[fill=gray!90, gray!90] (8,0) rectangle (4,7);
+
+            \draw[red!90, line width=2pt] (2,8) -- (4,7);
+            \draw[red!90, line width=2pt] (3,6) -- (1,4);
+
+            \filldraw[black] (5,1) circle (6pt);
+            \filldraw[black] (3,2) circle (6pt);
+            \filldraw[black] (7,3) circle (6pt);
+            \filldraw[red] (1,4) circle (6pt);
+            \filldraw[black] (6,5) circle (6pt);
+            \filldraw[red] (3,6) circle (6pt);
+            \filldraw[red] (4,7) circle (6pt);
+            \filldraw[blue] (2,8) circle (6pt);
+
+            \draw[black, line width=0.5pt] (0,0) rectangle (8,9);
+        \end{tikzpicture}
+    \caption{Para a sequência de acessos $X = (5,3,7,1,3,4,2)$, o cálculo de $f(P_X,p)$ para todo $p \in P_X$ é o número de linhas vermelhas. Cada imagem representa o cálculo para o ponto azul, os pontos vermelhos são os pontos pertencentes ao funil do ponto azul e cada linha vermelha representa uma intercalação dos funis esquerdo-direto desse ponto. A imagem dos primeiros dois pontos foi omitida}
+    \end{figure}
 \end{comment}
 
 \begin{figure}
@@ -902,9 +1045,522 @@ De maneira informal, a ideia central dessa delimitação é somar o valor de $f(
 
         \draw[black, line width=0.5pt] (0,0) rectangle (7,8);
     \end{tikzpicture}    
-\caption{Para a sequência de acessos $X = (4,1,2,5,6,3,4)$, o cálculo de $f(P_X,p)$ para todo $p \in P_X$ é o número de linhas vermelhas. Cada imagem representa o cálculo de $f(P_X,p)$ para o ponto azul $p$, os pontos vermelhos são os pontos pertencentes ao funil de $p$ e cada linha vermelha representa uma intercalação dos funis esquerdo-direto desse ponto. Para essa sequência de acessos, Funil$(X) = 9$.}
+    \caption{Para a sequência de acessos $X = (4,1,2,5,6,3,4)$, o cálculo de $f(P_X,p)$ para todo $p \in P_X$ é o número de linhas vermelhas. Cada imagem representa o cálculo de $f(P_X,p)$ para o ponto azul $p$, os pontos vermelhos são os pontos pertencentes ao funil de $p$ e cada linha vermelha representa uma intercalação dos funis esquerdo-direto desse ponto. Para essa sequência de acessos, Funil$(X) = 10$.}
+\label{fig:funil-execucao}
 \end{figure}
 
-\section{Conjunto independente de retângulos no funil}
+\section{Conjunto independente de retângulos a partir do funil}
 
-Por definição, todos os pontos $q$ do funil de um ponto $p$ possuem a propriedade que o $\{p,q\}$-retângulo está arboreamente insatisfeito.
+É possível encontrar um conjunto independente de retângulos associado a esta delimitação a partir do seguinte algoritmo: para cada ponto $p \in P_X$, trace um retângulo com vértices $p$ e $q$ para todo $q \in P_X$ associado à última ocorrência da string $E$ ou $D$ de cada bloco contíguo de $mix(F_E(P,p).y, F_D(P,p).y)$. Em outras palavaras, trace um retângulo com vértices em $p$ e $q$ para todo ponto $q$ que for o ponto mais alto do funil esquerdo ou do funil direito antes de uma intercalação.
+
+Note que todos os pares de ponto $(p,q)$ encontrados possuem o ponto $p$ como o ponto analisado e $q$ como pontos abaixo de $p$. Assim, por construção, todos os retângulos encontrados são distintos. Além disso, por definição, todos os pontos $q$ pertencentes ao funil do ponto $p$ possuem o $\{p,q\}$-retângulo arboreamente insatisfeito, logo o conjunto de retângulos encontrado é independente.
+
+\begin{figure}
+    \centering
+    \begin{tikzpicture}[scale=0.7]
+        \draw[very thin, gray!70] (0,0) grid (7,8);
+        
+        %\draw[fill=gray!90, gray!90] (0,0) rectangle (1,2);
+
+        \draw[red, line width=1.5pt] (1,2) rectangle (4,1);
+
+        \filldraw[red] (4,1) circle (6pt);
+        \filldraw[blue] (1,2) circle (6pt);
+        \filldraw[black] (2,3) circle (6pt);
+        \filldraw[black] (5,4) circle (6pt);
+        \filldraw[black] (6,5) circle (6pt);
+        \filldraw[black] (3,6) circle (6pt);
+        \filldraw[black] (4,7) circle (6pt);
+
+        \draw[black, line width=0.5pt] (0,0) rectangle (7,8);
+    \end{tikzpicture}
+    \begin{tikzpicture}[scale=0.7]
+        \draw[very thin, gray!70] (0,0) grid (7,8);
+        
+        %\draw[fill=gray!90, gray!90] (0,0) rectangle (1,2);
+        %\draw[fill=gray!90, gray!90] (7,0) rectangle (4,1);
+        %\draw[fill=gray!90, gray!90] (1,0) rectangle (5,1);
+        \draw[red, line width=1.5pt] (1,2) rectangle (2,3);
+        \draw[red, line width=1.5pt] (4,1) rectangle (2,3);
+
+        %\draw[red!90, line width=2pt] (2,3) -- (1,2) -- (4,1);  
+
+        \filldraw[red] (4,1) circle (6pt);
+        \filldraw[red] (1,2) circle (6pt);
+        \filldraw[blue] (2,3) circle (6pt);
+        \filldraw[black] (5,4) circle (6pt);
+        \filldraw[black] (6,5) circle (6pt);
+        \filldraw[black] (3,6) circle (6pt);
+        \filldraw[black] (4,7) circle (6pt);
+
+        \draw[black, line width=0.5pt] (0,0) rectangle (7,8);
+    \end{tikzpicture}
+    \begin{tikzpicture}[scale=0.7]
+        \draw[very thin, gray!70] (0,0) grid (7,8);
+        
+        %\draw[fill=gray!90, gray!90] (0,0) rectangle (4,1);
+        %\draw[fill=gray!90, gray!90] (0,0) rectangle (2,3);
+        %\draw[fill=gray!90, gray!90] (1,0) rectangle (5,1);
+
+        \draw[red, line width=1.5pt] (5,4) rectangle (2,3);
+
+        %\draw[red!90, line width=2pt] (5,4) -- (2,3);  
+
+        \filldraw[red] (4,1) circle (6pt);
+        \filldraw[black] (1,2) circle (6pt);
+        \filldraw[red] (2,3) circle (6pt);
+        \filldraw[blue] (5,4) circle (6pt);
+        \filldraw[black] (6,5) circle (6pt);
+        \filldraw[black] (3,6) circle (6pt);
+        \filldraw[black] (4,7) circle (6pt);
+
+        \draw[black, line width=0.5pt] (0,0) rectangle (7,8);
+    \end{tikzpicture}
+    \begin{tikzpicture}[scale=0.7]
+        \draw[very thin, gray!70] (0,0) grid (7,8);
+        
+        %\draw[fill=gray!90, gray!90] (0,0) rectangle (5,4);
+        %\draw[fill=gray!90, gray!90] (1,0) rectangle (5,1);
+
+        \draw[red, line width=1.5pt] (6,5) rectangle (5,4);
+
+        %\draw[red!90, line width=2pt] (6,5) -- (5,4);  
+
+        \filldraw[black] (4,1) circle (6pt);
+        \filldraw[black] (2,3) circle (6pt);
+        \filldraw[black] (1,2) circle (6pt);
+        \filldraw[red] (5,4) circle (6pt);
+        \filldraw[blue] (6,5) circle (6pt);
+        \filldraw[black] (3,6) circle (6pt);
+        \filldraw[black] (4,7) circle (6pt);
+
+        \draw[black, line width=0.5pt] (0,0) rectangle (7,8);
+    \end{tikzpicture}
+    \begin{tikzpicture}[scale=0.7]
+        \draw[very thin, gray!70] (0,0) grid (7,8);
+        
+        %\draw[fill=gray!90, gray!90] (7,0) rectangle (6,5);
+        %\draw[fill=gray!90, gray!90] (7,0) rectangle (5,4);
+        %\draw[fill=gray!90, gray!90] (0,0) rectangle (2,3);
+        %\draw[fill=gray!90, gray!90] (7,0) rectangle (4,1);
+        %\draw[fill=gray!90, gray!90] (1,0) rectangle (5,1);
+        \draw[red, line width=1.5pt] (3,6) rectangle (6,5);
+        \draw[red, line width=1.5pt] (3,6) rectangle (2,3);
+        \draw[red, line width=1.5pt] (3,6) rectangle (4,1);
+
+        %\draw[red!90, line width=2pt] (3,6) -- (6,5);  
+        %draw[red!90, line width=2pt] (5,4) -- (2,3) -- (4,1);  
+
+        \filldraw[red] (4,1) circle (6pt);
+        \filldraw[red] (2,3) circle (6pt);
+        \filldraw[black] (1,2) circle (6pt);
+        \filldraw[red] (5,4) circle (6pt);
+        \filldraw[red] (6,5) circle (6pt);
+        \filldraw[blue] (3,6) circle (6pt);
+        \filldraw[black] (4,7) circle (6pt);
+
+        \draw[black, line width=0.5pt] (0,0) rectangle (7,8);
+    \end{tikzpicture}
+    \begin{tikzpicture}[scale=0.7]
+        \draw[very thin, gray!70] (0,0) grid (7,8);
+        
+        %\draw[fill=gray!90, gray!90] (0,0) rectangle (3,6);
+        %\draw[fill=gray!90, gray!90] (7,0) rectangle (6,5);
+        %\draw[fill=gray!90, gray!90] (7,0) rectangle (5,4);
+        %\draw[fill=gray!90, gray!90] (0,0) rectangle (4,1);
+        %\draw[fill=gray!90, gray!90] (7,0) rectangle (4,1);
+
+        \draw[red, line width=1.5pt] (4,7) rectangle (3,6);
+        \draw[red, line width=1.5pt] (4,7) rectangle (6,5);
+        %\draw[red!90, line width=2pt] (4,7) -- (3,6) -- (6,5);  
+
+        \filldraw[black] (4,1) circle (6pt);
+        \filldraw[black] (2,3) circle (6pt);
+        \filldraw[black] (1,2) circle (6pt);
+        \filldraw[red] (5,4) circle (6pt);
+        \filldraw[red] (6,5) circle (6pt);
+        \filldraw[red] (3,6) circle (6pt);
+        \filldraw[blue] (4,7) circle (6pt);
+
+        \draw[black, line width=0.5pt] (0,0) rectangle (7,8);
+    \end{tikzpicture}    
+    \caption{Para a sequência de acessos $X = (4,1,2,5,6,3,4)$. Para cada ponto azul está destacado o conjunto independente de retângulos que será encontrado pelo algoritmo referente à delimitação do funil para aquele ponto. Perceba que nem todos os pontos do funil do ponto analisado são incluídos. Comparando com a Figura~\ref{fig:funil-execucao}, é facil notar que o tamanho do conjunto de retângulos final é exatamente Funil$(X)$.}
+\end{figure}
+
+\section{Sequência bit-reversa}
+
+Para evidenciar como as delimitações propostas por Wilber podem ser uma ferramenta poderosa para analisar sequência de acessos, mostraremos uma sequência que é sempre custosa, independente do algoritmo de busca. 
+
+Nesta seção, excepcionalmente, consideraremos que as ABBs contém as chaves de $0$ a $n-1$. Essa consideração será útil para maior simplificação das análises, porém não é necessária para o estudo abaixo. 
+
+Definimos a sequência bit-reversa - ou permutação bit-reversa - de $0$ a $n-1$ como a contagem de $0$ a $n-1$ em binário e depois a sua leitura de trás pra frente, ou seja, leia os bits da direita para a esquerda. Veja a Figura~\ref{fig:sequencia}.
+
+\begin{figure}
+    \begin{tikzpicture}
+        \node (a) at (0, 0) {0 = 000};
+        \node (b) at (0, -0.5) {1 = 001};
+        \node (c) at (0, -1) {2 = 010};
+        \node (d) at (0, -1.5) {3 = 011};
+        \node (e) at (0, -2) {4 = 100};
+        \node (f) at (0, -2.5) {5 = 101};
+        \node (g) at (0, -3) {6 = 110};
+        \node (h) at (0, -3.5) {7 = 111};
+
+        \node (a') at (4, 0) {000 = 0};
+        \node (b') at (4, -0.5) {100 = 4};
+        \node (c') at (4, -1) {010 = 2};
+        \node (d') at (4, -1.5) {110 = 6};
+        \node (e') at (4, -2) {001 = 1};
+        \node (f') at (4, -2.5) {101 = 5};
+        \node (g') at (4, -3) {011 = 3};
+        \node (h') at (4, -3.5) {111 = 7};
+
+        \draw[->] (a) -- (a');
+        \draw[->] (b) -- (b');
+        \draw[->] (c) -- (c');
+        \draw[->] (d) -- (d');
+        \draw[->] (e) -- (e');
+        \draw[->] (f) -- (f');
+        \draw[->] (g) -- (g');
+        \draw[->] (h) -- (h');
+    \end{tikzpicture}
+    \caption{Sequência bit-reversa para $n = 8$. A coluna da esquerda mostra a contagem de $0$ a $n - 1$ em binário e a  coluna da direita mostra a leitura desses números em base 2 de trás pra frente, ou seja, lendo da direita para a esquerda.}
+\label{fig:sequencia}
+\end{figure}
+
+É bastante útil entender como o algoritmo de busca se comporta nas sequências de busca em uma ABB completa fixa. Uma maneira de visualizar as buscas em binário dentro de uma ABB completa fixa é imaginar que os ponteiros representam um bit e a busca em binário dentro da ABB é a sequência de ponteiros que com seus bits concatenados resultam no número buscado. Veja a Figura~\ref{fig:abb-numerada}.
+
+\begin{figure}
+    \begin{tikzpicture}[scale=0.8,
+        node/.style={circle,draw,minimum size=2em, thick, font=\large},
+        nodeGray/.style={circle,draw,minimum size=2em, thick, font=\large, fill=gray!55}]
+        
+        \node[node] (H) at (0,0) {};
+        \node[node] (D) at (-2.6,-1.5) {};
+        \node[node] (B) at (-3.9,-3) {};
+        \node[node] (A) at (-4.55,-5) {\small$000$};
+        \node[node] (C) at (-3.25,-5) {\small$001$};
+        \node[node] (F) at (-1.3,-3) {};
+        \node[node] (E) at (-1.95,-5) {\small$010$};
+        \node[node] (G) at (-0.65,-5) {\small$011$};
+
+
+        \node[node] (L) at (2.6,-1.5) {};
+        \node[node] (J) at (3.9,-3) {};
+        \node[node] (I) at (4.55,-5) {\small$111$};
+        \node[node] (K) at (3.25,-5) {\small$110$};
+        \node[node] (N) at (1.3,-3) {};
+        \node[node] (M) at (1.95,-5) {\small$101$};
+        \node[node] (O) at (0.65,-5) {\small$100$};
+        
+        \draw[thick, ->] (H) -- (D) node[midway, above] {$0$};
+        \draw[thick, ->] (H) -- (L) node[midway, above] {$1$};
+        \draw[thick, ->] (D) -- (B) node[midway, above] {$0$};
+        \draw[thick, ->] (D) -- (F) node[midway, above] {$1$};
+        \draw[thick, ->] (B) -- (A) node[near start, left] {$0$};
+        \draw[thick, ->] (B) -- (C) node[near start, right] {$1$};
+        \draw[thick, ->] (F) -- (E) node[near start, left] {$0$};
+        \draw[thick, ->] (F) -- (G) node[near start, right] {$1$};
+
+        \draw[thick, ->] (L) -- (J) node[midway, above] {$1$};
+        \draw[thick, ->] (L) -- (N) node[midway, above] {$0$};
+        \draw[thick, ->] (J) -- (I) node[near start, right] {$1$};
+        \draw[thick, ->] (J) -- (K) node[near start, left] {$0$};
+        \draw[thick, ->] (N) -- (M) node[near start, right] {$1$};
+        \draw[thick, ->] (N) -- (O) node[near start, left] {$0$};
+    \end{tikzpicture}
+    \caption{ABB completa de 8 folhas com a representação binária.}
+\label{fig:abb-numerada}
+\end{figure}
+
+Como estamos lendo os bits de trás pra frente, sabemos que a característica do contador binário se mantém porém com os bits ao contrário. Assim, sabemos que essa sequência tem a propriedade que o maior bit se altera toda adição no número, o segundo maior bit se altera em metade das adições, o terceiro maior bit se altera em um quarto das adições e o $i$-ésimo bit se altera em $2^{i - 1}$ das adições.
+
+Voltando ao contexto de ABBs, como as buscas estão sempre se alterando com essa propriedade então sabemos que a partir da raiz, todas as buscas serão alternadas entre a subárvore esquerda e a subárvore direita. A mesma propriedade se mantém para todos os nós intermediários. Assim, como sabemos que as alternâncias começam pela esquerda por esta ser a ordem na contagem, então sabemos que para qualquer nó intermediário, a $j$-ésima busca em um de seus descendentes será na subárvore esquerda se $j$ for ímpar e na subárvore direita se $j$ for par.
+
+A princípio essa informação não parece tão poderosa, porém relembremos como funciona a delimitação da alternância. Para qualquer ABB fixa com as chaves nas folhas, a somatória do número de intercalações esquerda-direita de todos os nós intermediários dessa ABB é uma delimitação inferior no custo de executar essa sequência dentro do modelo de computação adotado. Assim, como notado anteriormente, nunca há duas buscas consecutivas na mesma subárvore, todos as buscas se alternam em todos os nós, assim sabemos que em nenhuma busca dessa sequência será usado algum ponteiro filho preferido. Assim, essa sequência maximiza a delimitação da alternância.
+
+Na ABB completa, cada folha tem altura $\lg n$. Então, sabemos que cada simulação de busca na ABB completa fixa acarretará em $\lg n$ alternâncias/alterações em ponteiros de filho preferido, e assim para uma sequência bit-reversa $X$ de acessos com $m$ buscas, Alt$_\cT(X) = m \cdot \lg n$ para a árvore completa $\cT$. Assim, sabemos que o $OPT(X) \geq m \cdot \lg n$.
+
+Esse resultado é particularmente especial, pois nos mostra que a melhor maneira de executar todos os acessos dessa sequência vai ter custo maior ou igual a $m \cdot \lg n$, ou seja, $\lg n$ por busca. Essa é a delimitação trivial de árvores binárias de busca balanceadas como a árvore rubro-negra ou a AVL. Em outras palavras, essa sequência é tão cara no modelo de computação que não existe nenhuma maneira de melhorar seu custo acima da delimitação trivial e assim, qualquer ABB balanceada com custo $\Oh(\lg n)$ por busca tem custo assintoticamente proporcional ao ótimo.
+
+Por fim, vale a pena relembrar que essa sequência também é importante para as delimitações da eficiência do algoritmo guloso futurista. Como citado anteriormente, O pior caso conhecido do guloso futurista é buscar a sequência bit-reversa uma vez e depois seguir a sequência apenas buscando as folhas da ABB.
+
+Note que esse caso é ruim, pois os nós intermediários se mantém no caminho das folhas e não permitem que o algoritmo traga as folhas para a superfície, assim todas as buscas visitam uma série de nós desnecessários e acarretam em um custo de $OPT(X) + \Oh(m)$. Veja a Figura~\ref{fig:GreedyFuture-bit-reversal}.
+
+\begin{figure}
+    \centering
+    
+    \begin{tikzpicture}[scale=0.265]
+        \draw[very thin, gray] (0,0) grid (8,12);
+        
+        \draw[teste, very thick] (0,2) -- (8,2);
+
+        \filldraw[black] (4,1) circle (8pt);
+        \filldraw[black] (2,2) circle (8pt);
+        \filldraw[red] (4,2) circle (8pt);
+        \filldraw[black] (6,3) circle (8pt);
+        \filldraw[black] (1,4) circle (8pt);
+        \filldraw[black] (3,5) circle (8pt);
+        \filldraw[black] (5,6) circle (8pt);
+        \filldraw[black] (7,7) circle (8pt);
+        \filldraw[black] (1,8) circle (8pt);
+        \filldraw[black] (3,9) circle (8pt);
+        \filldraw[black] (5,10) circle (8pt);
+        \filldraw[black] (7,11) circle (8pt);
+        \draw[black, line width=0.5pt] (0,0) rectangle (8,12);
+    \end{tikzpicture}
+    \begin{tikzpicture}[scale=0.265]
+        \draw[very thin, gray] (0,0) grid (8,12);
+        
+        \draw[teste, very thick] (0,3) -- (8,3);
+
+        \filldraw[black] (4,1) circle (8pt);
+        \filldraw[black] (2,2) circle (8pt);
+        \filldraw[red] (4,2) circle (8pt);
+        \filldraw[black] (6,3) circle (8pt);
+        \filldraw[red] (4,3) circle (8pt);
+        \filldraw[black] (1,4) circle (8pt);
+        \filldraw[black] (3,5) circle (8pt);
+        \filldraw[black] (5,6) circle (8pt);
+        \filldraw[black] (7,7) circle (8pt);
+        \filldraw[black] (1,8) circle (8pt);
+        \filldraw[black] (3,9) circle (8pt);
+        \filldraw[black] (5,10) circle (8pt);
+        \filldraw[black] (7,11) circle (8pt);
+        \draw[black, line width=0.5pt] (0,0) rectangle (8,12);
+    \end{tikzpicture}
+    \begin{tikzpicture}[scale=0.265]
+        \draw[very thin, gray] (0,0) grid (8,12);
+        
+        \draw[teste, very thick] (0,4) -- (8,4);
+
+        \filldraw[black] (4,1) circle (8pt);
+        \filldraw[black] (2,2) circle (8pt);
+        \filldraw[red] (4,2) circle (8pt);
+        \filldraw[black] (6,3) circle (8pt);
+        \filldraw[red] (4,3) circle (8pt);
+        \filldraw[black] (1,4) circle (8pt);
+        \filldraw[red] (2,4) circle (8pt);
+        \filldraw[red] (4,4) circle (8pt);
+        \filldraw[black] (3,5) circle (8pt);
+        \filldraw[black] (5,6) circle (8pt);
+        \filldraw[black] (7,7) circle (8pt);
+        \filldraw[black] (1,8) circle (8pt);
+        \filldraw[black] (3,9) circle (8pt);
+        \filldraw[black] (5,10) circle (8pt);
+        \filldraw[black] (7,11) circle (8pt);
+        \draw[black, line width=0.5pt] (0,0) rectangle (8,12);
+    \end{tikzpicture}
+    \begin{tikzpicture}[scale=0.265]
+        \draw[very thin, gray] (0,0) grid (8,12);
+        
+        \draw[teste, very thick] (0,5) -- (8,5);
+
+        \filldraw[black] (4,1) circle (8pt);
+        \filldraw[black] (2,2) circle (8pt);
+        \filldraw[red] (4,2) circle (8pt);
+        \filldraw[black] (6,3) circle (8pt);
+        \filldraw[red] (4,3) circle (8pt);
+        \filldraw[black] (1,4) circle (8pt);
+        \filldraw[red] (2,4) circle (8pt);
+        \filldraw[red] (4,4) circle (8pt);
+        \filldraw[black] (3,5) circle (8pt);
+        \filldraw[red] (2,5) circle (8pt);
+        \filldraw[red] (4,5) circle (8pt);
+        \filldraw[black] (5,6) circle (8pt);
+        \filldraw[black] (7,7) circle (8pt);
+        \filldraw[black] (1,8) circle (8pt);
+        \filldraw[black] (3,9) circle (8pt);
+        \filldraw[black] (5,10) circle (8pt);
+        \filldraw[black] (7,11) circle (8pt);
+        \draw[black, line width=0.5pt] (0,0) rectangle (8,12);
+    \end{tikzpicture}
+    \begin{tikzpicture}[scale=0.265]
+        \draw[very thin, gray] (0,0) grid (8,12);
+        
+        \draw[teste, very thick] (0,6) -- (8,6);
+
+        \filldraw[black] (4,1) circle (8pt);
+        \filldraw[black] (2,2) circle (8pt);
+        \filldraw[red] (4,2) circle (8pt);
+        \filldraw[black] (6,3) circle (8pt);
+        \filldraw[red] (4,3) circle (8pt);
+        \filldraw[black] (1,4) circle (8pt);
+        \filldraw[red] (2,4) circle (8pt);
+        \filldraw[red] (4,4) circle (8pt);
+        \filldraw[black] (3,5) circle (8pt);
+        \filldraw[red] (2,5) circle (8pt);
+        \filldraw[red] (4,5) circle (8pt);
+        \filldraw[red] (4,6) circle (8pt);
+        \filldraw[black] (5,6) circle (8pt);
+        \filldraw[red] (6,6) circle (8pt);
+        \filldraw[black] (7,7) circle (8pt);
+        \filldraw[black] (1,8) circle (8pt);
+        \filldraw[black] (3,9) circle (8pt);
+        \filldraw[black] (5,10) circle (8pt);
+        \filldraw[black] (7,11) circle (8pt);
+        \draw[black, line width=0.5pt] (0,0) rectangle (8,12);
+    \end{tikzpicture}
+    \\
+    \begin{tikzpicture}[scale=0.265]
+        \draw[very thin, gray] (0,0) grid (8,12);
+        
+        \draw[teste, very thick] (0,7) -- (8,7);
+
+        \filldraw[black] (4,1) circle (8pt);
+        \filldraw[black] (2,2) circle (8pt);
+        \filldraw[red] (4,2) circle (8pt);
+        \filldraw[black] (6,3) circle (8pt);
+        \filldraw[red] (4,3) circle (8pt);
+        \filldraw[black] (1,4) circle (8pt);
+        \filldraw[red] (2,4) circle (8pt);
+        \filldraw[red] (4,4) circle (8pt);
+        \filldraw[black] (3,5) circle (8pt);
+        \filldraw[red] (2,5) circle (8pt);
+        \filldraw[red] (4,5) circle (8pt);
+        \filldraw[red] (4,6) circle (8pt);
+        \filldraw[black] (5,6) circle (8pt);
+        \filldraw[red] (6,6) circle (8pt);
+        \filldraw[red] (6,7) circle (8pt);
+        \filldraw[black] (7,7) circle (8pt);
+        \filldraw[black] (1,8) circle (8pt);
+        \filldraw[black] (3,9) circle (8pt);
+        \filldraw[black] (5,10) circle (8pt);
+        \filldraw[black] (7,11) circle (8pt);
+        \draw[black, line width=0.5pt] (0,0) rectangle (8,12);
+    \end{tikzpicture}
+    \begin{tikzpicture}[scale=0.265]
+        \draw[very thin, gray] (0,0) grid (8,12);
+        
+        \draw[teste, very thick] (0,8) -- (8,8);
+
+        \filldraw[black] (4,1) circle (8pt);
+        \filldraw[black] (2,2) circle (8pt);
+        \filldraw[red] (4,2) circle (8pt);
+        \filldraw[black] (6,3) circle (8pt);
+        \filldraw[red] (4,3) circle (8pt);
+        \filldraw[black] (1,4) circle (8pt);
+        \filldraw[red] (2,4) circle (8pt);
+        \filldraw[red] (4,4) circle (8pt);
+        \filldraw[black] (3,5) circle (8pt);
+        \filldraw[red] (2,5) circle (8pt);
+        \filldraw[red] (4,5) circle (8pt);
+        \filldraw[red] (4,6) circle (8pt);
+        \filldraw[black] (5,6) circle (8pt);
+        \filldraw[red] (6,6) circle (8pt);
+        \filldraw[red] (6,7) circle (8pt);
+        \filldraw[black] (7,7) circle (8pt);
+        \filldraw[black] (1,8) circle (8pt);
+        \filldraw[red] (2,8) circle (8pt);
+        \filldraw[red] (4,8) circle (8pt);
+        \filldraw[red] (6,8) circle (8pt);
+        \filldraw[black] (3,9) circle (8pt);
+        \filldraw[black] (5,10) circle (8pt);
+        \filldraw[black] (7,11) circle (8pt);
+        \draw[black, line width=0.5pt] (0,0) rectangle (8,12);
+    \end{tikzpicture}
+    \begin{tikzpicture}[scale=0.265]
+        \draw[very thin, gray] (0,0) grid (8,12);
+        
+        \draw[teste, very thick] (0,9) -- (8,9);
+
+        \filldraw[black] (4,1) circle (8pt);
+        \filldraw[black] (2,2) circle (8pt);
+        \filldraw[red] (4,2) circle (8pt);
+        \filldraw[black] (6,3) circle (8pt);
+        \filldraw[red] (4,3) circle (8pt);
+        \filldraw[black] (1,4) circle (8pt);
+        \filldraw[red] (2,4) circle (8pt);
+        \filldraw[red] (4,4) circle (8pt);
+        \filldraw[black] (3,5) circle (8pt);
+        \filldraw[red] (2,5) circle (8pt);
+        \filldraw[red] (4,5) circle (8pt);
+        \filldraw[red] (4,6) circle (8pt);
+        \filldraw[black] (5,6) circle (8pt);
+        \filldraw[red] (6,6) circle (8pt);
+        \filldraw[red] (6,7) circle (8pt);
+        \filldraw[black] (7,7) circle (8pt);
+        \filldraw[black] (1,8) circle (8pt);
+        \filldraw[red] (2,8) circle (8pt);
+        \filldraw[red] (4,8) circle (8pt);
+        \filldraw[red] (6,8) circle (8pt);
+        \filldraw[black] (3,9) circle (8pt);
+        \filldraw[red] (2,9) circle (8pt);
+        \filldraw[red] (4,9) circle (8pt);
+        \filldraw[black] (5,10) circle (8pt);
+        \filldraw[black] (7,11) circle (8pt);
+        \draw[black, line width=0.5pt] (0,0) rectangle (8,12);
+    \end{tikzpicture}
+    \begin{tikzpicture}[scale=0.265]
+        \draw[very thin, gray] (0,0) grid (8,12);
+        
+        \draw[teste, very thick] (0,10) -- (8,10);
+
+        \filldraw[black] (4,1) circle (8pt);
+        \filldraw[black] (2,2) circle (8pt);
+        \filldraw[red] (4,2) circle (8pt);
+        \filldraw[black] (6,3) circle (8pt);
+        \filldraw[red] (4,3) circle (8pt);
+        \filldraw[black] (1,4) circle (8pt);
+        \filldraw[red] (2,4) circle (8pt);
+        \filldraw[red] (4,4) circle (8pt);
+        \filldraw[black] (3,5) circle (8pt);
+        \filldraw[red] (2,5) circle (8pt);
+        \filldraw[red] (4,5) circle (8pt);
+        \filldraw[red] (4,6) circle (8pt);
+        \filldraw[black] (5,6) circle (8pt);
+        \filldraw[red] (6,6) circle (8pt);
+        \filldraw[red] (6,7) circle (8pt);
+        \filldraw[black] (7,7) circle (8pt);
+        \filldraw[black] (1,8) circle (8pt);
+        \filldraw[red] (2,8) circle (8pt);
+        \filldraw[red] (4,8) circle (8pt);
+        \filldraw[red] (6,8) circle (8pt);
+        \filldraw[black] (3,9) circle (8pt);
+        \filldraw[red] (2,9) circle (8pt);
+        \filldraw[red] (4,9) circle (8pt);
+        \filldraw[black] (5,10) circle (8pt);
+        \filldraw[red] (4,10) circle (8pt);
+        \filldraw[red] (6,10) circle (8pt);
+        \filldraw[black] (7,11) circle (8pt);
+        \draw[black, line width=0.5pt] (0,0) rectangle (8,12);
+    \end{tikzpicture}
+    \begin{tikzpicture}[scale=0.265]
+        \draw[very thin, gray] (0,0) grid (8,12);
+        
+        \draw[teste, very thick] (0,11) -- (8,11);
+
+        \filldraw[black] (4,1) circle (8pt);
+        \filldraw[black] (2,2) circle (8pt);
+        \filldraw[red] (4,2) circle (8pt);
+        \filldraw[black] (6,3) circle (8pt);
+        \filldraw[red] (4,3) circle (8pt);
+        \filldraw[black] (1,4) circle (8pt);
+        \filldraw[red] (2,4) circle (8pt);
+        \filldraw[red] (4,4) circle (8pt);
+        \filldraw[black] (3,5) circle (8pt);
+        \filldraw[red] (2,5) circle (8pt);
+        \filldraw[red] (4,5) circle (8pt);
+        \filldraw[red] (4,6) circle (8pt);
+        \filldraw[black] (5,6) circle (8pt);
+        \filldraw[red] (6,6) circle (8pt);
+        \filldraw[red] (6,7) circle (8pt);
+        \filldraw[black] (7,7) circle (8pt);
+        \filldraw[black] (1,8) circle (8pt);
+        \filldraw[red] (2,8) circle (8pt);
+        \filldraw[red] (4,8) circle (8pt);
+        \filldraw[red] (6,8) circle (8pt);
+        \filldraw[black] (3,9) circle (8pt);
+        \filldraw[red] (2,9) circle (8pt);
+        \filldraw[red] (4,9) circle (8pt);
+        \filldraw[black] (5,10) circle (8pt);
+        \filldraw[red] (4,10) circle (8pt);
+        \filldraw[red] (6,10) circle (8pt);
+        \filldraw[black] (6,11) circle (8pt);
+        \filldraw[red] (7,11) circle (8pt);
+        \draw[black, line width=0.5pt] (0,0) rectangle (8,12);
+    \end{tikzpicture}
+    
+    \caption{Execução do Greedy Future para a sequência $X = (4,2,1,3,5,7,1,3,5,7)$ de acessos. $4,2,1$ representam as chaves dos nós intermediários e o restante são as folhas. Basta desenhar uma árvore completa e perceber o comportamento ineficiente.}
+\label{fig:GreedyFuture-bit-reversal}
+\end{figure}

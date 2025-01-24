@@ -13,49 +13,75 @@ Nesta capítulo estabeleceremos uma relação entre a delimitação da alternân
 %Por muitos ano
 
 
-\section{Novos conceitos}
+\section{Rotação e inversão de conjuntos de pontos}
 Pouco se sabe sobre a relação entre a delimitação da alternância e do funil para sequências de acessos sem restrições. Assim, neste capítulo consideraremos apenas sequências de acessos sem repetições.
 
-Seja $P$ um conjunto de pontos. Definimos a inversão temporal de um ponto $p \in P$ como $\widebar{p} = (p.x,-p.y)$. Definimos a inversão temporal de um conjunto de pontos $P$ como $\widebar{P} = \{\widebar{p} \mid p \in P\}$. Na prática, a inversão temporal de um conjunto de pontos é o conjunto resultante do espelhamento de cada um dos seus pontos em relação ao eixo das abscissas.
+Seja $P$ um conjunto de pontos. Definimos a inversão temporal de um ponto $p \in P$ como $\widebar{p} = (p.x,-p.y)$. Definimos a inversão temporal de um conjunto de pontos $P$ como $\widebar{P} = \{\widebar{p} \mid p \in P\}$. Na prática, a inversão temporal de um conjunto de pontos é o conjunto resultante do espelhamento de cada um dos seus pontos em relação ao eixo das abscissas. Veja a Figura~\ref{fig:inversao}.
 
 \begin{figure}
     \centering
     \begin{tikzpicture}[scale=0.62]
-        \draw[very thin, gray!70] (0,0) grid (8,8);
-
-        
-        %\draw[red, line width=1.2pt] (1,5) rectangle (4,7);
-        %\draw[red, line width=1.2pt] (3,3) rectangle (4,7);
-        
+        \draw[very thin, gray!70] (0,0) grid (8,8);        
         \filldraw[black] (6,1) circle (7pt);
         \filldraw[black] (3,2) circle (7pt);
-        \filldraw[black] (5,3) circle (7pt);
+        \filldraw[black] (7,3) circle (7pt);
         \filldraw[black] (2,4) circle (7pt);
         \filldraw[black] (1,5) circle (7pt);
         \filldraw[black] (4,6) circle (7pt);
-        \filldraw[black] (7,7) circle (7pt);
+        \filldraw[black] (5,7) circle (7pt);
         \draw[black, line width=0.5pt] (0,0) rectangle (8,8);
 
-        \node[anchor=south west] at (-0.1,6.2) {\huge$P_X$};
+        \node[anchor=south west] at (0.3,6.2) {\huge$P$};
     \end{tikzpicture}
     \begin{tikzpicture}[scale=0.62]
         \draw[very thin, gray!70] (0,0) grid (8,8);
-        
-        %\draw[black, line width=1.2pt] (5,2) rectangle (4,7);
-        %\draw[black, line width=1.2pt] (6,6) rectangle (4,7);
-        
-        \filldraw[black] (7,1) circle (7pt);
+        \filldraw[black] (5,1) circle (7pt);
         \filldraw[black] (4,2) circle (7pt);
         \filldraw[black] (1,3) circle (7pt);
         \filldraw[black] (2,4) circle (7pt);
-        \filldraw[black] (5,5) circle (7pt);
+        \filldraw[black] (7,5) circle (7pt);
         \filldraw[black] (3,6) circle (7pt);
         \filldraw[black] (6,7) circle (7pt);
         \draw[black, line width=0.5pt] (0,0) rectangle (8,8);
 
-        \node[anchor=south west] at (-0.1,6.2) {\huge$\widebar{P_X}$};
+        \node[anchor=south west] at (0.3,6.2) {\huge$\widebar{P}$};
+    \end{tikzpicture}
+    \caption{À esquerda, um conjunto $P$ de pontos. À direita, a sua inversão temporal $\protect\widebar{P}$.}
+\label{fig:inversao}
+\end{figure}
+
+Analogamente, definimos a rotação 90°(em sentido anti-horário) de um ponto $p \in P$ como $p^{\perp} = (-p.y,p.x)$. A rotação 90° em sentido anti-horário de um conjunto de pontos $P$ é definida por $P^{\perp} = \{p^{\perp} \mid p \in P\}$. Veja a figura~\ref{fig:rotacao}.
+
+\begin{figure}
+    \centering
+    \begin{tikzpicture}[scale=0.62]
+        \draw[very thin, gray!70] (0,0) grid (8,8);        
+        \filldraw[black] (6,1) circle (7pt);
+        \filldraw[black] (3,2) circle (7pt);
+        \filldraw[black] (7,3) circle (7pt);
+        \filldraw[black] (2,4) circle (7pt);
+        \filldraw[black] (1,5) circle (7pt);
+        \filldraw[black] (4,6) circle (7pt);
+        \filldraw[black] (5,7) circle (7pt);
+        \draw[black, line width=0.5pt] (0,0) rectangle (8,8);
+
+        \node[anchor=south west] at (0.3,6.2) {\huge$P$};
+    \end{tikzpicture}
+    \begin{tikzpicture}[scale=0.62]
+        \draw[very thin, gray!70] (0,0) grid (8,8);
+        \filldraw[black] (7,6) circle (7pt);
+        \filldraw[black] (6,3) circle (7pt);
+        \filldraw[black] (5,7) circle (7pt);
+        \filldraw[black] (4,2) circle (7pt);
+        \filldraw[black] (3,1) circle (7pt);
+        \filldraw[black] (2,4) circle (7pt);
+        \filldraw[black] (1,5) circle (7pt);
+        \draw[black, line width=0.5pt] (0,0) rectangle (8,8);
+
+        \node[anchor=south west] at (-0.1,6.2) {\huge$P^{\perp}$};
     \end{tikzpicture}
     \caption{À esquerda, o conjunto de pontos $P_X$ relativo a sequência de acessos $X =(6,3,5,4,2,1,7) $. À direita, a inversão temporal de $P_X$.}
+\label{fig:rotacao}
 \end{figure}
 
 \section{Relacionando a alternância com o funil e sua inversão temporal}
@@ -75,7 +101,7 @@ Primeiramente, é necessário entender como a inversão temporal de um ponto inf
 \end{proof}
 \end{comment}
 
-\begin{lemma} \label{lemma-relacao-alt-com-funil}
+\begin{lemma} \label{lemma:relacao-alt-com-funil}
     Seja $P_X$ a visão geométrica de uma sequência de acessos sem repetições e $\cT$ uma árvore de referência em relação à $P_X$. Funil$(P_X) + $ Funil$(\widebar{P_X}) \geq $ Alt$_{\cT}(P_X)$.
 \end{lemma}
 
@@ -90,7 +116,7 @@ Primeiramente, é necessário entender como a inversão temporal de um ponto inf
 
     $\text{Funil}(P_D) +  \text{Funil}(\widebar{P_D}) \geq  \text{Alt}_{\cT_D}(P_D)$.
     \end{center}
-    Assim, sabemos que 
+    Assim, temos 
     \begin{align}
         \text{Alt}_{\cT}(P_X) &= a(P_X,\cT) + \text{Alt}_{\cT_E}(P_X) + \text{Alt}_{\cT_D}(P_X), \notag \\
         &\leq a(P_X,\cT) + \text{Funil}(P_E) +  \text{Funil}(\widebar{P_E}) + \text{Funil}(P_D) +  \text{Funil}(\widebar{P_D}). \label{eq:inicio}
@@ -375,7 +401,7 @@ Primeiramente, é necessário entender como a inversão temporal de um ponto inf
     Assim, terminamos a prova indutiva.
 \end{proof}
 
-Apesar do Lema~\ref{lemma-relacao-alt-com-funil} relacionar as duas delimitações com a ajuda da inversão temporal de $P_X$, não é de grande utilidade isolada, pois não sabemos como Funil$(P)$ e Funil$(\widebar{P})$ se relacionam.
+Apesar do Lema~\ref{lemma:relacao-alt-com-funil} relacionar as duas delimitações com a ajuda da inversão temporal de $P_X$, não é de grande utilidade isolada, pois não sabemos como Funil$(P)$ e Funil$(\widebar{P})$ se relacionam.
 
 \section{Relacionando o funil e sua inversão temporal}
 
@@ -422,7 +448,7 @@ Precisamos entender agora como transformações geométricas afetam a delimitaç
 
         \draw[black, line width=0.5pt] (0,0) rectangle (6,6);
     \end{tikzpicture}
-    \caption{À esquerda, está destacado o funil do ponto azul. À direita, está destacado o funil do ponto de mesma altura no conjunto de pontos espelhados em relação ao eixo $Y$. Perceba que em ambos os casos há o mesmo número de intercalações entre os funis esquerdo e direito do ponto azul.}
+    \caption{À esquerda, está destacado o funil do ponto azul. À direita, está destacado o funil do mesmo ponto no conjunto inicial espelhado em relação ao eixo $Y$. Perceba que em ambos os casos há o mesmo número de intercalações entre os funis esquerdo e direito do ponto azul.}
 \label{fig:espelhamento-de-funil}
 \end{figure}
 
@@ -459,37 +485,196 @@ Porém o valor da delimitação pode alterar com a inversão temporal. Veja a Fi
 \label{fig:espelhamento-de-funil-2}
 \end{figure}
 
-\begin{lemma}
+Assim, a princípio Funil$(P)$ e Funil$(\widebar{P})$ podem ter valores muito diferentes. Para entender essa relação precisamos caracterizar a delimitação do funil de maneira invariante em relação a rotações de 90°. 
+
+Para um conjunto de pontos $P$, chamamos de \textit{z-retângulo} qualquer conjunto de 4 pontos $(p,q,r,s) \in P^4$ com as seguintes propriedades: $q.x < p.x < r.x < s.x$, $r.y < q.y < s.y < p.y$ e $P \cap [q.x,s.x] \times [r.y,p.y]$. Na prática, z-retângulo é um conjunto de 4 pontos de $P$ que cronologicamente possuem x-coordenada relativa 3,1,4,2 e o retângulo que contém todos os 4 pontos em seu perímetro não possui nenhum outro ponto de $P$ em sua área. Veja a Figura~\ref{fig:z-retangulo-isolado}. Definimos por \textit{zRet(P)} o número de z-retângulos de P.
+
+\begin{figure}
+    \begin{tikzpicture}[scale=0.85]
+        \draw[very thin, gray!70] (0,0) grid (7,7);
+
+        \draw[red, line width=0.07cm] (2,2) rectangle (5,6);
+
+        \filldraw[black] (6,1) circle (6pt);
+        \filldraw[black] (4,2) circle (6pt);
+        \filldraw[black] (2,3) circle (6pt);
+        \filldraw[black] (5,4) circle (6pt);
+        \filldraw[black] (1,5) circle (6pt);
+        \filldraw[black] (3,6) circle (6pt);
+
+        \draw[black, line width=0.5pt] (0,0) rectangle (7,7);
+    \end{tikzpicture}
+    \caption{O único z-retângulo da visão geométrica da sequência de acessos $X = (6,4,2,5,1,3)$.}
+\label{fig:z-retangulo-isolado}
+\end{figure}
+
+\begin{lemma}\label{lemma:p-inversivel}
     Para qualquer conjunto $P$ de pontos, $zRet(P) = zRet(P^{\perp})$.
 \end{lemma}
 
 \begin{proof}
+    Ao rotacionar $P$, o z-retângulo $(p,q,r,s)$ de $P$ se tornará o z-retângulo $(s^{\perp},p^{\perp},q^{\perp},r^{\perp},)$ em $P^{\perp}$. Uma maneira simples de perceber esse fenômeno é rotacionar a Figura~\ref{fig:z-retangulo-isolado}. Perceba que a x-coordenada relativa 3,1,4,2 é invariante em relação à rotações de 90°.
 \end{proof}
 
 \begin{lemma}
-    Para qualquer conjunto $P$ de pontos, $zRet(P) = Funil(P)/2 - \Oh(m)$.
+    Para qualquer ponto $p$ de um conjunto $P$ de pontos, é possível encontrar $\lfloor f(P,p)/2 \rfloor - 1$ z-retângulos formados por $p$ e três de pontos de seu funil.
 \end{lemma}
 
-\begin{proof}
+\begin{proof} \label{lema:passo-intermediario}
+    Para um ponto $p \in P$ com $l$ pontos em seu funil, enumeremos os pontos de seu funil de maneira cronológica $(a_1,a_2,\ldots,a_l)$, onde $a_1.y < a_2.y < \ldots < a_l.y$. Suponha que $f(P,p) \geq 4$, pois caso contrário a delimitação é imediata.
+
+    Chamamos um par $(i,j)$ de índices de \textit{separadores esquerdos} se $i + 1 < j, a_i.x > p.x, a_j.x > p.x$ e para todo $k$, com $i < k < j$, $a_k.x < p.x$. Em outras palavras, chamamos um par $(i,j)$ de índices de separadores esquerdo se ambos os pontos $a_i$ e $a_j$ estão à direita de $p$ e todos os pontos com índice $k$ entre $i$ e $j$ estão à esquerda de $p$.
+
+    Sabemos que há $f(P,p)$ intercalações entre o funil esquerdo e o funil direito de $p$. Como os funis de $p$ se alternam entre si $f(P,p) -1$ vezes, então, no pior dos casos onde as intercalações se iniciam e terminam no funil esquerdo, existem  $\lfloor f(P,p)/2 \rfloor - 1$ pares de índices separadores de $p$. Veja a Figura~\ref{fig:bound-z-rets}.
+
+    %figure!
+    \begin{figure}
+        \begin{tikzpicture}[scale=0.85]
+            \draw[very thin, gray!70] (0,0) grid (7,7);  
+            
+            \draw[fill=gray!90, gray!90] (0,0) rectangle (3,1);
+            \draw[fill=gray!90, gray!90] (0,0) rectangle (2,3);
+            \draw[fill=gray!90, gray!90] (0,0) rectangle (1,5);
+            \draw[fill=gray!90, gray!90] (7,0) rectangle (5,2);
+            \draw[fill=gray!90, gray!90] (7,0) rectangle (6,4);
+              
+            \draw[red!90, line width=2pt] (3,1) -- (5,2) -- (2,3) -- (6,4) -- (1,5) -- (4,6);  
+    
+            \filldraw[red] (3,1) circle (6pt);
+            \filldraw[red] (5,2) circle (6pt);
+            \filldraw[red] (2,3) circle (6pt);
+            \filldraw[red] (6,4) circle (6pt);
+            \filldraw[red] (1,5) circle (6pt);
+            \filldraw[blue] (4,6) circle (6pt);
+    
+            \draw[black, line width=0.5pt] (0,0) rectangle (7,7);
+        \end{tikzpicture}
+        \caption{Em azul, o ponto $p = (4,6)$ do conjunto $P$ de pontos. Em vermelho, os pontos de seu funil e suas intercalações. Perceba que $f(P,p) = 5$, o ponto mais alto e mais baixo do funil de $p$ pertencem ao funil esquerdo e há apenas $\lfloor f(P,p)/2 \rfloor - 1 = 1$ par de índices separadores esquerdos.}
+    \label{fig:bound-z-rets}
+    \end{figure}
+
+    Assim, para cada par de índices $(i,j)$ separadores esquerdos, note que os pontos $(p,a_{i+1},a_i,a_j)$ caracterizam um z-retângulo. Pela ordem dos índices, é fácil perceber que $p.y > a_j.y > a_{i+1}.y > a_i.y$. Como todos os pontos do funil direito possuem x-coordenada cronologicamente crescente, então sabemos que $a_j.x > a_i.x > p.x > a_{i+1}.x$. Assim, concluímos que as posições relativas estão corretas.
+
+    Por fim, é necessário garantir que $P \cap [a_{i+1}.x,a_j.x] \times [a_i.y,p.y]$. Por $a_i$ e $a_j$ serem pontos consecutivos do funil direito, sabemos que não há nenhum ponto no funil direito com y-coordenada entre $a_i.y$ e $a_j.y$. Como os pontos do funil esquerdo possuem x-coordenada cronologicamente decrescente e não existe nenhum ponto do funil de $p$ com y-coordenada entre $a_i.y$ e $a_{i+1}.y$, então conclui-se que não há nenhum ponto $q$, $q \in P \setminus \{p,a_i,a_{i+1},a_j\}$, na área descrita pelo $\{a_i,a_{i+1}\}$-retângulo, pelo $\{a_j,a_{i+1}\}$-retângulo e pelo $\{p,a_{i+1}\}$-retângulo. Por fim, pelos pontos do funil direito possuírem x-coordenada cronologicamente crescente, então também não há um ponto $q$, $q \in P \setminus \{p,a_j\}$, no $\{p,a_j\}$-retângulo. Veja a Figura~\ref{fig:representacao-areas}. 
+
+    %\fill[pattern=vertical lines] (A) -- (C) -- (end) -- (start) -- cycle;
+    \begin{figure}
+        \begin{tikzpicture}[scale=0.85]
+            % Grade de fundo
+            \draw[very thin, gray!70] (0,0) grid (5,5);  
+            \draw[red,line width=0.07cm] (1,1) rectangle (4,4);
+
+            \fill[pattern=north west lines] (3,1) -- (4,1) -- (4,3) -- (3,3) -- cycle;
+            \fill[pattern=north east lines] (3,1) --(1,1) -- (1,4) -- (2,4) -- (2,3) -- (4,3) -- (4,2) -- (3,2) -- cycle;
+            \fill[pattern=vertical lines] (2,4) -- (4,4) -- (4,3) -- (2,3) -- cycle;
+            %\fill[pattern=north lines] (3,1) -- (4,1) -- (4,3) -- (3,3) -- cycle;
+
+            \node at (3,0.5) {\textbf{\large $a_i$}};
+            \node at (0.5,1.7) {\textbf{\large $a_{i+1}$}};
+            \node at (4.4,3.3) {\textbf{\large $a_j$}};
+            \node at (2,4.5) {\textbf{\large $p$}};
+            
+            % Pontos
+            \filldraw[black] (3,1) circle (6pt); %ai
+            \filldraw[black] (1,2) circle (6pt); %ai+1
+            \filldraw[black] (4,3) circle (6pt); %aj
+            \filldraw[black] (2,4) circle (6pt); %p
+            
+            % Limite do quadrado
+            \draw[black, line width=0.5pt] (0,0) rectangle (5,5);
+        \end{tikzpicture}
+        \caption{Ilustração do argumento geométrico que mostra que os pontos $(p,a_{i+1},a_i,a_j)$ caracterizam um z-retângulo. Cada área hachurada representa uma parte diferente do argumento.}
+        \label{fig:representacao-areas}
+    \end{figure}
 \end{proof}
 
-\begin{lemma}
-    Para qualquer conjunto $P$ de pontos, $\text{Funil}(P) \geq 2 \, zRet(P)$.
+\begin{lemma} \label{lemma:zrets-funil}
+    Para qualquer conjunto $P$ de pontos, $zRet(P) \geq Funil(P)/2 - \Oh(m)$.
 \end{lemma}
 
 \begin{proof}
+    De acordo com o Lema~\ref{lema:passo-intermediario}, para cada ponto $p \in P$, é possível encontrar $\lfloor f(P,p)/2 \rfloor - 1$ z-retângulos distintos de $P$. Pelo Lema, para cada $p$, os z-retângulos encontrados referentes a esse ponto são formados por $p$ e três pontos de seu funil, assim é fácil concluir que os z-retângulos encontrados para cada $p \in P$ são distintos entre si. Somando para todos os pontos, temos
+    \begin{align}
+        zRet(P) &\geq \sum_{p \in P} (\lfloor f(P,p)/2 \rfloor - 1) , \notag \\
+        &\geq \sum_{p \in P} (f(P,p)/2 - 2) , \notag \\
+        &= \frac{1}{2} \sum_{p \in P} (f(P,p)) - 2m , \notag \\
+        &= \text{Funil}(P)/2 - \Oh(m). \notag
+    \end{align}
 \end{proof}
 
-\begin{lemma} %COROLÁRIO!!!
-    Para qualquer conjunto $P$ de pontos, $\text{Funil}(P) \geq \text{Funil}(\widebar{P}) - \Oh(m)$.
+\begin{lemma} \label{lemma:funil-zrets}
+    Para qualquer conjunto $P$ de pontos, $\text{Funil}(P) \geq 2 \cdot zRet(P)$.
 \end{lemma}
 
 \begin{proof}
+    Fixe um ponto $p \in P$. Suponha que o número de z-retângulos formados por $p$ e três pontos abaixo de $p$ seja $k$. Rotule os pontos dos $k$ z-retângulos desse formato em ordem crescente em relação a y-coordenada do ponto mais baixo por $(p,q_1,r_1,s_1)$ até $(p,q_k,r_k,s_k)$.
+
+    Considere dois z-retângulos consecutivos $(p,q_i,r_i,s_i)$ e $(p,q_{i+1},r_{i+1},s_{i+1})$. Pela definição de z-retângulos sabemos que $r_i.y < q_i.y < s_i.y$ e $r_{i+1}.y < q_{i+1}.y < s_{i+1}.y$. Por conta da rotulação em ordem crescente na y-coordenada do ponto mais baixo dos z-retângulos, sabemos que $r_i.y < r_{i+1}.y$. Assim, $s_i.x \leq r_{i+1}.y$ pois caso contrário o ponto $r_{i+1}$ está dentro do z-retângulo $(p,q_i,r_i,s_i)$. Por consequência, $s_i.y \leq r_{i+1}.y$, pois caso contrário o ponto $s_i$ está dentro do z-retângulo $(p,q_{i+1},r_{i+1},s_{i+1})$. Para auxiliar a visualização, veja a Figura~\ref{fig:funil-2-z-rets}. Agrupando essas propriedades, deduzimos que $r_i.y < q_i.y < s_i.y \leq r_{i+1}.y < q_{i+1}.y < s_{i+1}.y$. Assim, notamos que $q_1.y < s_1.y < q_2.y < s_2.y < \ldots < q_k.y < s_k.y$ para os z-retângulos considerados.
+
+    Pela definição de z-retângulos, sabemos que os pontos $q_1,s_1,\ldots,q_k,s_k$ pertencem ao funil de $p$. Assim, sabemos que há pelo menos $2k$ intercalações entre o funil esquerdo e o direito de $p$, ou seja, $f(P,p) = intercala(F_E(P,p).y, F_D(P,p).y) \geq 2k$. Sabemos que o conjunto de z-retângulos formados por um ponto $q \in P$ é disjunto do conjunto de z-retângulos formado pelo ponto $r \in P$, tal que $r \neq q$. Assim, ao somarmos para todos os pontos de $P$, temos que $\text{Funil}(P) \geq 2 \cdot zRet(P)$.
+
+    \begin{figure}
+        \begin{tikzpicture}[scale=0.85]
+            % Grade de fundo
+            \draw[very thin, gray!70] (0,0) grid (8,8);  
+            \draw[red,line width=0.07cm] (2,1) rectangle (5,7);
+            \draw[red,line width=0.07cm] (1,4) rectangle (7,7);
+
+            \node at (4,0.5) {\textbf{\large $r_i$}};
+            \node at (1.5,2) {\textbf{\large $q_i$}};
+            \node at (5.4,2.7) {\textbf{\large $s_i$}};
+            \node at (6,3.5) {\textbf{\large $r_{i + 1}$}};
+            \node at (0.5,4.6) {\textbf{\large $q_{i + 1}$}};
+            \node at (7.5,5.6) {\textbf{\large $s_{i + 1}$}};
+            \node at (3,7.5) {\textbf{\large $p$}};
+            %\node at (4.4,3.3) {\textbf{\large $a_j$}};
+            %\node at (2,4.5) {\textbf{\large $p$}};
+            
+            % Pontos
+            \filldraw[black] (4,1) circle (6pt); %ai
+            \filldraw[black] (2,2) circle (6pt); %ai+1
+            \filldraw[black] (5,3) circle (6pt); %aj
+            \filldraw[black] (6,4) circle (6pt); %p
+            \filldraw[black] (1,5) circle (6pt); %p
+            \filldraw[black] (7,6) circle (6pt); %p
+            \filldraw[black] (3,7) circle (6pt); %p
+            
+            % Limite do quadrado
+            \draw[black, line width=0.5pt] (0,0) rectangle (8,8);
+        \end{tikzpicture}
+    \caption{Estão descritos dois z-retângulos consecutivos. Note que $s_i$ e $r_{i+1}$ podem ser rótulos do mesmo ponto.}
+    \label{fig:funil-2-z-rets}
+    \end{figure}
+\end{proof}
+
+\begin{corollary} \label{corollario:final} %COROLÁRIO!!!
+    Para qualquer sequência $X$ de acessos, $\text{Funil}(P_X) \geq \text{Funil}(\widebar{P_X}) - \Oh(m)$.
+\end{corollary}
+
+\begin{proof}
+    \begin{align*}
+        \text{Funil}(P_X) &\geq 2 \cdot zRet(P_X) \quad & \text{pelo Lema~\ref{lemma:funil-zrets}}, \\
+        &= 2 \cdot zRet(P_X^{\perp}) \quad & \text{pelo Lema~\ref{lemma:p-inversivel}}, \\
+        &= 2 \cdot zRet(P_X^{\perp\perp}) \quad & \text{novamente pelo Lema~\ref{lemma:p-inversivel}}, \\
+        &= 2 \cdot zRet(\widebar{P_X}), \\
+        &\geq \text{Funil}(\widebar{P_X}) - \Oh(m) \quad & \text{pelo Lema~\ref{lemma:zrets-funil}}. \\
+    \end{align*}
 \end{proof}
 
 \begin{theorem}
-    Para toda sequência de acessos $X$ sem repetições e para toda árvore de referência $\cT$ em relação à $P_X$, $\text{Alt}(P_X) \leq \Oh(\text{Funil}(P_X) + m)$.
+    Para toda sequência $X$ de acessos sem repetições e para toda árvore de referência $\cT$ em relação à $P_X$, $\text{Alt}(P_X) \leq \Oh(\text{Funil}(P_X) + m)$.
 \end{theorem}
 
 \begin{proof}
+    \begin{align*}
+        \text{Alt}_{\cT}(P_X) &\leq \text{Funil}(P_X) +  \text{Funil}(\widebar{P_X}) \quad & \text{pelo Lema~\ref{lemma:relacao-alt-com-funil}}, \\
+        &\leq \text{Funil}(P_X) +  \text{Funil}(P_X) + \Oh(m) \quad & \text{pelo Corolário~\ref{corollario:final}}, \\
+        &= \Oh(\text{Funil}(P_X) + m).
+    \end{align*}
 \end{proof}
+
+Esses resultados são bastante impressionantes dado que delimitações construídas a partir de z-retângulos são invariantes em relação à rotações. Além disso, os z-retângulos nos mostram que rotações dos conjuntos de pontos de visões geométricas de sequência de acessos tem seu custo relacionado, ou seja, de grosso modo, fazer $m$ buscas no conjunto de chaves de $1$ a $n$ tem seu custo relacionado com inverter os eixos e fazer as $n$ buscas correspondentes no conjunto de chaves de $1$ a $m$. Esse resultado é bastante impressionante. 
+
+
+
+%Além disso, os z-retângulos nos mostram que rotações dos conjuntos de pontos das visões geométricas têm seu custo relacionado e isso é um resultado bem pouco intuitivo.

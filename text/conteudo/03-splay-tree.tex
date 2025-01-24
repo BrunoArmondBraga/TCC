@@ -8,13 +8,13 @@
 
 \newtheorem{caso}{Caso}
 
-Neste capítulo apresentaremos as árvores splay, desenvolvidas por Sleator e Tarjan~\cite{selfadjustingbst}. As árvores splay são uma ABB que, além das rotinas usuais de busca, inserção e remoção, possuem uma rotina extra, chamada splay. Essa rotina deve ser acionada ao final de cada operação feita numa árvore splay, aplicada ao nó mais profundo que foi visitado durante a operação Descreveremos o funcionamento da operação splay, analisaremos o custo amortizado de operações em árvores splay e introduziremos a Conjectura da Otimalidade Dinâmica.
+Neste capítulo apresentaremos as árvores splay, desenvolvidas por Sleator e Tarjan~\cite{selfadjustingbst}. As árvores splay são ABBs que, além das rotinas usuais de busca, inserção e remoção, possuem uma rotina extra, chamada splay. Essa rotina deve ser acionada ao final de cada operação feita nesta árvore, aplicada ao nó mais profundo visitado durante a operação. Descreveremos o funcionamento da operação splay, analisaremos o seu custo amortizado e introduziremos a Conjectura da Otimalidade Dinâmica.
 
 
 \section{Introdução}
-A altura de uma árvore binária de busca é o comprimento de um caminho mais longo da raiz da árvore a uma de suas folhas. É sabido que a altura de uma ABB com $n$ nós é um valor entre $\lg n$ e $n-1$. O pior caso das operações de busca, inserção, remoção e outros em árvores binárias de busca é exatamente a altura da árvore. Por isso, surgiram na literatura várias propostas de implementações de ABBs que mantém alguma propriedade que implica que a altura da árvore se mantém logarítmica no número de nós da ABB. Tais implementações, em geral, carregam informação extra nos nós da árvore e executam rotações durante as inserções e remoções porém não alteram a árvore durante as buscas.
+A altura de uma árvore binária de busca é o comprimento de um caminho mais longo da raiz da árvore a uma de suas folhas. É sabido que a altura de uma ABB com $n$ nós é um valor entre $\lg n$ e $n-1$. O pior caso das operações de busca, inserção, remoção e outras em árvores binárias de busca é exatamente a altura da árvore. Por isso, surgiram na literatura várias propostas de implementações de ABBs que mantém alguma propriedade que implica que a altura da árvore se mantém logarítmica no número de nós da ABB. Tais implementações, em geral, carregam informação extra nos nós da árvore e executam rotações durante as inserções e remoções porém não alteram a árvore durante as buscas.
 
-Uma alternativa a essas estratégias é a árvore splay. Árvore Splay é uma árvore binária de busca balanceada proposta por \cite{selfadjustingbst}. Diferentemente das árvores binárias balanceadas citadas anteriormente, a árvore splay se reestrutura após qualquer operação, inclusive após as buscas e não utiliza armazenamento adicional.
+Uma alternativa a essas estratégias é a árvore splay. Árvore Splay é uma árvore binária de busca balanceada proposta por Sleator e Tarjan \cite{selfadjustingbst}. Diferentemente das árvores binárias balanceadas citadas anteriormente, a árvore splay não utiliza armazenamento adicional e se reestrutura após toda operação, inclusive após as buscas.
 
 % ESTÁ RUIM!
 %A árvore splay é uma ABB que segue a heurística “move to front”, ou seja, a ideia central é que a medida que operações são realizadas na estrutura, os elementos são movidos para perto da raiz de uma maneira particular com intuito de manter na raiz o nó que guarda a última chave acessada.
@@ -72,7 +72,7 @@ Os passos splay zig-zig e zag-zag são realizados quando $x$ e seu pai são ambo
     \end{comment}
     \includegraphics[scale=0.9]{imagens/zigzig2.pdf}
     \label{fig:zigzig}
-\caption{Passo splay zig-zig onde $x$ e $y$ ambos filhos esquerdos.}
+\caption{Passo splay zig-zig onde $x$ e $y$ são ambos filhos esquerdos.}
 \end{figure}
 
 
@@ -317,9 +317,9 @@ Para deduzir o custo amortizado de uma operação splay($x$), vamos calcular o c
     \textit{Caso zig}.   
     \begin{align*}
         \hat{c} &= c + \Delta \Phi,\\
-        &= 1 + r^{j-1}(x) + r^{j-1}(y) - r^{j}(x) - r^{j}(y), \quad & \text{}\\
-        &< 1 + r^{j-1}(x) - r^{j}(x) \quad & \text{pois $r^{j}(y) > r^{j-1}(y)$},\\
-        &< 1 + 3(r^{j-1}(x) - r^{j}(x)) \quad & \text{pois $r^{j-1}(x) > r^{j}(x)$}.\\
+        &= 1 + r^{j}(x) + r^{j}(y) - r^{j-1}(x) - r^{j-1}(y), \quad & \text{}\\
+        &< 1 + r^{j}(x) - r^{j-1}(x) \quad & \text{pois $r^{j-1}(y) > r^{j}(y)$},\\
+        &< 1 + 3(r^{j}(x) - r^{j-1}(x)) \quad & \text{pois $r^{j}(x) > r^{j-1}(x)$}.\\
     \end{align*}
 
     Simetricamente vale para o caso zag.
@@ -468,7 +468,7 @@ Essa propriedade será utilizada abaixo. Considere uma sequência de $m$ buscas 
 
 \section{Conjectura da Otimalidade Dinâmica}
 
-Uma ABB online é \textit{dinamicamente ótima} se, para todas as sequências $X$, seu algoritmo de busca tem custo $\Oh(\textit{OPT(X)})$. De maneira mais geral, uma ABB online é \textit{$c$-competitiva} se executa todas as buscas para sequências $X$ suficientemente longas com custo no máximo $c$\,$OPT(X)$.
+Uma ABB online é \textit{dinamicamente ótima} se, para todas as sequências $X$ de acessos, seu algoritmo de busca tem custo $\Oh(\textit{OPT(X)})$. De maneira mais geral, uma ABB online é \textit{$c$-competitiva} se executa todas as buscas para sequências $X$ suficientemente longas com custo no máximo $c$\,$OPT(X)$.
 
 Sleator e Tarjan \cite{selfadjustingbst} conjecturaram que a árvore splay é dinamicamente ótima. Essa conjectura é conhecida por Conjectura da Otimalidade Dinâmica. Os cientistas nas últimas décadas vêm buscando provar propriedades que o $OPT$ e as árvores splay possuem em comum. Uma série de características foram encontradas e o ramo de pesquisa se mantém ativo. É impressionante como essa conjectura continua a intrigar cientistas pela sua dificuldade mesmo em uma área tão amplamente pesquisada que é a área de estrutura de dados.
 %Diversos pesquisadores já investigaram essa conjectura mas ainda pouco se sabe sobre ela. Os resultados obtidos com essas décadas de pesquisa não obtiveram sucesso provando ou refutando essa hipótese, porém provou-se que a árvore splay é uma estrutura que possui uma serie de propriedades que o $OPT$ também tem. 

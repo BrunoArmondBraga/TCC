@@ -8,14 +8,13 @@
 
 Árvores Binárias de Busca (ABBs) são estruturas de dados que armazenam um conjunto de chaves de um universo estático, que possui uma ordem total, e dão suporte a buscas neste conjunto. Denotaremos por $n$ o número de elementos do conjunto armazenado na ABB considerada.
 
-Estas estruturas são fundamentais na ciência da computação e possuem as mais diversas finalidades. Nesse projeto iremos estudar a chamada Conjectura da Otimalidade Dinâmica, interpretações geométricas de algoritmos de busca em ABBs e suas delimitações associadas. Também serão estudadas as árvores splay e as árvores tango.
+Estas estruturas são fundamentais na ciência da computação e possuem as mais diversas finalidades. Nesse projeto iremos estudar a chamada Conjectura da Otimalidade Dinâmica, interpretações geométricas de algoritmos de busca em ABBs e uma caracterização do custo ótimo. Também serão estudadas as delimitações de Wilber e como elas se relacionam.
 
 Adaptando a definição dada por Sedgewick e Wayne \cite{Sedgewick}, \textit{árvore binária de busca} é uma árvore binária onde cada nó possui uma chave comparável e possivelmente um valor associado. Além disso, os nós satisfazem a restrição de que a chave em qualquer nó é maior do que as chaves em todos os nós na subárvore esquerda desse nó e menor do que as chaves em todos os nós na subárvore direita desse nó.
 
 As ABBs também possuem um atributo \textit{raiz} que aponta para o nó raiz ou possui valor \textit{nulo}, caso a árvore esteja vazia.
 
 \textit{Rotações} são operações que trocam dois nós, pai-filho, entre si enquanto mantém a restrição vista acima. Veja a Figura~\ref{fig:imagem}. Essa operação é fundamental para garantir performance em alguns algoritmos de ABBs e é muito utilizada para controlar a altura das árvores.
-
 
 % Arrumar figura!!
 \begin{figure}[h]
@@ -70,7 +69,7 @@ Apesar de existirem muitas ABBs muito bem documentadas com tempo por busca logar
 
 Há uma conjectura não resolvida no artigo \cite{selfadjustingbst} que diz que as árvores splay são dinamicamente ótimas. Essa conjectura ficou conhecida como a Conjectura da Otimalidade Dinâmica.
 
-A árvore conhecida que mais se aproxima de uma árvore ótima é a árvores tango~\cite{dynamicoptimality}. Tal estrutura é $\Oh(\lg \lg n)$-competitiva. Esta árvore, proposta por Demaine, Harmon, Iacono e Pătrașcu \cite{dynamicoptimality}, utiliza $\Oh(\lg \lg n)$ bits a mais por nó e o custo para determinar a próxima operação primitiva a ser executada é amortizadamente constante.
+%A árvore conhecida que mais se aproxima de uma árvore ótima é a árvores tango~\cite{dynamicoptimality}. Tal estrutura é $\Oh(\lg \lg n)$-competitiva. Esta árvore, proposta por Demaine, Harmon, Iacono e Pătrașcu \cite{dynamicoptimality}, utiliza $\Oh(\lg \lg n)$ bits a mais por nó e o custo para determinar a próxima operação primitiva a ser executada é amortizadamente constante.
 
 %Nas árvores tango, há a definição de \textit{filho preferido}. O \textit{filho preferido} de um nó é o filho direito se ele foi o nó mais recentemente acessado em comparação com o nó esquerdo, e caso contrário (incluindo o caso em que nenhum dos dois filhos foi acessado ainda), definimos o nó esquerdo como \textit{filho preferido}.
 
@@ -80,6 +79,6 @@ A árvore conhecida que mais se aproxima de uma árvore ótima é a árvores tan
 
 %Durante os \textit{acessos}, os \textit{filhos preferidos} podem ser alterados e isso provocará mudanças nas estruturas da árvores auxiliares para manter a estrutura da árvore tango coerentes com o comportamento descrito acima.
 
-Nesse texto, abordaremos uma série de aspectos diferentes em relação a delimitações de custo em algoritmos de busca em ABBs e implementações visando o menor custo possível. No Capítulo 2, será discutido o problema de encontrar uma ABB estática de custo mínimo para uma determinada sequência de acessos. No Capítulo 3, abordaremos o funcionamento e o custo das operações das árvores splay e apresentaremos a Conjectura da Otimalidade Dinâmica. 
-No Capítulo 4, examinaremos como tratar buscas em ABBs de maneira geométrica por meio de conjuntos arboreamente satisfeitos e será proposto um algoritmo offline guloso para encontrar conjuntos arboreamente satisfeitos para sequências de entradas. %e será apresentada uma análise de como transforma-lo em um algoritmo online. 
-No Capítulo 5, ampliaremos a análise geométrica para desenvolver uma nova delimitação relacionada a retângulos independentes. O Capítulo 6 tratará das delimitações de Wilber e, por fim, no Capítulo 7 explicaremos como funcionam as árvores tango.
+Nesse texto, abordaremos uma série de aspectos diferentes em relação a delimitações de custo em algoritmos de busca em ABBs e implementações visando o menor custo possível. No Capítulo 2, será discutido o problema de encontrar uma ABB estática de custo mínimo para uma determinada sequência de acessos. No Capítulo 3, abordaremos o funcionamento e o custo de acessos das árvores splay e apresentaremos a Conjectura da Otimalidade Dinâmica. 
+No Capítulo 4 e 5, examinaremos como tratar buscas em ABBs de maneira geométrica por meio de conjuntos arboreamente satisfeitos e será proposto um algoritmo online guloso para encontrar superconjuntos arboreamente satisfeitos a partir de conjuntos de pontos arbitrários.
+No Capítulo 6, ampliaremos a análise geométrica para desenvolver uma nova delimitação relacionada a retângulos independentes. O Capítulo 7 tratará das delimitações de Wilber e no Capítulo 8 explicaremos como elas se relacionam. Por fim, no capítulo 9, apresentaremos uma redução de um problema NP-completo no problema de buscas múltiplas em ABBs.

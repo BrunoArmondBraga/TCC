@@ -3,7 +3,7 @@
 % para saber mais: https://tex.stackexchange.com/q/78101/183146
 
 %% ------------------------------------------------------------------------- %%
-\chapter{Retângulos independentes}
+\chapter{Conjuntos independentes de retângulos}
 \label{cap:retângulos-independentes}
 
 \newcommand{\rectpos}{%
@@ -63,32 +63,32 @@ Note que qualquer união entre dois conjuntos $Z_{\rectpos}$ e $Z_{\rectneg}$, o
     \begin{tikzpicture}[scale=0.7]
         \draw[very thin, gray] (0,0) grid (4,4);
 
-        \filldraw[black] (1,1) circle (7pt);
-        \filldraw[black] (2,3) circle (7pt);
-        \filldraw[black] (3,2) circle (7pt);
-        \filldraw[violet] (2,1) circle (7pt);
-        \filldraw[violet] (2,2) circle (7pt);
+        \filldraw[black] (1,1) circle (8pt);
+        \filldraw[black] (2,3) circle (8pt);
+        \filldraw[black] (3,2) circle (8pt);
+        \filldraw[violet] (2,1) circle (6pt);
+        \filldraw[violet] (2,2) circle (6pt);
         
         \draw[black, line width=0.5pt] (0,0) rectangle (4,4);
     \end{tikzpicture}
     \begin{tikzpicture}[scale=0.7]
         \draw[very thin, gray] (0,0) grid (4,4);
 
-        \filldraw[black] (1,1) circle (7pt);
-        \filldraw[black] (2,3) circle (7pt);
-        \filldraw[black] (3,2) circle (7pt);
-        \filldraw[magenta] (2,2) circle (7pt);
+        \filldraw[black] (1,1) circle (8pt);
+        \filldraw[black] (2,3) circle (8pt);
+        \filldraw[black] (3,2) circle (8pt);
+        \filldraw[magenta] (2,2) circle (6pt);
         
         \draw[black, line width=0.5pt] (0,0) rectangle (4,4);
     \end{tikzpicture}
     \begin{tikzpicture}[scale=0.7]
         \draw[very thin, gray] (0,0) grid (4,4);
 
-        \filldraw[black] (1,1) circle (7pt);
-        \filldraw[black] (2,3) circle (7pt);
-        \filldraw[black] (3,2) circle (7pt);
-        \filldraw[red] (2,1) circle (7pt);
-        \filldraw[red] (2,2) circle (7pt);
+        \filldraw[black] (1,1) circle (8pt);
+        \filldraw[black] (2,3) circle (8pt);
+        \filldraw[black] (3,2) circle (8pt);
+        \filldraw[red] (2,1) circle (6pt);
+        \filldraw[red] (2,2) circle (6pt);
         
         \draw[black, line width=0.5pt] (0,0) rectangle (4,4);
     \end{tikzpicture}
@@ -103,7 +103,7 @@ Outro ponto fundamental de ser compreendido é que todo conjunto $Y$, superconju
 
 \section{Guloso futurista orientado}
 
-Definimos agora dois algoritmos muito parecidos com o guloso futurista visto no capítulo anterior, que nos ajudarão a descrever delimitações inferiores em buscas. 
+Definimos agora dois algoritmos muito parecidos com o guloso futurista visto no capítulo anterior, que nos ajudarão a descrever delimitações inferiores em sequências de buscas. 
 
 Chamaremos de guloso \textit{futurista}-$\rectpos$ o seguinte algoritmo que recebe um conjunto $P_X$ de pontos que representa uma sequência $X$ de buscas. O algoritmo começa com $P = P_X$ e desliza uma reta horizontal $r$ que começa em $y = 1$ e vai até $y = m$. O algoritmo mantém o invariante que todos os pares de pontos de $P$ em $r$ ou abaixo de $r$ são $\rectpos$-satisfeitos. Esse algoritmo garante essa propriedade adicionando a $P$ o menor número de pontos na linha $r$ durante cada iteração. Ao fim da execução, o conjunto $P$ de pontos é $\rectpos$-satisfeito. O algoritmo guloso futurista-$\rectneg$ é definido de maneira simétrica considerando a $\rectneg$-satisfação.
 
@@ -606,7 +606,9 @@ Veja a Figura~\ref{fig:greedy_sign}.
 \label{fig:greedy_sign}
 \end{figure}
 
-Esse algoritmos terão um papel essencial para a última seção desse capítulo, onde buscamos delimitações inferiores de custo para sequências de acesso.
+Definimos $R(q)$ como o par de pontos $(a,b)$ do conjunto inicial tal que $q$ foi um ponto adicionado durante algum dos algoritmo gulosos futuristas orientados e o $\{a,b\}$-retângulos possui $q$ em um de seus vértices superiores. Esse par de pontos existe e é bem definido. Ele existe, pois os algoritmos gulosos futuristas orientados apenas adicionam o mínimo de pontos durante cada iteração para satisfazer arboreamente o conjunto de pontos que estão na linha descrita ou abaixo dela. Se não houvesse tal par de pontos, então o ponto $q$ foi adicionado para satisfazer um outro par de pontos $(c,d)$ onde $c$ e/ou $d$ são pontos que também adicionados pelo algoritmo. Porém, se $c$ e/ou $d$ foram adicionados pelo algoritmo então deve existir algum par de pontos mais ao extremo nos mesmo sentidos de $c$ e $d$ que fazem parte do conjunto inicial, ou seja, existe o par $(a,b)$. Esse par de pontos é bem definido, pois assumimos que os conjuntos de pontos analisados nesse capítulo possuem as propriedades de x e y-coordenada distintas.
+
+Esses algoritmos terão um papel essencial para a última seção desse capítulo, onde buscamos delimitações inferiores de custo para sequências de acesso.
 
 \section{Independência de retângulos}
 Um conjunto $I$ de retângulos é \textit{independente} se todos os retângulos de~$I$ são arboreamente insatisfeitos e não há nenhum vértice de algum dos retângulos de $I$ estritamente no interior de outro retângulo de $I$. Veja a Figura~\ref{fig:retangulos_independentes}.
@@ -669,7 +671,7 @@ Um conjunto $I$ de retângulos é \textit{independente} se todos os retângulos 
 
 %CHEIO DE PROBLEMAS!!!
 \begin{proof}
-    Para todo ponto $q$ em Fut$_{\rectpos}(P_X)$, seja $R(q)$ o $\rectpos$-retângulo que o ponto $q$ satisfaz arboreamente. Sejam $r$ e $s$ os vértices desse retângulo, sendo $r$ o ponto de $P_X$ abaixo de $q$ e $s$ o ponto de $P_X$ a direita de $q$. Por construção $R(q)$ só é igual a $R(t)$ se e somente se $q = t$. Seja \( \text{IRB}_{\rectpos}(P_X) = \{ R(q) \mid q \in \text{Fut}_{\rectpos}(P_X) \} \). Obviamente $|\text{IRB}_{\rectpos}(P_X)| = |\text{Fut}_{\rectpos}(P_X)|$ e por construção nenhum ponto de Fut$_{\rectpos}(P_X) \cup P_X$ está estritamente dentro de algum retângulo de IRB$_{\rectpos}$ e o vértice superior esquerdo de todos os retângulos de $\text{IRB}_{\rectpos}(P_X)$ estão em $\text{Fut}_{\rectpos}(P_X) \cup P_X$.
+    Para todo ponto $q$ em Fut$_{\rectpos}(P_X)$, sejam $r$ e $s$ o par de pontos de $R(q)$, sendo $r$ o ponto de $P_X$ abaixo de $q$ e $s$ o ponto de $P_X$ a direita de $q$. Como $R(q)$ é bem definido, então $R(q) = R(t)$ se e somente se $q = t$. Seja \( \text{IRB}_{\rectpos}(P_X) = \{ R(q) \mid q \in \text{Fut}_{\rectpos}(P_X) \} \). Obviamente $|\text{IRB}_{\rectpos}(P_X)| = |\text{Fut}_{\rectpos}(P_X)|$ e por construção nenhum ponto de Fut$_{\rectpos}(P_X) \cup P_X$ está estritamente dentro de algum retângulo de IRB$_{\rectpos}$ e o vértice superior esquerdo de todos os retângulos de $\text{IRB}_{\rectpos}(P_X)$ estão em $\text{Fut}_{\rectpos}(P_X) \cup P_X$.
 \end{proof}
 
 Para visualizar a ideia da prova acima, veja a Figura~\ref{fig:IRB_igual_add}. Note que analogamente à prova, o conjunto de $\rectpos$-retângulos independentes mostrado possui o vértice superior esquerdo localizado em algum ponto adicionado pelo algoritmo guloso futurista-$\rectpos$. 
@@ -723,7 +725,7 @@ Para visualizar a ideia da prova acima, veja a Figura~\ref{fig:IRB_igual_add}. N
 
 \begin{proof}
     Assuma sem perda de generalidade que $a.x < b.x$.
-    Seja $p$ o ponto de $Y$ mais à direita e mais acima do $\{a,b\}$-retângulo que está à esquerda de $\ell$ e seja $q$ o ponto de $Y$ mais abaixo e mais a esquerda que esteja na mesma altura ou acima de $q$ do $\{a,b\}$-retângulo e esteja à direita de $\ell$. Esses pontos existem pois $a$ e $b$ satisfazem as restrições de $p$ e $q$ respectivamente. Por construção, $p$ está à esquerda de $\ell$ e $q$ à direita. Nota-se que $p.y = q.y$ obrigatoriamente, pois caso contrário o $\{p,q\}$-retângulo estaria insatisfeito, ou seja, existiria um $\rectpos$-retângulo insatisfeito dentro de um conjunto $Y$ de pontos $\rectpos$-satisfeito, o que é uma contradição. Veja a Figura~\ref{fig:contraexemplo_contradicao} para uma ilustração dessa contradição.
+    Seja $p$ o ponto de $Y$ mais à direita e mais acima do $\{a,b\}$-retângulo que está à esquerda de $\ell$ e seja $q$ o ponto de $Y$ mais abaixo e mais a esquerda que esteja na mesma altura ou acima de $q$ do $\{a,b\}$-retângulo e esteja à direita de $\ell$. Esses pontos existem pois $a$ e $b$ satisfazem as restrições de $p$ e $q$ respectivamente e $Y$ é $\rectpos$-satisfeito. Por construção, $p$ está à esquerda de $\ell$ e $q$ à direita. Nota-se que $p.y = q.y$ obrigatoriamente, pois caso contrário o $\{p,q\}$-retângulo estaria insatisfeito, o que é contradiz o que assumimos. Veja a Figura~\ref{fig:contraexemplo_contradicao} para uma ilustração dessa contradição.
 \end{proof}
 
 \begin{figure}
@@ -823,7 +825,7 @@ Para visualizar a ideia da prova acima, veja a Figura~\ref{fig:IRB_igual_add}. N
 
 \section{Delimitação dos retângulos independentes}
 
-De acordo com o Teorema~\ref{teorema_retangulos_independentes}, conjuntos independentes de retângulos estão atrelados intimamente com delimitações inferiores de custo. Assim, se conseguirmos encontrar o maior conjunto independente de retângulos, então encontraremos o melhor delimitante de custo, ou seja, o delimitante que mais se aproxima de OPT$(P_X)$.
+De acordo com o Teorema~\ref{teorema_retangulos_independentes}, conjuntos independentes de retângulos estão atrelados intimamente com delimitações inferiores de custo. Assim, se conseguirmos encontrar o maior conjunto independente de retângulos, então encontraremos o melhor delimitante de custo, ou seja, o delimitante que mais se aproxima de OPT$(X)$.
 
 Denotemos por maxIRB$(P_X)$ como o maior conjunto independente de retângulos para o conjunto de pontos $P_X$ que representa uma sequência $X$ de buscas. Não se sabe se há uma maneira de encontrar o valor de $|$maxIRB$(P_X)|$ em tempo polinomial, muito menos se há uma maneira de encontrar o próprio conjunto independente de retângulos.
 %Uma maneira conhecida de encontrar conjuntos independentes de retângulos são as delimitações propostas por Wilber \cite{lowerbound_wilber}. Esse tema será explorado com profundidade no próximo capítulo, por ora basta saber que Alt$(P_X)$ e Funil$(P_X)$ são maneiras de encontrar conjuntos independentes de retângulos em tempo polinomial.

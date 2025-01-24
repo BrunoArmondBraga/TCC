@@ -113,14 +113,14 @@ Em um conjunto arboreamente satisfeito $P$, para todo par de pontos $\{a,b\}$ n�
 
     Para $k = 0$, todo $\{a,b\}$-retângulo possui um ponto de $P \setminus \{a,b\}$ em um de seus vértices ou possui dois pontos de $P \setminus \{a,b\}$ em seu perímetro alinhados verticalmente ou horizontalmente. Caso o $\{a,b\}$-retângulo possua um ponto de $P \setminus \{a,b\}$ em um de seus vértices, então a propriedade é válida. Caso o $\{a,b\}$-retângulo possua dois pontos de $P \setminus \{a,b\}$ em seu perímetro alinhados verticalmente ou horizontalmente, então um desses pontos está em um dos lados do $\{a,b\}$-retângulo que incide em $a$ e o outro está em um dos lados do $\{a,b\}$-retângulo que incide em $b$, satisfazendo a propriedade do lema.
 
-    Suponha agora que $k > 0$ e que a propriedade vale para todo retângulo com menos que $k$ pontos de $P$ em seu interior. Seja $e$ um ponto de $P$ no interior do $\{a,b\}$-retângulo. O $\{a,e\}$-retângulo e o $\{e,b\}$-retângulo são retângulos de $P$ com menos que $k$ pontos, logo a propriedade vale para esses retângulos. Como os lados do $\{a,b\}$-retângulo que incidem em $a$ contém os lados do $\{a,e\}$-retângulo que incidem $a$ e os lados do $\{a,b\}$-retângulo que incidem em $b$ contém os lados do $\{e,b\}$-retângulo que incidem $b$, então se a propriedade vale também para o $\{a,b\}$-retângulo.    
+    Suponha agora que $k > 0$ e que a propriedade vale para todo retângulo com menos que $k$ pontos de $P$ em seu interior. Seja $e$ um ponto de $P$ no interior do $\{a,b\}$-retângulo. O $\{a,e\}$-retângulo e o $\{e,b\}$-retângulo são retângulos de $P$ com menos que $k$ pontos, logo a propriedade vale para esses retângulos. Como os lados do $\{a,b\}$-retângulo que incidem em $a$ contém os lados do $\{a,e\}$-retângulo que incidem $a$ e os lados do $\{a,b\}$-retângulo que incidem em $b$ contém os lados do $\{e,b\}$-retângulo que incidem $b$, então a propriedade vale também para o $\{a,b\}$-retângulo.
 \end{proof}
 
 \section{Visão geométrica de buscas}
 
 No modelo de computação adotado, para realizar um acesso em uma ABB, o algoritmo de busca inicia o nó corrente na raiz da ABB. Em seguida, percorre a árvore descendo para o filho apropriado por meio de comparações até alcançar a chave procurada.
 
-Dada uma sequência $X = (x_{1},\ldots,x_{m})$ de $m$ acessos às chaves $1,2,\ldots,n$, é possível ilustrar essa sequência $X$ de maneira gráfica em um plano cartesiano da seguinte forma: o eixo $x$ representará as chaves armazenadas na ABB e o eixo $y$ representará os índices $i = 1,2,\ldots,m$, que interpretamos como o tempo. Denotaremos por $P_X$ esse conjunto de pontos. Assim, um ponto de coordenada ($x$,$i$) representa a busca da chave $x$ na ABB no instante de tempo $i$, ou seja, representa $x_i$. Veja o exemplo da Figura~\ref{fig:busca_padrao}.
+Dada uma sequência $X = (x_{1},\ldots,x_{m})$ de $m$ acessos às chaves $1,2,\ldots,n$, é possível ilustrar essa sequência $X$ de maneira gráfica em um plano cartesiano da seguinte forma: o eixo $x$ representará as chaves armazenadas na ABB e o eixo $y$ representará os índices $i = 1,2,\ldots,m$, que interpretamos como o tempo. Denotaremos por $P_X$ esse conjunto de pontos que chamaremos de \textit{visão geométrica da sequência de acessos}. Assim, um ponto de coordenada ($x$,$i$) representa a busca da chave $x$ na ABB no instante de tempo $i$, ou seja, representa $x_i$. Veja o exemplo da Figura~\ref{fig:busca_padrao}.
 
 \begin{figure}
     \begin{tikzpicture}[scale=0.67]
@@ -153,7 +153,7 @@ Dada uma sequência $X = (x_{1},\ldots,x_{m})$ de $m$ acessos às chaves $1,2,\l
 \label{fig:busca_padrao}
 \end{figure}
 
-A \textit{visão geométrica da execução de um algoritmo de busca em ABB} para uma sequência $X = (x_{1},\ldots,x_{m})$ de buscas, de maneira similar, é o conjunto $P$ de pontos na forma ($x$,$i$) tal que $x$ foi uma das chaves visitadas durante a busca pela chave $x_i$. Para cada $i \in \{1,\ldots,m\}$, os pontos de $P$ pertencentes a reta $y = i$ representam as chaves dos nós visitados durante a busca por $x_i$. Veja a Figura~\ref{fig:traducao-busca-em-ASS}.
+A \textit{visão geométrica da execução de um algoritmo de busca em ABB} para uma sequência $X = (x_{1},\ldots,x_{m})$ de buscas, de maneira similar, é o conjunto $P$ de pontos na forma ($x$,$i$) tal que $x$ é a chave de um dos nós visitados durante a busca pela chave $x_i$. Para cada $i \in \{1,\ldots,m\}$, os pontos de $P$ pertencentes a reta $y = i$ representam as chaves dos nós visitados durante a busca por $x_i$. Veja a Figura~\ref{fig:traducao-busca-em-ASS}.
 
 \begin{figure}[h!]
     \centering
@@ -221,11 +221,11 @@ A \textit{visão geométrica da execução de um algoritmo de busca em ABB} para
             \end{axis}
             \end{tikzpicture}
     \end{minipage}
-    \caption{À esquerda, o conjunto de pontos que representa a sequência $X = (3,1,4,2,5)$. No meio, uma possível ABB com as chaves \{1,2,\ldots,5\}. À direita, o conjunto correspondente aos nós da ABB ao centro, visitados pelo algoritmo de busca que não efetua rotações. Os pontos pretos são os nós da sequência $X$ de acessos e os pontos vermelhos são o restante dos nós visitados durante cada um desses acessos. Note que o conjunto de pontos à esquerda não é arboreamente satisfeito, mas o conjunto à direita é.}
+    \caption{À esquerda, o conjunto de pontos que representa a sequência $X = (3,1,4,2,5)$. No meio, uma possível ABB com as chaves \{1,2,\ldots,5\}. À direita, a visão geométrica do algoritmo de busca que não efetua rotações na ABB do meio. Os pontos pretos são pontos de $P_X$ relacionados à sequência de acessos e os pontos vermelhos são o restante dos nós visitados durante cada um desses acessos. Note que o conjunto de pontos à esquerda não é arboreamente satisfeito, mas o conjunto à direita é.}
 \label{fig:traducao-busca-em-ASS}
 \end{figure}
 
-\begin{lemma} A visão geométrica de qualquer execução de um algoritmo de busca em ABB no modelo de computação adotado é um conjunto de pontos arboreamente satisfeitos.
+\begin{lemma} A visão geométrica de qualquer execução de um algoritmo de busca em ABB no modelo de computação adotado é um conjunto de pontos arboreamente satisfeito.
 \label{lema:visao_geometrica_vira_ASS}
 \end{lemma}
 
@@ -358,7 +358,7 @@ Vamos supor, por contradição, que há um nó $q$ cuja prioridade é menor que 
     \caption{Representação da situação descrita. O triângulo é uma representação simplificada de uma ABB. A área destacada representa todos os nós acessados no instante de tempo $i$. O nó $q$ não foi visitado nesse instante de tempo.}
 \label{fig:representacao_grafica}
 \end{figure}
-De maneira informal, os nós $p$ e $q$ são nós pai-filho. Durante o instante de tempo $i$, $p$ será visitado pelo algoritmo de busca e $q$ não. Após o instante $i$, queremos visitar o nó $q$ pela primeira vez no instante $j = N(b,i)$ antes de fazer qualquer outra visita ao nó $p$, porém isso é impossível. Vamos mostrar que, neste caso, $P$ não era um conjunto arboreamente satisfeito.
+De maneira informal, os nós $p$ e $q$ são nós pai-filho. Durante o instante de tempo $i$, $p$ será visitado pelo algoritmo de busca e $q$ não. Após o instante $i$, queremos visitar o nó $q$ pela primeira vez no instante $j = N(b,i)$ antes de fazer qualquer outra visita ao nó $p$, porém isso é impossível. Vamos mostrar que, neste caso, o conjunto inicial $P$ não era arboreamente satisfeito.
 
 Os lados a seguir terão um papel na prova e estão representados na Figura~\ref{fig:area_delimitada}. São eles:
 \begin{itemize}
@@ -425,7 +425,7 @@ Assim, nota-se que a reestruturação da treap da maneira proposta é sempre vá
 \end{proof}
 
 %Ao longo dessa pesquisa, uma série de conjuntos de pontos foram analisados. 
-Verificar se um conjunto de pontos é arboreamente satisfeito é demorado se feito à mão. Assim, com o intuito de automatizar e garantir que um conjunto de pontos sendo analisado é arboreamente satisfeito, implementamos a treap proposta na Demonstração~\ref{prova:ASS}. %Essa treap executa um desce heap na raiz múltiplas vezes em cada instante de tempo e detecta se a propriedade de heap mínimo foi violada em algum momento. 
+Verificar se um conjunto de pontos é arboreamente satisfeito é demorado se feito à mão. Assim, com o intuito de automatizar e garantir que um conjunto de pontos é arboreamente satisfeito, implementamos a treap proposta na Demonstração~\ref{prova:ASS}. %Essa treap executa um desce heap na raiz múltiplas vezes em cada instante de tempo e detecta se a propriedade de heap mínimo foi violada em algum momento. 
 Se a propriedade não for violada, o código imprime a árvore correspondente a cada instante de tempo, caso a propriedade seja violada, o código imprime todas as árvores correspondentes aos instantes de tempo anteriores ao da violação e imprime o par de pontos que é arboreamente insatisfeito. A implementação pode ser vista \href{https://github.com/BrunoArmondBraga/TCC/blob/main/src/ValidAss.cpp}{aqui}.
 
 É importante notar que essa interpretação geométrica é muito útil para entender buscas em ABBs de maneira simplificada. Essa abordagem convenientemente oculta as rotações da ABB e leva em consideração apenas os nós visitados durante as buscas. É bastante impressionante que a disposição exata dos nós de uma ABB não é uma informação essencial para a análise e pode ser reconstruída a partir dos nós visitados.

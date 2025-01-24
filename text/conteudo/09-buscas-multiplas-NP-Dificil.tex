@@ -6,4 +6,940 @@
 \chapter{Buscas múltiplas}
 \label{cap:buscas-multiplas}
 
-buscas multiplas super dificil slc
+\definecolor{cor1}{named}{blue}
+\definecolor{cor2}{named}{red}
+
+
+\definecolor{cor_orange}{named}{orange}
+\definecolor{cor_blue}{named}{blue}
+\definecolor{vip_orange}{named}{orange}
+\definecolor{vip_blue}{named}{blue}
+\definecolor{vip}{named}{magenta}
+
+\newtheorem*{kuratowski}{Teorema de Kuratowski (1930)}
+
+
+Nesse capítulo mostraremos que ao retirar a propriedade da y-coordenada distinta do conjunto de pontos inicial, o problema de encontrar o menor superconjunto arboreamente satisfeito a partir de um conjunto de pontos é NP-difícil. 
+
+Usaremos a seguir uma série de conceitos básicos de complexidade computacional. Esses conceitos podem ser encontrados na seção 34 do livro Introduction to Algorithms de Cormen, Leiserson, Rivest e Stein~\cite{CLRS}.
+
+Como evidenciado durante esse texto, ainda não se sabe se é possível computar minASS($P_X$) para uma sequência $X$ de acessos em tempo polinomial. Porém note que toda visão geométrica de sequências de acessos possui seus pontos com y-coordenada distinta. Essa propriedade é essencial para a esperança do desenvolvimento de um algoritmo com tempo polinomial para esse cálculo. Definimos o problema de buscas únicas em ABBs como encontrar o menor custo, dentro do modelo de computação adotado, para executar todos os acessos de uma sequência de acessos $X = (x_1,\ldots,x_m)$, ou seja, em cada instante de tempo $i$, o algoritmo de busca em ABB precisa acessar o nó com chave $x_i$.
+
+Ao retirarmos essa restrição, a estrutura se mantém com a diferença que permitimos buscas múltiplas em ABBs. Nesse novo problema estamos buscando encontrar o menor custo, dentro do modelo de computação adotado, para executar todos os acessos de uma sequência de conjuntos de acessos $Y = (C_1,C_2,\ldots,C_m)$, onde $C_i$ define um subconjunto do conjunto $C = \{1,2,\ldots,n\}$. Assim, no instante de tempo $i$, o algoritmo de busca em ABB precisa acessar todos os nós com chave $k \in C_i$ em ordem livre.
+
+Mostraremos que para um conjunto $P$ de pontos, em que seus pontos não possuem a restrição de y-coordenada distinta, o problema de encontrar o menor superconjunto de $P$ que seja arboreamente satisfeito é NP-difícil.
+
+Abaixo serão utilizados conceitos de planaridade da teoria dos grafos. Esses conceitos podem ser encontrados na seção 4 do livro Graph Theory de Diestel~\cite{graph}. Exportamos também dessa seção o Teorema de Kuratowski:
+
+\begin{kuratowski}
+    Um grafo $G$ é planar se e só se $G$ não contém subdivisões nem do $K_5$ e nem do $K_{3,3}$.
+    \label{teorema-kuratowski}
+\end{kuratowski}
+
+Para isso, utilizaremos um problema variante do 3SAT conhecido por Not-All-Equal 3SAT que é NP-completo para o caso não planar. Esse problema consiste em dadas $k$ variáveis $x_1, x_2, \ldots, x_k$ e $l$ cláusulas que possuem três dessas variáveis cada, encontrar uma valoração das $k$ variáveis que faça com que cada cláusula possua pelo menos uma valoração verdadeira e uma valoração falsa.
+
+%Para descrever as variáveis faremos uso de fios de retângulos arboreamente insatisfeitos.
+%Para a variável $x_i$, denotaremos por $P^i$ o fio que a descreve. 
+Para descrever as variáveis faremos uso de linhas e fios entre pontos. Para um par $(a,b)$ de pontos arboreamente insatisfeito, descrevemos o segmento de reta que liga $a$ e $b$ como uma \textit{linha}. Um \textit{fio} é um conjunto contíguo de linhas. 
+
+Todo fio indica um subconjunto de pontos onde há um número mínimo de pontos necessários a serem adicionados para torna-lo arboreamente satisfeito. É possível construir fios de maneira a ter apenas duas formas de tornar o subconjunto indicado por esse fio arboreamente satisfeito adicionando o número mínimo de pontos.
+Assim, denotamos uma dessas maneiras como a valoração verdadeira da variável $x_i$ e a outra como a valoração falsa. Por padrão, nas imagens utilizaremos retângulos laranjas para a valoração verdadeira e retângulos azuis para a valoração falsa. Veja a Figura~\ref{fig:variavel}. A escolha de formas retangulares é para fins ilustrativos, retângulos representam possíveis conjuntos de pontos a serem adicionados.
+
+\begin{figure}
+    \begin{tikzpicture}[scale=0.62]
+        \draw[very thin, gray!70] (0,0) grid (6,6);   
+        
+        \draw[red!90, line width=2pt] (1,3) -- (3,1);
+        \draw[red!90, line width=2pt] (1,5) -- (5,1);
+        \draw[red!90, line width=2pt] (5,3) -- (3,5);
+        
+        \draw[red!90, line width=2pt] (1,1) -- (5,5);
+        \draw[red!90, line width=2pt] (3,1) -- (5,3);
+        \draw[red!90, line width=2pt] (1,3) -- (3,5);
+
+        %pontos normais     
+        \filldraw[black] (1,1) circle (7pt);
+        \filldraw[black] (3,1) circle (7pt);
+        \filldraw[black] (5,1) circle (7pt);
+        \filldraw[black] (2,2) circle (7pt);
+        \filldraw[black] (4,2) circle (7pt);
+
+        \filldraw[black] (1,3) circle (7pt);
+        \filldraw[black] (3,3) circle (7pt);
+        \filldraw[black] (5,3) circle (7pt);
+        \filldraw[black] (2,4) circle (7pt);
+        \filldraw[black] (4,4) circle (7pt);
+
+        \filldraw[black] (1,5) circle (7pt);
+        \filldraw[black] (3,5) circle (7pt);
+        \filldraw[black] (5,5) circle (7pt);
+        \draw[black, line width=0.5pt] (0,0) rectangle (6,6);
+
+    \end{tikzpicture}
+    %2
+    \begin{tikzpicture}[scale=0.62]
+        \tikzset{
+            ret/.style={
+                draw,
+                fill=#1,
+                minimum width=0.1cm,
+                minimum height=0.1cm
+            }
+        }
+        \draw[very thin, gray!70] (0,0) grid (6,6);   
+
+        \draw[red!90, line width=2pt] (1,3) -- (3,1);
+        \draw[red!90, line width=2pt] (1,5) -- (5,1);
+        \draw[red!90, line width=2pt] (5,3) -- (3,5);
+        
+        \draw[red!90, line width=2pt] (1,1) -- (5,5);
+        \draw[red!90, line width=2pt] (3,1) -- (5,3);
+        \draw[red!90, line width=2pt] (1,3) -- (3,5);
+
+
+        %pontos normais     
+        \filldraw[black] (1,1) circle (7pt);
+        \filldraw[black] (3,1) circle (7pt);
+        \filldraw[black] (5,1) circle (7pt);
+        \filldraw[black] (2,2) circle (7pt);
+        \filldraw[black] (4,2) circle (7pt);
+
+        \filldraw[black] (1,3) circle (7pt);
+        \filldraw[black] (3,3) circle (7pt);
+        \filldraw[black] (5,3) circle (7pt);
+        \filldraw[black] (2,4) circle (7pt);
+        \filldraw[black] (4,4) circle (7pt);
+
+        \filldraw[black] (1,5) circle (7pt);
+        \filldraw[black] (3,5) circle (7pt);
+        \filldraw[black] (5,5) circle (7pt);
+
+        \node[ret=cor_orange] at (1,2) {};
+        \node[ret=cor_orange] at (3,2) {};
+        \node[ret=cor_orange] at (5,2) {};
+        \node[ret=cor_orange] at (1,4) {};
+        \node[ret=cor_orange] at (3,4) {};
+        \node[ret=cor_orange] at (5,4) {};
+
+        \draw[black, line width=0.5pt] (0,0) rectangle (6,6);
+
+    \end{tikzpicture}
+    %3
+    \begin{tikzpicture}[scale=0.62]
+        \tikzset{
+            ret/.style={
+                draw,
+                fill=#1,
+                minimum width=0.1cm,
+                minimum height=0.1cm
+            }
+        }
+        \draw[very thin, gray!70] (0,0) grid (6,6);   
+
+        \draw[red!90, line width=2pt] (1,3) -- (3,1);
+        \draw[red!90, line width=2pt] (1,5) -- (5,1);
+        \draw[red!90, line width=2pt] (5,3) -- (3,5);
+        
+        \draw[red!90, line width=2pt] (1,1) -- (5,5);
+        \draw[red!90, line width=2pt] (3,1) -- (5,3);
+        \draw[red!90, line width=2pt] (1,3) -- (3,5);
+
+
+        %pontos normais     
+        \filldraw[black] (1,1) circle (7pt);
+        \filldraw[black] (3,1) circle (7pt);
+        \filldraw[black] (5,1) circle (7pt);
+        \filldraw[black] (2,2) circle (7pt);
+        \filldraw[black] (4,2) circle (7pt);
+
+        \filldraw[black] (1,3) circle (7pt);
+        \filldraw[black] (3,3) circle (7pt);
+        \filldraw[black] (5,3) circle (7pt);
+        \filldraw[black] (2,4) circle (7pt);
+        \filldraw[black] (4,4) circle (7pt);
+
+        \filldraw[black] (1,5) circle (7pt);
+        \filldraw[black] (3,5) circle (7pt);
+        \filldraw[black] (5,5) circle (7pt);
+
+        \node[ret=cor_blue] at (2,1) {};
+        \node[ret=cor_blue] at (4,1) {};
+        \node[ret=cor_blue] at (2,3) {};
+        \node[ret=cor_blue] at (4,3) {};
+        \node[ret=cor_blue] at (2,5) {};
+        \node[ret=cor_blue] at (4,5) {};
+
+        \draw[black, line width=0.5pt] (0,0) rectangle (6,6);
+
+    \end{tikzpicture}
+    \caption{À esquerda, um fio descrito pelas linhas vermelhas que representa uma variável. Ao meio, um superconjunto arboreamente satisfeito do conjunto de pontos da esquerda que representa a valoração verdadeira para a variável analisada. À direita, outro superconjunto arboreamente satisfeito que representa a valoração falsa para a mesma variável. Perceba que os conjuntos de pontos adicionados para a valoração verdadeira e para a valoração falsa são disjuntos e possuem mesmo tamanho.}
+\label{fig:variavel}
+\end{figure}
+
+Para descrever as cláusulas, podemos nos utilizar de subestruturas que recebem três variáveis diferentes, ou seja fios diferentes, pelas pontas e organizam-as de maneira a garantir que o menor superconjunto arboreamente satisfeito dessa estrutura utiliza pelo menos uma valoração verdadeira e outra falsa. Veja a Figura~\ref{fig:clausula}.
+
+
+%TEM ALGO ERRADO NO JEITO QUE EU ESCREVI
+% Basicamente nós não queremos necessariamente 1 variavel true e outra falsa, queremos o resultado de 2 pra ser assim.
+% Ex: ¬X¹ ^ ¬X² ^ X³ = Aqui (falso,falso,verdadeiro) é uma valoração das variaveis que não obedece ao not all equal, mas possui valorações tanto verdadeiras quanto falsas.
+
+\begin{figure}
+    \begin{tikzpicture}[scale=0.62]
+        \tikzset{
+            ret/.style={
+                draw,
+                fill=#1,
+                minimum width=0.1cm,
+                minimum height=0.1cm
+            },
+            vipp/.style={
+                draw=black,
+                fill=#1,
+                double,
+                line width=1pt,
+                double distance=0.3mm,
+                minimum width=0.1cm,
+                minimum height=0.1cm
+            }
+        }
+        \draw[very thin, gray!70] (0,0) grid (10,10);   
+
+
+        \draw[red!90, line width=2pt] (1,9) -- (4,6) -- (3,4);
+        \draw[red!90, line width=2pt] (1,7) -- (3,9);
+        \draw[red!90, line width=2pt] (2,6) -- (4,8) -- (5,7) -- (6,8) -- (8,6) -- (7,5) -- (8,4) -- (6,2);
+        \draw[red!90, line width=2pt] (9,9) -- (6,6);
+        \draw[red!90, line width=2pt] (7,9) -- (9,7);
+        \draw[red!90, line width=2pt] (9,1) -- (6,4) -- (4,3);
+        \draw[red!90, line width=2pt] (7,1) -- (9,3);
+
+
+        %pontos normais     
+        %1
+        \filldraw[black] (1,1) circle (7pt);
+        \filldraw[black] (2,1) circle (7pt);
+        \filldraw[black] (3,1) circle (7pt);
+        \filldraw[black] (4,1) circle (7pt);
+        \filldraw[black] (5,1) circle (7pt);
+        \filldraw[black] (6,1) circle (7pt);
+        \filldraw[black] (7,1) circle (7pt);
+        \node[ret=cor_orange] at (8,1) {};
+        %\filldraw[cor1] (8,1) circle (7pt);
+        \filldraw[black] (9,1) circle (7pt);
+
+        %2
+        \filldraw[black] (1,2) circle (7pt);
+        \filldraw[black] (2,2) circle (7pt);
+        \filldraw[black] (3,2) circle (7pt);
+        \filldraw[black] (4,2) circle (7pt);
+        \filldraw[black] (5,2) circle (7pt);
+        \filldraw[black] (6,2) circle (7pt);
+        \node[ret=cor_blue] at (7,2) {};
+        %\filldraw[cor2] (7,2) circle (7pt);
+        \filldraw[black] (8,2) circle (7pt);
+        \node[ret=cor_blue] at (9,2) {};
+        %\filldraw[cor2] (9,2) circle (7pt);
+
+        %3
+        \filldraw[black] (1,3) circle (7pt);
+        \filldraw[black] (2,3) circle (7pt);
+        \filldraw[black] (3,3) circle (7pt);
+        \filldraw[black] (4,3) circle (7pt);
+        \node[vipp=vip_orange] at (6,3) {};
+        %\filldraw[cor1] (6,3) circle (7pt); %ESPECIAL
+        \filldraw[black] (7,3) circle (7pt);
+        \node[ret=cor_orange] at (8,3) {};
+        %\filldraw[cor1] (8,3) circle (7pt);
+        \filldraw[black] (9,3) circle (7pt);
+
+        %4
+        \filldraw[black] (1,4) circle (7pt);
+        \filldraw[black] (2,4) circle (7pt);
+        \filldraw[black] (3,4) circle (7pt);
+        \node[ret=vip] at (4,4) {};
+        %\filldraw[magenta] (4,4) circle (7pt);
+        \filldraw[black] (6,4) circle (7pt);
+        \node[vipp=cor_blue] at (7,4) {};
+        %\filldraw[cor2] (7,4) circle (7pt);
+        \filldraw[black] (8,4) circle (7pt);
+        \filldraw[black] (9,4) circle (7pt);
+
+        %5
+        \filldraw[black] (1,5) circle (7pt);
+        \filldraw[black] (2,5) circle (7pt);
+        \filldraw[black] (6,5) circle (7pt);
+        \filldraw[black] (7,5) circle (7pt);
+        \node[ret=vip] at (8,5) {};
+        %\filldraw[magenta] (8,5) circle (7pt);
+        \filldraw[black] (9,5) circle (7pt);
+
+        %6
+        \filldraw[black] (1,6) circle (7pt);
+        \filldraw[black] (2,6) circle (7pt);
+        \node[vipp=vip_blue] at (3,6) {};
+        %\filldraw[cor2] (3,6) circle (7pt); %ESPECIAL
+        \filldraw[black] (4,6) circle (7pt);
+        \filldraw[black] (5,6) circle (7pt);
+        \filldraw[black] (6,6) circle (7pt);
+        \node[vipp=vip_orange] at (7,6) {};
+        %\filldraw[cor1] (7,6) circle (7pt); %ESPECIAL
+        \filldraw[black] (8,6) circle (7pt);
+        \filldraw[black] (9,6) circle (7pt);
+
+        %7
+        \filldraw[black] (1,7) circle (7pt);
+        \node[ret=cor_orange] at (2,7) {};
+        %\filldraw[cor1] (2,7) circle (7pt);
+        \filldraw[black] (3,7) circle (7pt);
+        \node[vipp=vip_orange] at (4,7) {};
+        %\filldraw[cor1] (4,7) circle (7pt); %ESPECIAL
+        \filldraw[black] (5,7) circle (7pt);
+        \node[vipp=vip_blue] at (6,7) {};
+        %\filldraw[cor2] (6,7) circle (7pt); %ESPECIAL
+        \filldraw[black] (7,7) circle (7pt);
+        \node[ret=vip_blue] at (8,7) {};
+        %\filldraw[cor2] (8,7) circle (7pt);
+        \filldraw[black] (9,7) circle (7pt);
+
+        %8
+        \node[ret=cor_blue] at (1,8) {};
+        %\filldraw[cor2] (1,8) circle (7pt);
+        \filldraw[black] (2,8) circle (7pt);
+        \node[ret=cor_blue] at (3,8) {};
+        %\filldraw[cor2] (3,8) circle (7pt);
+        \filldraw[black] (4,8) circle (7pt);
+        \node[ret=vip] at (5,8) {};
+        %\filldraw[magenta] (5,8) circle (7pt);
+        \filldraw[black] (6,8) circle (7pt);
+        \node[ret=cor_orange] at (7,8) {};
+        %\filldraw[cor1] (7,8) circle (7pt);
+        \filldraw[black] (8,8) circle (7pt);
+        \node[ret=cor_orange] at (9,8) {};
+        %\filldraw[cor1] (9,8) circle (7pt);
+
+        %9
+        \filldraw[black] (1,9) circle (7pt);
+        \node[ret=cor_orange] at (2,9) {};
+        %\filldraw[cor1] (2,9) circle (7pt);
+        \filldraw[black] (3,9) circle (7pt);
+        \filldraw[black] (4,9) circle (7pt);
+        \filldraw[black] (5,9) circle (7pt);
+        \filldraw[black] (6,9) circle (7pt);
+        \filldraw[black] (7,9) circle (7pt);
+        \node[ret=cor_blue] at (8,9) {};
+        %\filldraw[cor2] (8,9) circle (7pt);
+        \filldraw[black] (9,9) circle (7pt);
+
+        \draw[black, line width=0.5pt] (0,0) rectangle (10,10);
+
+    \end{tikzpicture}
+    \caption{Note que a única maneira de apenas adicionar dois dos três pontos indicados por retângulos rosas é com uma valoração verdadeira e outra falsa dentre as 3 valorações. Os retângulos laranjas/azuis destacados são aqueles relacionados aos retângulos rosa.}
+\label{fig:clausula}
+\end{figure}
+
+Dependendo da geometria do problema e das cláusulas utilizadas, serão necessários ajustes adicionais. \textit{Saltos} são espaçamentos adicionais que alternam a ordem das cores ao longo de um fio e podem ser usados para ajuste de paridade de maneira arbitrária. Além disso, podemos utilizar \textit{adaptadores} que são espaçamentos para cruzamento de fios diferentes. Veja a Figura~\ref{fig:pulo}.
+
+\begin{figure}
+    \begin{tikzpicture}[scale=0.62]
+        \tikzset{
+            ret/.style={
+                draw,
+                fill=#1,
+                minimum width=0.1cm,
+                minimum height=0.1cm
+            }
+        }
+        \draw[very thin, gray!70] (0,0) grid (9,10);   
+
+        \draw[red!90, line width=2pt] (1,9) -- (4,6) -- (5,4) -- (8,1);
+        \draw[red!90, line width=2pt] (1,7) -- (3,9);
+        \draw[red!90, line width=2pt] (2,6) -- (4,8);
+        \draw[red!90, line width=2pt] (3,4) -- (4,6) -- (5,7);
+        \draw[red!90, line width=2pt] (4,3) -- (5,4) -- (6,6);
+        \draw[red!90, line width=2pt] (5,2) -- (7,4);
+        \draw[red!90, line width=2pt] (6,1) -- (8,3);
+
+        \foreach \y in {1,2,3,4,5,6,7,9} { %PONTOS PRETOS
+            \filldraw[black] (1,\y) circle (7pt);
+        }
+        \foreach \y in {1,2,3,4,5,6,8} { %PONTOS PRETOS
+            \filldraw[black] (2,\y) circle (7pt);
+        }
+        \foreach \y in {1,2,3,4,7,9} { %PONTOS PRETOS
+            \filldraw[black] (3,\y) circle (7pt);
+        }
+        \foreach \y in {1,2,3,6,8,9} { %PONTOS PRETOS
+            \filldraw[black] (4,\y) circle (7pt);
+        }
+        \foreach \y in {1,2,4,7,8,9} { %PONTOS PRETOS
+            \filldraw[black] (5,\y) circle (7pt);
+        }
+        \foreach \y in {1,3,6,7,8,9} { %PONTOS PRETOS
+            \filldraw[black] (6,\y) circle (7pt);
+        }
+        \foreach \y in {2,4,5,6,7,8,9} { %PONTOS PRETOS
+            \filldraw[black] (7,\y) circle (7pt);
+        }
+        \foreach \y in {1,3,4,5,6,7,8,9} { %PONTOS PRETOS
+            \filldraw[black] (8,\y) circle (7pt);
+        }
+
+        \node[ret=cor_orange] at (2,7) {};
+        \node[ret=cor_orange] at (2,9) {};
+        \node[ret=cor_orange] at (4,4) {};
+        \node[ret=cor_orange] at (4,7) {};
+        \node[ret=cor_orange] at (6,2) {};
+        \node[ret=cor_orange] at (6,4) {};
+        \node[ret=cor_orange] at (8,2) {};
+        \node[ret=cor_blue] at (1,8) {};
+        \node[ret=cor_blue] at (3,8) {};
+        \node[ret=cor_blue] at (3,6) {};
+        \node[ret=cor_blue] at (5,6) {};
+        \node[ret=cor_blue] at (5,3) {};
+        \node[ret=cor_blue] at (7,3) {};
+        \node[ret=cor_blue] at (7,1) {};
+
+        \draw[black, line width=0.5pt] (0,0) rectangle (9,10);
+
+    \end{tikzpicture}
+    \begin{tikzpicture}[scale=0.62]
+        \tikzset{
+            ret/.style={
+                draw,
+                fill=#1,
+                minimum width=0.1cm,
+                minimum height=0.1cm
+            }
+        }
+        \draw[very thin, gray!70] (0,0) grid (10,10);   
+
+
+        \draw[red!90, line width=2pt] (2,3) -- (1,4) -- (2,5) -- (1,6);
+        \draw[red!90, line width=2pt] (7,4) -- (2,5) -- (7,6) -- (2,7);
+        \draw[red!90, line width=2pt] (3,3) -- (4,8) --(5,3) -- (6,8);
+        \draw[red!90, line width=2pt] (4,2) -- (5,3) -- (6,2) -- (7,3);
+        \draw[red!90, line width=2pt] (5,1) -- (6,2) -- (7,1) -- (8,2);
+        \draw[red!90, line width=2pt] (2,8) -- (3,9) -- (4,8) -- (5,9);
+        \draw[red!90, line width=2pt] (2,8) -- (3,9) -- (4,8) -- (5,9);
+        \draw[red!90, line width=2pt] (8,5) -- (7,6) -- (9,8) -- (8,9);
+        \draw[red!90, line width=2pt] (9,6) -- (7,8);
+
+        \foreach \y in {1,2,4,6,7,8,9} { %PONTOS PRETOS
+            \filldraw[black] (1,\y) circle (7pt);
+        }
+        \foreach \y in {1,2,3,5,7,8} { %PONTOS PRETOS
+            \filldraw[black] (2,\y) circle (7pt);
+        }
+        \foreach \y in {1,2,3,9} { %PONTOS PRETOS
+            \filldraw[black] (3,\y) circle (7pt);
+        }
+        \foreach \y in {1,2,8} { %PONTOS PRETOS
+            \filldraw[black] (4,\y) circle (7pt);
+        }
+        \foreach \y in {1,3,9} { %PONTOS PRETOS
+            \filldraw[black] (5,\y) circle (7pt);
+        }
+        \foreach \y in {2,8,9} { %PONTOS PRETOS
+            \filldraw[black] (6,\y) circle (7pt);
+        }
+        \foreach \y in {1,3,4,6,8,9} { %PONTOS PRETOS
+            \filldraw[black] (7,\y) circle (7pt);
+        }
+        \foreach \y in {2,3,4,5,7,9} { %PONTOS PRETOS
+            \filldraw[black] (8,\y) circle (7pt);
+        }
+        \foreach \y in {1,2,3,4,5,6,8} { %PONTOS PRETOS
+            \filldraw[black] (9,\y) circle (7pt);
+        }
+
+        \node[ret=cor_orange] at (1,3) {};
+        \node[ret=cor_orange] at (1,5) {};
+        \node[ret=cor_orange] at (2,9) {};
+        \node[ret=cor_orange] at (4,3) {};
+        \node[ret=cor_orange] at (4,9) {};
+        \node[ret=cor_orange] at (6,1) {};
+        \node[ret=cor_orange] at (6,3) {};
+        \node[ret=cor_orange] at (7,5) {};
+        \node[ret=cor_orange] at (7,7) {};
+        \node[ret=cor_orange] at (8,1) {};
+        \node[ret=cor_orange] at (9,7) {};
+        \node[ret=cor_orange] at (9,9) {};
+        \node[ret=cor_blue] at (2,4) {};
+        \node[ret=cor_blue] at (2,6) {};
+        \node[ret=cor_blue] at (3,8) {};
+        \node[ret=cor_blue] at (5,2) {};
+        \node[ret=cor_blue] at (5,8) {};
+        \node[ret=cor_blue] at (7,2) {};
+        \node[ret=cor_blue] at (8,6) {};
+        \node[ret=cor_blue] at (8,8) {};
+
+
+        \draw[black, line width=0.5pt] (0,0) rectangle (10,10);
+
+    \end{tikzpicture}
+    \caption{À esquerda, um salto que tem como finalidade alternar a paridade ou fazer uma negação. À direita, um adaptador, onde dois fios de variáveis se cruzam sem interagir entre si.}
+\label{fig:pulo}
+\end{figure}
+
+Assim, concluímos que é possível reduzir o problema 3SAT-Not-All-Equal no problema de busca do menor superconjunto arboreamente satisfeito. Foi provado por Moret~\cite{buscas} que o problema 3SAT-Not-All-Equal está em $P$ se o grafo a seguir for planar: crie um vértice para cada variável, suas negações e para cada cláusula. Conecte os vértices de cada cláusula aos vértices das variáveis contidas em cada cláusula. Por fim, conecte todos os vértices relacionados à variáveis em um ciclo simples.
+
+Faremos a redução do problema 3SAT-Not-All-Equal com 6 variáveis e com as cláusulas $C_1 = x_1 \land x_3 \land x_5$, $C_2 = x_1 \land x_4 \land x_5$, $C_3 = x_2 \land x_4 \land x_6$, $C_4 = \neg x_1 \land x_2 \land x_6$ e $C_5 = \neg x_1 \land x_3 \land x_6$ para o problema de buscas múltiplas. Veja que a Figura~\ref{fig:nao-planar} mostra uma subdivisão do grafo $K_5$ em um subgrafo do problema, então pelo Teorema de Kuratowski concluímos que o grafo do problema não é planar e assim a instância é NP-completo.
+
+\begin{figure}
+    \begin{tikzpicture}[scale=0.8, node distance=2cm, every node/.style={circle, draw, minimum size=8mm, font=\sffamily}]
+        
+        % Definindo os nós
+        \node (x1) at (0, 3.75) [fill=gray!40] {$x_1$};
+        \node (x2) at (0, 2.25) [fill=gray!40] {$x_2$};
+        \node (x3) at (0, 0.75) [fill=gray!40] {$x_3$};
+        \node (x4) at (0, -0.75) [fill=gray!40] {$x_4$};
+        \node (x5) at (0, -2.25) {$x_5$};
+        \node (x6) at (0, -3.75) {$x_6$};
+    
+        \node (c4) at (3, 3) {$C_4$};
+        \node (c5) at (3, 1.5) {$C_5$};
+        \node (c1) at (3, 0) {$C_1$};
+        \node (c2) at (3, -1.5) {$C_2$};
+        \node (c3) at (3, -3) {$C_3$};
+    
+        \node (nx1) at (6, 3.75) [fill=gray!40] {$\neg x_1$};
+        \node (nx2) at (6, 2.25) {$\neg x_2$};
+        \node (nx3) at (6, 0.75) {$\neg x_3$};
+        \node (nx4) at (6, -0.75) {$\neg x_4$};
+        \node (nx5) at (6, -2.25) {$\neg x_5$};
+        \node (nx6) at (6, -3.75) {$\neg x_6$};
+
+        \draw[line width=0.05cm] (x1) to[out=200, in=160] (x2);
+        \draw[line width=0.05cm] (x2) to[out=200, in=160] (x3);
+        \draw[line width=0.05cm] (x3) to[out=200, in=160] (x4);
+        \draw[line width=0.05cm] (x4) to[out=200, in=160] (x5);
+        \draw[line width=0.05cm] (x5) to[out=200, in=160] (x6);
+        \draw[line width=0.05cm] (x6) to[out=200, in=-20] (nx6);
+
+        %\draw (nx1) -- (nx2);
+        \draw[line width=0.05cm] (nx1) to[out=-20, in=20] (nx2);
+        \draw[line width=0.05cm] (nx2) to[out=-20, in=20] (nx3);
+        \draw[line width=0.05cm] (nx3) to[out=-20, in=20] (nx4);
+        \draw[line width=0.05cm] (nx4) to[out=-20, in=20] (nx5);
+        \draw[line width=0.05cm] (nx5) to[out=-20, in=20] (nx6);
+        \draw[line width=0.05cm] (x1) to[out=160, in=20] (nx1);
+
+        \draw[line width=0.05cm] (x1) -- (c1) -- (x3);
+        \draw (c1) -- (x5);
+
+        \draw[line width=0.05cm] (x1) -- (c2) -- (x4);
+        \draw (c2) -- (x5);
+
+        \draw[line width=0.05cm] (x2) -- (c3) -- (x4);
+        \draw (c3) -- (x6);
+        
+        \draw[line width=0.05cm] (x2) -- (c4) -- (nx1);
+        \draw (c4) -- (x6);
+
+        \draw[line width=0.05cm] (x3) -- (c5) -- (nx1);
+        \draw (c5) -- (x6);
+    
+    \end{tikzpicture}    
+\caption{Subdivisão $\{x_1,x_2,x_3,x_4,\neg x_1\}$ do $K_5$ do grafo descrito.}
+\label{fig:nao-planar}
+\end{figure}
+
+Note que a Figura~\ref{fig:final} mostra que é possível descrever o problema utilizando apenas as ferramentas descritas anteriormente. Assim, conclui-se que encontrar o menor superconjunto do conjunto de pontos pretos da figura citada é uma solução para a instância do problema 3SAT-Not-All-Equal não planar descrito acima, ou seja, se soubermos resolver o problema de buscas múltiplas em tempo polinomial, então também sabemos resolver o problema 3SAT-Not-All-Equal não planar em tempo polinomial. Como 3SAT-Not-All-Equal não planar é um problema NP-completo, então o problema de múltiplas buscas também é.
+
+\begin{figure}
+    \begin{tikzpicture}[scale=0.6]
+        \tikzset{
+            ret/.style={
+                draw,
+                fill=#1,
+                minimum width=0.1cm,
+                minimum height=0.1cm
+            },
+            vipp/.style={
+                draw=black,
+                fill=#1,
+                double,
+                line width=1pt,
+                double distance=0.3mm,
+                minimum width=0.1cm,
+                minimum height=0.1cm
+            }
+        }
+        
+        \draw[very thin, gray!70] (0,0) grid (24,32); 
+        
+        \draw[ForestGreen,line width=0.07cm] (3.5,2.5) rectangle (10.5,9.5);
+        \draw[ForestGreen,line width=0.07cm] (2.5,12.5) rectangle (9.5,19.5);
+        \draw[ForestGreen,line width=0.07cm] (12.5,3.5) rectangle (19.5,10.5);
+        \draw[ForestGreen,line width=0.07cm] (12.5,14.5) rectangle (19.5,21.5);
+        \draw[ForestGreen,line width=0.07cm] (11.5,23.5) rectangle (18.5,30.5);
+
+        \draw[red!90, line width=2pt] (1,13) -- (2,12) -- (3,10) -- (2,9) -- (3,8) -- (4,9) -- (5,8) -- (6,9);
+        \draw[red!90, line width=2pt] (5,8) -- (6,7) -- (5,5);
+        \draw[red!90, line width=2pt] (3,13) -- (4,12);
+        \draw[red!90, line width=2pt] (2,12) -- (3,13) -- (4,14) -- (5,15) -- (4,17);
+        \draw[red!90, line width=2pt] (4,14) -- (5,13) -- (6,14) -- (7,13) -- (9,15) -- (8,16) -- (9,17) -- (8,18) -- (7,17) -- (5,18);
+        \draw[red!90, line width=2pt] (8,18) -- (9,17);
+        \draw[red!90, line width=2pt] (9,19) -- (10,20) -- (9,29) -- (10,30) -- (11,29);
+        \draw[red!90, line width=2pt] (9,31) -- (10,30) -- (11,31) -- (14,28) -- (16,29);
+        \draw[red!90, line width=2pt] (14,28) -- (13,27) -- (12,26) -- (13,25) -- (12,24) -- (13,23) -- (12,22) -- (13,21) -- (12,20);
+        \draw[red!90, line width=2pt] (11,21) -- (12,22) -- (11,23);
+
+        \draw[red!90, line width=2pt] (7,19) -- (8,18) -- (9,19);
+
+        \draw[red!90, line width=2pt] (10,1) -- (11,2) -- (8,5);
+        \draw[red!90, line width=2pt] (8,3) -- (10,5) -- (9,6) -- (10,7) -- (9,8) -- (10,9) -- (9,11) -- (10,12) -- (9,13) -- (8,14) --(7,15);
+
+        \draw[red!90, line width=2pt] (8,5) -- (6,4);
+
+        \draw[red!90, line width=2pt] (6,9) -- (7,8) -- (8,9) -- (9,8);
+
+        \draw[red!90, line width=2pt] (11,11) -- (10,12) -- (15,17);
+        \draw[red!90, line width=2pt] (13,21) -- (14,20) -- (13,19) -- (14,18) -- (13,17) -- (14,16);
+
+        \draw[red!90, line width=2pt] (14,20) -- (15,19) -- (17,20);
+        \draw[red!90, line width=2pt] (17,28) -- (16,26) -- (17,25) -- (16,24) -- (15,25) -- (14,24) -- (13,25);
+
+        \draw[red!90, line width=2pt] (18,26) -- (17,25) -- (18,24) -- (19,25) -- (20,24) -- (22,25) -- (23,26);
+
+        \draw[red!90, line width=2pt] (22,25) -- (23,24) -- (22,23) -- (23,22) -- (22,20) -- (23,19) -- (22,18) -- (23,17) -- (22,16) -- (23,15) -- (22,14) -- (23,13) -- (22,12) -- (23,11);
+
+        \draw[red!90, line width=2pt] (22,10) -- (21,11) -- (22,12) -- (21,13) -- (20,14) -- (21,15) -- (22,14); 
+        \draw[red!90, line width=2pt] (22,14) -- (21,13) -- (17,17); 
+        \draw[red!90, line width=2pt] (19,17) -- (18,16) -- (17,15) -- (16,16) -- (15,15) -- (14,16); 
+
+        \draw[red!90, line width=2pt] (21,11) -- (19,10) -- (18,9) -- (19,8);
+        \draw[red!90, line width=2pt] (18,6) -- (17,8) -- (18,9) -- (17,10) -- (16,9) -- (15,10) -- (14,9) -- (15,8);
+
+        \draw[red!90, line width=2pt] (15,10) -- (14,11) -- (13,12) -- (11,11); 
+
+        \draw[red!90, line width=2pt] (14,11) -- (13,10) -- (14,9) -- (13,8) -- (14,7) -- (13,6) -- (14,5) -- (15,6) -- (17,5);
+
+        \draw[red!90, line width=2pt] (12,1) -- (11,2) -- (12,3) -- (13,4) -- (15,6); 
+
+        \draw[red!90, line width=2pt] (13,2) -- (12,3) -- (11,4) -- (10,3);
+
+        \draw[red!90, line width=2pt] (13,4) -- (12,5);
+        \draw[red!90, line width=2pt] (9,19) -- (8,20);
+        \draw[red!90, line width=2pt] (3,15) -- (4,14);
+        \draw[red!90, line width=2pt] (4,7) -- (5,8);
+        \draw[red!90, line width=2pt] (13,4) -- (14,3);
+
+        \draw[red!90, line width=2pt] (20,14) -- (19,13);
+        \draw[red!90, line width=2pt] (21,13) -- (20,12);
+        \draw[red!90, line width=2pt] (13,13) -- (11,15);
+        \draw[red!90, line width=2pt] (14,14) -- (13,15);
+        \draw[red!90, line width=2pt] (14,11) -- (15,12) -- (16,11) -- (15,10);
+        \draw[red!90, line width=2pt] (11,13) -- (10,14) -- (9,13);
+        \draw[red!90, line width=2pt] (13,21) -- (14,22);
+        \draw[red!90, line width=2pt] (17,17) -- (18,19);
+        \draw[red!90, line width=2pt] (13,27) -- (11,29) -- (12,30);
+        \draw[red!90, line width=2pt] (12,28) -- (14,30);
+        \draw[red!90, line width=2pt] (14,5) -- (15,4);
+        \draw[red!90, line width=2pt] (14,20) -- (15,21);
+        \draw[red!90, line width=2pt] (18,14) -- (19,15) -- (20,16);
+        \draw[red!90, line width=2pt] (13,25) -- (14,26);
+
+
+
+        \draw[red!90, line width=2pt] (8,7) -- (9,8);
+        \draw[red!90, line width=2pt] (9,13) -- (8,12);
+        \draw[red!90, line width=2pt] (19,10) -- (18,11);
+        
+        %vamos fazer por colunas
+        %coluna 2
+        \foreach \y in {8, 9, 10, 11, 13} {
+            \filldraw[black] (1,\y) circle (7pt);
+        }
+        \foreach \y in {12} { % LARANJAS
+            \node[ret=cor_orange] at (1,\y) {};
+        }
+
+        %coluna 3
+        \foreach \y in {9, 12} {
+            \filldraw[black] (2,\y) circle (7pt);
+        }
+        \foreach \y in {8, 10, 13} {
+            \node[ret=cor_blue] at (2,\y) {};
+        }
+
+        %coluna 4
+        \filldraw[black] (3,6) circle (7pt);
+        \filldraw[black] (3,7) circle (7pt);
+        \filldraw[black] (3,8) circle (7pt);
+        \node[ret=cor_orange] at (3,9) {};
+        \filldraw[black] (3,10) circle (7pt);
+        \node[ret=cor_orange] at (3,12) {};
+        \filldraw[black] (3,13) circle (7pt);
+        \node[ret=cor_orange] at (3,14) {};
+        \filldraw[black] (3,15) circle (7pt);
+        \filldraw[black] (3,16) circle (7pt);
+        \filldraw[black] (3,17) circle (7pt);
+        \filldraw[black] (3,18) circle (7pt);
+        \filldraw[black] (3,19) circle (7pt);
+
+        %coluna 5
+        \node[ret=cor_blue] at (4,8) {};
+        \filldraw[black] (4,3) circle (7pt);
+        \filldraw[black] (4,4) circle (7pt);
+        \filldraw[black] (4,5) circle (7pt);
+        \filldraw[black] (4,6) circle (7pt);
+        \filldraw[black] (4,7) circle (7pt);
+        \filldraw[black] (4,9) circle (7pt);
+        \filldraw[black] (4,10) circle (7pt);
+        \filldraw[black] (4,11) circle (7pt);
+        \filldraw[black] (4,12) circle (7pt);
+        \node[ret=cor_blue] at (4,13) {};
+        \filldraw[black] (4,14) circle (7pt);
+        \node[vipp=vip_blue] at (4,15) {};
+        \filldraw[black] (4,17) circle (7pt);
+        \filldraw[black] (4,18) circle (7pt);
+        \filldraw[black] (4,19) circle (7pt);
+
+        %coluna 6
+        \foreach \y in {9} { % LARANJAS
+            \node[ret=cor_orange] at (5,\y) {};
+        }
+        \foreach \y in {3,4,5, 8, 10, 11, 12, 13, 15, 18, 19} { %PONTOS PRETOS
+            \filldraw[black] (5,\y) circle (7pt);
+        }
+        \node[vipp=vip_orange] at (5,7) {};
+        \node[vipp=vip_orange] at (5,14) {};
+        \node[ret=vip] at (5,17) {};
+
+        %coluna 7
+        \foreach \y in {3, 4, 7,9,10,11,12,14, 15, 19} { %PONTOS PRETOS
+            \filldraw[black] (6,\y) circle (7pt);
+        }
+        \node[ret=vip] at (6,5) {};
+        \node[ret=vip] at (6,13) {};
+        \node[vipp=vip_blue] at (6,8) {};
+
+        %coluna 8
+        \foreach \y in {3, 7, 8,10,11,12, 13, 15, 16, 17, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31} { %PONTOS PRETOS
+            \filldraw[black] (7,\y) circle (7pt);
+        }
+        \foreach \y in {} { % AZUIS
+            \node[ret=cor_blue] at (7,\y) {};
+        }
+        \node[ret=vip] at (7,9) {};
+        \node[vipp=vip_orange] at (7,18) {};
+        \node[vipp=vip_blue] at (7,14) {};
+
+        %coluna 9
+        \foreach \y in {3, 5, 6, 7, 9,10,11,12, 14, 16, 18, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31} { %PONTOS PRETOS
+            \filldraw[black] (8,\y) circle (7pt);
+        }
+        \foreach \y in {19} { % AZUIS
+            \node[ret=cor_blue] at (8,\y) {};
+        }
+        \foreach \y in {13} { % LARANJAS
+            \node[ret=cor_orange] at (8,\y) {};
+        }
+        \node[vipp=vip_orange] at (8,8) {};
+        \node[vipp=vip_orange] at (8,15) {};
+        \node[vipp=vip_blue] at (8,4) {};
+        \node[vipp=vip_blue] at (8,17) {};
+        
+
+        %coluna 10
+        \foreach \y in {4, 6, 8, 11, 13, 15, 17, 19, 29, 31} { %PONTOS PRETOS
+            \filldraw[black] (9,\y) circle (7pt);
+        }
+        \foreach \y in {9, 12, 14} { % AZUIS
+            \node[ret=cor_blue] at (9,\y) {};
+        }
+        \foreach \y in {3, 18, 20, 30} { % LARANJAS
+            \node[ret=cor_orange] at (9,\y) {};
+        }
+        \node[vipp=vip_orange] at (9,5) {};
+        \node[vipp=vip_blue] at (9,7) {};
+        \node[ret=vip] at (9,16) {};
+
+        %coluna 11
+        \foreach \y in {1, 3, 5, 7, 9, 12, 14, 15, 16, 17, 18, 19, 20, 30} { %PONTOS PRETOS
+            \filldraw[black] (10,\y) circle (7pt);
+        }
+        \foreach \y in {2, 4, 29, 31} { % AZUIS
+            \node[ret=cor_blue] at (10,\y) {};
+        }
+        \foreach \y in {8, 11, 13} { % LARANJAS
+            \node[ret=cor_orange] at (10,\y) {};
+        }
+        \node[ret=vip] at (10,6) {};
+
+        %coluna 12
+        \foreach \y in {2, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 16, 17, 18, 19, 20, 21, 23, 24, 25, 26, 27, 28, 29, 31} { %PONTOS PRETOS
+            \filldraw[black] (11,\y) circle (7pt);
+        }
+        \foreach \y in {12, 14, 22} { % AZUIS
+            \node[ret=cor_blue] at (11,\y) {};
+        }
+        \foreach \y in {1, 3, 30} { % LARANJAS
+            \node[ret=cor_orange] at (11,\y) {};
+        }
+
+        %coluna 13
+        \foreach \y in {1, 3, 5, 6, 7, 8, 9, 10, 14, 20, 22, 24, 26, 28, 30} { %PONTOS PRETOS
+            \filldraw[black] (12,\y) circle (7pt);
+        }
+        \foreach \y in {2, 4, 29, 31} { % AZUIS
+            \node[ret=cor_blue] at (12,\y) {};
+        }
+        \foreach \y in {13, 15, 21, 23, 25} { % LARANJAS
+            \node[ret=cor_orange] at (12,\y) {};
+        }
+        \node[ret=vip] at (12,27) {};
+
+        %coluna 14
+        \foreach \y in {1, 2, 4, 6, 8, 10, 12, 13, 15, 17, 19, 21, 23, 25, 27, 29} { %PONTOS PRETOS
+            \filldraw[black] (13,\y) circle (7pt);
+        }
+        \foreach \y in {14, 16, 20, 22, 24} { % AZUIS
+            \node[ret=cor_blue] at (13,\y) {};
+        }
+        \foreach \y in {3, 5, 9, 11, 30} { % LARANJAS
+            \node[ret=cor_orange] at (13,\y) {};
+        }
+        \node[vipp=vip_blue] at (13,26) {};
+        \node[vipp=vip_orange] at (13,28) {};
+        \node[ret=vip] at (13,7) {};
+        \node[ret=vip] at (13,18) {};
+
+        %coluna 15
+        \foreach \y in {1,2,3,5, 7, 9, 11, 13, 14, 16, 18, 20, 22, 23, 24, 26, 27, 28,  30} { %PONTOS PRETOS
+            \filldraw[black] (14,\y) circle (7pt);
+        }
+        \foreach \y in {4, 10, 12} { % AZUIS
+            \node[ret=cor_blue] at (14,\y) {};
+        }
+        \foreach \y in {15, 21} { % LARANJAS
+            \node[ret=cor_orange] at (14,\y) {};
+        }
+        \node[vipp=vip_blue] at (14,6) {};
+        \node[vipp=vip_blue] at (14,8) {};
+        \node[vipp=vip_blue] at (14,29) {};
+        \node[vipp=vip_orange] at (14,17) {};
+        \node[vipp=vip_orange] at (14,19) {};
+        \node[vipp=vip_orange] at (14,25) {};
+
+        %coluna 16
+        \foreach \y in {1,2,3,4, 6, 7, 8, 10, 12, 13, 14, 15, 17, 18, 19, 21, 22, 23, 25, 26, 30} { %PONTOS PRETOS
+            \filldraw[black] (15,\y) circle (7pt);
+        }
+        \foreach \y in {11} { % LARANJAS
+            \node[ret=cor_orange] at (15,\y) {};
+        }
+        \node[vipp=vip_orange] at (15,5) {};
+        \node[vipp=vip_orange] at (15,9) {};
+        \node[vipp=vip_blue] at (15,16) {};
+        \node[vipp=vip_blue] at (15,20) {};
+        \node[ret=vip] at (15,24) {};
+
+        %coluna 17
+        \foreach \y in {4, 8, 9, 11, 13, 14, 16, 17, 21, 22, 23, 24, 26, 29,30} { %PONTOS PRETOS
+            \filldraw[black] (16,\y) circle (7pt);
+        }
+        \foreach \y in {12} { % AZUIS
+            \node[ret=cor_blue] at (16,\y) {};
+        }
+        \node[vipp=vip_blue] at (16,25) {};
+        \node[ret=vip] at (16,10) {};
+        \node[ret=vip] at (16,15) {};
+        \node[ret=vip] at (16,28) {};
+
+        %coluna 18
+        \foreach \y in {4, 5, 8, 10, 11, 12, 13, 14, 15, 17, 20, 21, 22, 23, 25, 28, 29, 30} { %PONTOS PRETOS
+            \filldraw[black] (17,\y) circle (7pt);
+        }
+        \foreach \y in {24} { % AZUIS
+            \node[ret=cor_orange] at (17,\y) {};
+        }
+        \node[ret=vip] at (17,6) {};
+        \node[ret=vip] at (17,19) {};
+        \node[vipp=vip_blue] at (17,16) {};
+        \node[vipp=vip_orange] at (17,9) {};
+        \node[vipp=vip_orange] at (17,26) {};
+
+        %coluna 19
+        \foreach \y in {4, 5, 6, 9, 11, 12, 13, 14, 16, 19,20, 21, 22, 23, 24, 26,27,28,29 ,30} { %PONTOS PRETOS
+            \filldraw[black] (18,\y) circle (7pt);
+        }
+        \foreach \y in {10, 25} { % AZUIS
+            \node[ret=cor_blue] at (18,\y) {};
+        }
+        \foreach \y in {15} { % LARANJAS
+            \node[ret=cor_orange] at (18,\y) {};
+        }
+
+        \node[vipp=vip_blue] at (18,8) {};
+        \node[vipp=vip_orange] at (18,17) {};
+
+        %coluna 20
+        \foreach \y in {4, 5, 6, 7, 8, 10, 12, 13, 15, 17, 18, 19, 20, 21,22, 23, 25, 26, 27, 28, 29, 30} { %PONTOS PRETOS
+            \filldraw[black] (19,\y) circle (7pt);
+        }
+        \foreach \y in {14, 16} { % AZUIS
+            \node[ret=cor_blue] at (19,\y) {};
+        }
+        \foreach \y in {9, 11, 24} { % LARANJAS
+            \node[ret=cor_orange] at (19,\y) {};
+        }
+
+        %coluna 21
+        \foreach \y in {7,8,9, 12, 14, 16, 17, 18, 19, 20, 21, 22, 23, 24, 26, 27, 28, 29, 30} { %PONTOS PRETOS
+            \filldraw[black] (20,\y) circle (7pt);
+        }
+        \foreach \y in {13, 15} { % LARANJAS
+            \node[ret=cor_orange] at (20,\y) {};
+        }
+        \foreach \y in {25} { % LARANJAS
+            \node[ret=cor_blue] at (20,\y) {};
+        }
+
+        %coluna 22
+        \foreach \y in {9, 11, 13, 15, 16, 17, 18, 19, 20, 21, 22, 23, 26, 27, 28, 29, 30} { %PONTOS PRETOS
+            \filldraw[black] (21,\y) circle (7pt);
+        }
+        \foreach \y in {10, 12, 14} { % AZUIS
+            \node[ret=cor_blue] at (21,\y) {};
+        }
+
+        %coluna 23
+        \foreach \y in {9, 10, 12, 14, 16, 18, 20, 23, 25, 27, 28, 29, 30} { %PONTOS PRETOS
+            \filldraw[black] (22,\y) circle (7pt);
+        }
+        \foreach \y in {11, 13, 15, 17, 19, 22, 24, 26} { % LARANJAS
+            \node[ret=cor_orange] at (22,\y) {};
+        }
+
+        %coluna 24
+        \foreach \y in {10, 11, 13, 15, 17, 19, 22, 24, 26, 27, 28, 29, 30} { %PONTOS PRETOS
+            \filldraw[black] (23,\y) circle (7pt);
+        }
+        \foreach \y in {12, 14, 16, 18, 20, 23, 25} { % AZUIS
+            \node[ret=cor_blue] at (23,\y) {};
+        }
+        \foreach \y in {} { % LARANJAS
+            \node[ret=cor_orange] at (23,\y) {};
+        }
+
+        \node at (2.8,3.2) [text=ForestGreen] {\huge$C_1$};
+        \node at (3.2,20.2) [text=ForestGreen] {\huge$C_2$};
+        \node at (20.3,4.2) [text=ForestGreen] {\huge$C_5$};
+        \node at (16.2,18.2) [text=ForestGreen] {\huge$C_4$};
+        \node at (17.8,31.2) [text=ForestGreen] {\huge$C_3$};
+        \node at (12.05,11.7) {\huge$x_1$};
+        \node at (12,19.2) {\huge$x_2$};
+        \node at (23.2,9) {\huge$x_6$};
+        \node at (9.1,1.5) {\huge$x_3$};
+        \node at (2,7.2) {\huge$x_5$};
+        \node at (13.2,31.1) {\huge$x_4$};
+
+
+        \draw[black, line width=0.5pt] (0,0) rectangle (24,32);
+
+    \end{tikzpicture}
+    \caption{Representação do problema dentro do contexto de buscas múltiplas. Perceba que todas as valorações possuem mesmo custo e o menor custo só se dá quando se respeita a restrição do problema 3SAT Not-All-Equal.}
+\label{fig:final}
+\end{figure}
