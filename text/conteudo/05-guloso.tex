@@ -3,31 +3,35 @@
 % para saber mais: https://tex.stackexchange.com/q/78101/183146
 
 %% ------------------------------------------------------------------------- %%
-\chapter{Algoritmo Guloso}
+\chapter{Algoritmo guloso}
 \label{cap:algoritmo-guloso}
 
 %\definecolor{teste}{rgb}{0.0, 0.3, 0.8}
 \definecolor{teste}{rgb}{1,0,0}
 
-Neste capítulo entenderemos como a visão geométrica de um algoritmo de busca em ABB para uma sequência de acessos $X$ se relaciona com o custo ótimo $OPT(X)$. Além disso, será apresentado um algoritmo guloso offline que transforma um conjunto arboreamente insatisfeito em um conjunto arboreamente satisfeito adicionando uma série de pontos, tentando adicionar o menor número possível de pontos ao conjunto. Por fim, argumentaremos como esse algoritmo pode ser adaptado para um algoritmo online em ABBs dentro do modelo de computação adotado.
+Neste capítulo entenderemos como a visão geométrica de um algoritmo de busca em ABB para uma sequência de acessos $X$ se relaciona com o custo ótimo $\OPT(X)$. Além disso, será apresentado um algoritmo guloso offline que transforma um conjunto arboreamente insatisfeito em um conjunto arboreamente satisfeito adicionando uma série de pontos, tentando adicionar o menor número possível de pontos ao conjunto. Por fim, argumentaremos como esse algoritmo pode ser adaptado para um algoritmo online em ABBs dentro do modelo de computação adotado.
 
 \section{Otimalidade} 
 
-Revisemos a definição de custo nesse modelo de computação. O custo para realizar um acesso é o número de nós visitados durante essa operação. Assim, $OPT(X)$ é o menor custo necessário para um algoritmo de busca offline em ABB realizar todos os acessos de uma entrada $X = (x_{1},\ldots,x_{m})$, ou seja, o número mínimo de visitas a nós necessárias para realizar todos os acessos.
+Revisemos a definição de custo nesse modelo de computação. O custo para realizar um acesso é o número de nós visitados durante essa operação. Assim, $\OPT(X)$ é o menor custo necessário para um algoritmo de busca offline em ABB realizar todos os acessos de uma entrada $X = (x_{1},\ldots,x_{m})$, ou seja, o número mínimo de visitas a nós necessárias para realizar todos os acessos.
 
-Retornando à análise geométrica, seja $P$ um conjunto de pontos. Denotaremos por \textit{minASS(P)} o tamanho do menor conjunto arboreamente satisfeito que contém $P$. 
+Retornando à análise geométrica, seja $P$ um conjunto de pontos. Denotaremos por \minASS$(P)$ o tamanho do menor conjunto arboreamente satisfeito que contém $P$.
 
-Seja $P$ a visão geométrica de um algoritmo de busca em ABB que possui custo $OPT(X)$ para a sequência de acessos $X$. De acordo com o Lema~\ref{lema:visao_geometrica_vira_ASS}, $P$ é um conjunto arboreamente satisfeito. Além disso, $|P|$ é mínimo para a entrada $X$, pois $P$ é a visão geométrica do algoritmo de busca em ABB que possui o custo ótimo $OPT(X)$. Assim, nota-se que $OPT(X) = minASS(P_X) = |P|$.
+%Seja $P$ a visão geométrica de um algoritmo de busca em ABB que possui custo $\OPT(X)$ para a sequência $X$ de acessos. De acordo com o Lema~\ref{lema:visao_geometrica_vira_ASS}, $P$ é um conjunto arboreamente satisfeito. Além disso, $|P|$ é mínimo para a entrada $X$, pois $P$ é a visão geométrica de um algoritmo de busca em ABB que possui o custo ótimo $\OPT(X)$. Assim, nota-se que $\OPT(X) = \minASS(P_X) = |P|$.
 
-Isso implica que o problema de encontrar o custo de um algoritmo ótimo de busca em ABBs para uma sequência de acessos $X$ pode ser reformulado como o problema de encontrar o menor superconjunto arboreamente satisfeito do conjunto $P_X$.
+Seja $P$ um menor superconjunto arboreamente satisfeito da visão geométrica da sequência $X$ de acessos, ou seja, $|P| = \minASS(P_X)$. De acordo com o Lema~\ref{lema:ASS_vira_visao_geometrica}, $P$ é a visão geométrica da execução de um algoritmo de busca em ABB. Dentro do contexto de ABBs, $|P|$ representa o número de nós visitados pelo algoritmo de busca e, consequentemente, seu custo dentro do modelo de computação adotado. Por fim, se $|P| = \minASS(P_X)$, então não há nenhum superconjunto arboreamente satisfeito de $P_X$ que possua tamanho menor que $|P|$, ou seja, não há nenhuma execução de um algoritmo de busca que visite menos nós que $|P|$. Assim, concluimos que $|P| = \minASS(P_X) = \OPT(X)$.
+
+%Além disso, de acordo com o modelo de computação, se $P$ possui tamanho $\OPT(X)$, então o algoritmo de 
+
+Isso implica que o problema de encontrar o custo de um algoritmo ótimo de busca em ABB para uma sequência $X$ de acessos pode ser reformulado como o problema de encontrar o menor superconjunto arboreamente satisfeito do conjunto $P_X$.
 
 \section{Guloso futurista}
 
-Apesar de não se saber se é possível encontrar o valor de $OPT(X)$ em tempo polinomial, e consequentemente encontrar o menor superconjunto de $P_X$ arboreamente satisfeito, apresentaremos o algoritmo Guloso futurista - Greedy Future - que dado o conjunto $P_X$ de pontos que representa a sequência $X$ de acessos, produz um conjunto $P$ de pontos pequeno que contém $P_X$ e é arboreamente satisfeito. Esse algoritmo foi descoberto de maneira independente por Lucas \cite{lucas} e por Munro \cite{munro}.
+Apesar de não se saber se é possível encontrar o valor de $\OPT(X)$ em tempo polinomial, e consequentemente encontrar o menor superconjunto de $P_X$ arboreamente satisfeito, apresentaremos o algoritmo Guloso futurista --- Greedy Future --- que dado o conjunto $P_X$ de pontos que representa a sequência $X$ de acessos, produz um conjunto $P$ de pontos pequeno que contém $P_X$ e é arboreamente satisfeito. Esse algoritmo foi descoberto de maneira independente por Lucas \cite{lucas} e por Munro \cite{munro}.
 
-Naturalmente $|P_X| \geq |X| = m$ e todos os pontos de $P_X$ possuem coordenadas $y$ distintas dentro do intervalo $[1,m]$. 
+Naturalmente $|P_X| \geq |X| = m$ e todos os pontos de $P_X$ possuem $y$-coordenadas distintas dentro do intervalo $[1,m]$. 
 
-O algoritmo funciona da seguinte maneira: inicialmente defina uma reta horizontal $r$ em $y = 1$ e inicialize $P = P_X$. Seja $a \in P \cap r$ um ponto com coordenadas $(a.x, a.y)$. Para cada $\{a,b\}$-retângulo insatisfeito em $P$, com $b$ um ponto com coordenadas $(b.x, b.y)$, com $b.y < a.y$, adicione um ponto em $(b.x, a.y)$. Após satisfazer todos os $\{a,b\}$-retângulos desse tipo, mova $r$ uma unidade para cima e repita. O algoritmo termina após satisfazer todos os $\{a,b\}$-retângulos com $r$ em $y = m$. Veja a Figura~\ref{fig:GreedyFuture-funcionamento}.
+O algoritmo funciona da seguinte maneira: inicialmente defina uma reta horizontal $r$ em $y = 1$ e inicialize $P = P_X$. Seja $a \in P \cap r$ um ponto com coordenadas $(a.x, a.y)$. Para cada $\{a,b\}$-retângulo insatisfeito em $P$, com $b$ um ponto com coordenadas $(b.x, b.y)$, com $b.y < a.y$, adicione a $P$ um ponto em $(b.x, a.y)$. Após satisfazer todos os $\{a,b\}$-retângulos desse tipo, mova $r$ uma unidade para cima e repita. O algoritmo termina após satisfazer todos os $\{a,b\}$-retângulos de $P$ com $r$ em $y = m$. Veja a Figura~\ref{fig:GreedyFuture-funcionamento}.
 
 \begin{figure}
     \centering
@@ -296,9 +300,9 @@ O algoritmo funciona da seguinte maneira: inicialmente defina uma reta horizonta
 \label{fig:GreedyFuture-funcionamento}
 \end{figure}
 
-O algoritmo mantém o invariante que ao final da iteração do algoritmo para a reta horizontal $y = l$, todos os pares de ponto $\{a,b\}$, com $a,b \in P$ e $a.y, b.y \leq l$ são arboreamente satisfeitos. Assim, por construção, o resultado do algoritmo é um conjunto arboreamente satisfeito.
+O algoritmo mantém o invariante que, ao final da iteração do algoritmo para a reta horizontal $y = l$, todos os pares de ponto $\{a,b\}$, com $a,b \in P$ e $a.y, b.y \leq l$ são arboreamente satisfeitos. Assim, por construção, o resultado do algoritmo é um conjunto arboreamente satisfeito.
 
-O comportamento desse algoritmo é caracterizado por uma abordagem gulosa local. Esse algoritmo, quando refletido no contexto de ABBs, visita apenas os nós que estão no caminho do nó com chave buscada e reorganiza todos os nós visitados de maneira a deixar mais perto da raiz, os nó que serão visitados mais cedo, e consequentemente, mais longe da raiz os nós que serão visitados mais tarde. 
+O comportamento desse algoritmo é caracterizado por uma abordagem gulosa local. Esse algoritmo, quando refletido no contexto de ABBs, visita apenas os nós que estão no caminho da raiz até o nó com chave buscada e reorganiza todos os nós visitados de maneira a deixar mais perto da raiz, os nós que serão visitados mais cedo, e consequentemente, mais longe da raiz os nós que serão visitados mais tarde. 
 
 A Figura~\ref{fig:greedy_em_ABB} evidencia este comportamento. A primeira coluna é uma cópia da Figura~\ref{fig:GreedyFuture-funcionamento}. A segunda coluna mostra o caminho utilizado pelo algoritmo de busca para executar o acesso da sequência $X$ e a terceira coluna representa a disposição final da ABB após as rotações serem realizadas preparando-se para os próximos acessos. As ABBs da segunda e terceira coluna estão propositalmente invertidas (com a raiz embaixo e as folhas em cima) para evidenciar que todos os nós visitados em cada acesso (nós em vermelho) são os nós representados pelos pontos na reta $r$ daquele instante.
 
@@ -1015,13 +1019,13 @@ A Figura~\ref{fig:greedy_em_ABB} evidencia este comportamento. A primeira coluna
 \label{fig:greedy_em_ABB}
 \end{figure}
 
-Como mostrado no Lema~\ref{lema:ASS_vira_visao_geometrica}, e evidenciado pela Figura~\ref{fig:greedy_em_ABB}, é possível a partir unicamente do conjunto de pontos $P$ resultante da execução do algoritmo guloso futurista para uma sequência $X$ de buscas construir os passos que devem ser executados para um algoritmo de busca executar todos os acessos de $X$ apenas visitando os nós representados pelos pontos de $P$. 
+Como mostrado no Lema~\ref{lema:ASS_vira_visao_geometrica}, e evidenciado pela Figura~\ref{fig:greedy_em_ABB}, é possível a partir unicamente do conjunto de pontos $P$ resultante da execução do algoritmo guloso futurista para uma sequência $X$ de acessos construir os passos que devem ser executados para um algoritmo de busca executar todos os acessos de $X$ apenas visitando os nós representados pelos pontos de $P$. 
 
-Note que para isso foi necessário inicializar a árvore com os nós ordenados pelo primeiro acesso de cada nó e também foi necessário saber a próxima visita aos nós para ter a informação de como reestruturar a ABB durante os acessos de maneira a apenas visitar os nós propostos. Assim, apesar do guloso futurista ser um algoritmo online, a principio a sua tradução para um algoritmo de busca em ABB necessita de mais informação e, portanto, é offline.
+Note que para isso foi necessário inicializar a árvore com os nós ordenados pelo primeiro acesso de cada nó e também foi necessário saber a próxima visita aos nós para ter a informação de como reestruturar a ABB durante os acessos de maneira a apenas visitar os nós propostos. Assim, apesar do guloso futurista ser um algoritmo online, a princípio a sua tradução para um algoritmo de busca em ABB necessita de mais informação e, portanto, é offline.
 
 Demaine et al. \cite{geometry_of_bst} provaram que utilizando uma estrutura abstrata de dados chamada árvore split que implementa as operações maketree e split no modelo de computação adotado é possível converter um algoritmo online do contexto de conjunto de pontos arboreamente satisfeitos em um algoritmo online do contexto de buscas em ABBs com custo extra limitado por um fator constante. A ideia central é evitar tomar decisões sobre como dispor os nós na ABB e armazenar esses nós em uma árvore split. Dessa maneira é possível utilizar a operação split no futuro quando for necessário visitar um dos nós presentes nesta árvore split. Essa prova é bastante enigmática e de difícil compreensão, envolvendo uma série de estruturas de dados como árvores treap, árvores rubro-negras e árvores 2-3-4. Para esse texto, basta perceber que é possível converter o algoritmo guloso futurista em um algoritmo online de busca em ABBs sem aumento significativo do seu custo.
 
-Embora o algoritmo garanta encontrar um superconjunto $P$ arboreamente satisfeito de $P_X$, o guloso futurista não garante que $|P| = minASS(P_X)$. Veja a Figura~\ref{fig:greedy_subotimo}.
+Embora o algoritmo garanta encontrar um superconjunto $P$ arboreamente satisfeito de $P_X$, o guloso futurista não garante que $|P| = \minASS(P_X)$. Veja a Figura~\ref{fig:greedy_subotimo}.
 
 \begin{comment}
 \begin{figure}
@@ -1159,7 +1163,7 @@ Embora o algoritmo garanta encontrar um superconjunto $P$ arboreamente satisfeit
             child {node {3}};
         \end{scope}
     \end{tikzpicture}
-    \caption{Em preto, os pontos de $P_X$ para uma sequência $X = (2,3,1,3,1,3)$ de acessos. À esquerda, o conjunto de pontos produzidos pelo Guloso futurista. À direita, o menor conjunto arboreamente satisfeito para $P_X$, de tamanho minASS$(P_X)$.}
+    \caption{Em preto, os pontos de $P_X$ para uma sequência $X = (2,3,1,3,1,3)$ de acessos. À esquerda, o conjunto de pontos produzidos pelo Guloso futurista. À direita, o menor conjunto arboreamente satisfeito para $P_X$, de tamanho \minASS$(P_X)$.}
 \label{fig:greedy_subotimo}
 \end{figure}
 \end{comment}
@@ -1167,14 +1171,14 @@ Embora o algoritmo garanta encontrar um superconjunto $P$ arboreamente satisfeit
 \begin{figure}
     \centering
     \includegraphics[scale=0.8]{imagens/guloso_subotimo.pdf}
-    \caption{Em cima, o conjunto de pontos $P$ produzido pelo algoritmo guloso futurista para a sequência $X = (2,3,1,3,1,3)$ de acessos. À direita desse conjunto de pontos está a ABB correspondente onde as buscas são feitas com os nós visitados em cada busca destacados. Abaixo, o conjunto de pontos $P'$ com tamanho minASS$(X)$. À direita desse conjunto está a ABB correspondente onde as buscas são feitas com os nós visitados em cada busca destacados.}
+    \caption{Em cima, o conjunto de pontos $P$ produzido pelo algoritmo guloso futurista para a sequência $X = (2,3,1,3,1,3)$ de acessos. À direita desse conjunto de pontos está a ABB correspondente onde as buscas são feitas com os nós visitados em cada busca destacados. Abaixo, um conjunto de pontos $P'$ com tamanho \minASS$(P_X)$. À direita desse conjunto está a ABB correspondente onde os nós visitados em cada acesso estão destacados.}
 \label{fig:greedy_subotimo}
 \end{figure}
 
-Analisando o caso acima, perceba que o guloso futurista, por ser um algoritmo online, sempre assume que a primeira chave buscada é a chave da raiz da árvore inicial em sua execução refletida no contexto de ABBs. Após o acesso à chave 2, todas as buscas se alteram entre as chaves 1 e 3, porém, a chave 2 não é mais buscada. Assim, fica óbvio perceber que o nó com chave 2 deveria ser retirado do caminho das duas folhas, porém pelo algoritmo fazer decisões gulosas locais, para ele rotacionar o nó com chave 2 para baixo é necessário que ele visite todos os nós da árvore e isso não pode ocorrer. No caso ótimo é exatamente isso que acontece, o algoritmo visita todos os nós no inicio e já rotaciona o nó com chave 2 para a folha garantindo assim que esse nó não vai ser visitado de maneira desnecessária no futuro.
+Analisando o caso acima, perceba que o guloso futurista, por ser um algoritmo online, sempre assume que a primeira chave buscada é a chave da raiz da árvore inicial em sua execução refletida no contexto de ABBs. Após o acesso à chave 2, todas as buscas se alternam entre as chaves 1 e 3, porém a chave 2 não é mais buscada. Assim, fica óbvio perceber que o nó com chave 2 deveria ser retirado do caminho das duas folhas, porém pelo algoritmo fazer decisões gulosas locais, para ele rotacionar o nó com chave 2 para baixo é necessário que ele visite todos os nós da árvore e isso não pode ocorrer. No caso ótimo é exatamente isso que acontece: o algoritmo visita todos os nós no início e já rotaciona o nó com chave 2 para a folha, garantindo assim que esse nó não vai ser visitado de maneira desnecessária no futuro.
 
-Para uma sequência $X$ de acessos com tamanho $m$, formada por uma busca à chave 2 e depois buscas alternadas entre as chaves 1 e 3, é possível notar que o custo do algoritmo guloso futurista é $OPT(X)$ + $m$/2.
+Para uma sequência $X$ de acessos com tamanho $m$, formada por uma busca à chave 2 e depois buscas alternadas entre as chaves 1 e 3, é possível notar que o custo do algoritmo guloso futurista é $\OPT(X)$ + $m$/2.
 
-O pior caso encontrado do algoritmo guloso futurista foi propostos por Munro~\cite{munro}. Esse caso acontece quando o algoritmo guloso futurista busca uma ABB completa na ordem da permutação bit-reversa e depois busca apenas as chaves seguindo a mesma permutação. Esse autor conjecturou que o custo do guloso futurista é $OPT(X)$ + $\Oh(m)$ para toda sequência $X$ de acessos. Essa sequência é de extrema importância para o estudo de delimitações de custo em algoritmos de busca em ABBs que permitem rotações e será explicada mais a frente no Capítulo~\ref{cap:wilber}.
+O pior caso encontrado do algoritmo guloso futurista foi proposto por Munro~\cite{munro}. Esse caso acontece quando o algoritmo guloso futurista busca, em uma ABB completa, as chaves na ordem da sequência bit-reversa e em seguida busca apenas as chaves seguindo a mesma sequência. Munro conjecturou que o custo do guloso futurista é $\OPT(X)$ + $\Oh(m)$ para toda sequência $X$ de acessos. Essa sequência particular apresentada por Munro é de extrema importância para o estudo de delimitações de custo em algoritmos de busca em ABBs que permitem rotações e será explicada mais à frente no Capítulo~\ref{cap:wilber}.
 
-Se provada a conjectura de Munro que o custo do guloso futurista é $OPT(X)$ + $\Oh(m)$ para toda sequência $X$ de acessos, como $OPT(X) \geq m$ então prova-se também que o algoritmo guloso futurista tem custo $\Oh(OPT(X))$. Assim, o algoritmo de busca em ABBs resultante da conversão do algoritmo guloso futurista para o contexto de ABBs possui também custo $\Oh(OPT(X))$ e é dinamicamente ótimo.
+Se provada a conjectura de Munro, que o custo do guloso futurista é $\OPT(X)$ + $\Oh(m)$ para toda sequência $X$ de acessos, como $\OPT(X) \geq m$, então prova-se também que o algoritmo guloso futurista tem custo $\Oh(\OPT(X))$. Assim, o algoritmo de busca em ABBs resultante da conversão do algoritmo guloso futurista para o contexto de ABBs possuiria também custo $\Oh(\OPT(X))$ e seria dinamicamente ótimo. Ou seja, essa conjectura de Munro implica que a implementação online de Demaine et al.~\cite{geometry_of_bst} do guloso futurista é dinamicamente ótima.

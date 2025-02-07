@@ -41,9 +41,9 @@ Neste capítulo entenderemos como utilizar a visão geométrica da execução de
 \section{Orientação de retângulos}
 %\section{Categoria de retângulos}
 
-Para construção de provas mais sofisticadas, é necessário entender melhor características da geometria dos retângulos formados por pontos de um conjunto. Lembre-se que todos os retângulos aqui considerados são ortogonais aos eixos cartesianos. Por conveniência das provas, todas as sequências de acessos desse capítulo possuem tamanho $n$ e todas as chaves são buscadas exatamente uma vez, ou seja, a sequência de busca é uma permutação de 1 a $n$.
+Para a construção de provas mais sofisticadas, é necessário entender melhor características da geometria dos retângulos formados por pontos de um conjunto. Lembre-se que todos os retângulos aqui considerados são ortogonais aos eixos cartesianos. Por conveniência das provas, todas as sequências de acessos desse capítulo possuem exatamente um acesso por chave, ou seja, $m = n$ e a sequência de busca é uma permutação de 1 a $n$.
 
-Dividiremos os retângulos formados por um par de pontos de um conjunto $P$ em dois grupos, os $\rectpos$-retângulos e os $\rectneg$-retângulos. Denotamos por $\rectpos$\textit{-retângulo} os retângulos que possuem o vértice de $P$ à esquerda mais abaixo que o vértice de $P$ à direita. Denotamos por $\rectneg$\textit{-retângulo} os retângulos que possuem o vértice de $P$ à esquerda mais acima que o vértice de $P$ à direita.
+Dividiremos os retângulos formados por um par de pontos de um conjunto $P$ em dois grupos: os $\rectpos$-retângulos e os $\rectneg$-retângulos. Denotamos por $\rectpos$\textit{-retângulo} um retângulo que possui o vértice de $P$ à esquerda mais abaixo que o vértice de $P$ à direita. Denotamos por $\rectneg$\textit{-retângulo} um retângulo que possui o vértice de $P$ à esquerda mais acima que o vértice de $P$ à direita.
 
 Assim, definimos que um conjunto de pontos $P$ é $\rectpos$\textit{-satisfeito} se todos os $\rectpos$-retângulos formados por dois pontos de $P$ não ortogonalmente colineares são arboreamente satisfeitos. O conceito de $\rectneg$-satisfeito é definido simetricamente.
 
@@ -54,7 +54,7 @@ Também será útil definir quando ambos os tipos de retângulos são satisfeito
 Por fim, definimos \textit{minASS}$_{\rectpos}(P)$ como o tamanho de um menor superconjunto de $P$ que é $\rectpos$-satisfeito. Analogamente, \textit{minASS}$_{\rectneg}(P)$ é o tamanho de um menor superconjunto de $P$ que é $\rectneg$-satisfeito e \textit{minASS}$_{\recttotal}(P)$ é o tamanho do menor superconjunto de $P$ que é $\recttotal$-satisfeito em relação a $P$.
 
 %EXPLICAR MAIS!! NAO ESTÁ CLARA A CONCLUSÃO DA EQUAÇÃO.
-Note que qualquer união entre dois conjuntos $Z_{\rectpos}$ e $Z_{\rectneg}$, onde $Z_{\rectpos}$ é $\rectpos$-satisfeito, $Z_{\rectneg}$ é $\rectneg$-satisfeito e ambos são superconjuntos de $P$, é $\recttotal$-satisfeita em relação a $P$. Veja Figura~\ref{fig:eq4.1_ex_minimal}. Porém, $Z_{\rectpos} \setminus P$ e $Z_{\rectneg} \setminus P$ não necessariamente são disjuntos entre si. Levando em consideração ambas as propriedade, conclui-se então a Equação~\ref{eq:minASStotal_menorouigual_soma_de_minASSs}.
+Note que qualquer união entre dois conjuntos $Z_{\rectpos}$ e $Z_{\rectneg}$, onde $Z_{\rectpos}$ é $\rectpos$-satisfeito, $Z_{\rectneg}$ é $\rectneg$-satisfeito e ambos são superconjuntos de $P$, é $\recttotal$-satisfeita em relação a $P$. Veja a Figura~\ref{fig:eq4.1_ex_minimal}. Porém, $Z_{\rectpos} \setminus P$ e $Z_{\rectneg} \setminus P$ não necessariamente são disjuntos entre si. Levando em consideração ambas as propriedades, conclui-se então a Equação~(\ref{eq:minASStotal_menorouigual_soma_de_minASSs}).
 \begin{equation} \label{eq:minASStotal_menorouigual_soma_de_minASSs}
     \text{minASS}_{\recttotal}(P) \leq \text{minASS}_{\rectpos}(P) + \text{minASS}_{\rectneg}(P).
 \end{equation}
@@ -96,16 +96,16 @@ Note que qualquer união entre dois conjuntos $Z_{\rectpos}$ e $Z_{\rectneg}$, o
 \label{fig:eq4.1_ex_minimal}
 \end{figure}
 
-Outro ponto fundamental de ser compreendido é que todo conjunto $Y$, superconjunto de $P$, arboreamente satisfeito também é $\recttotal$-satisfeito em relação a $P$. Isso acontece pois por conta do conjunto $Y$ ser superconjunto de $P$ e arboreamente satisfeito, então $Y \cup P = Y$ que é $\rectpos$-satisfeito e $\rectneg$-satisfeito. Assim, temos que
+Outro ponto fundamental a ser compreendido é que todo conjunto $Y$, superconjunto de $P$, arboreamente satisfeito também é $\recttotal$-satisfeito em relação a $P$. Isso acontece pois por conta do conjunto $Y$ ser superconjunto de $P$ e arboreamente satisfeito, então $Y \cup P = Y$ é $\rectpos$-satisfeito e $\rectneg$-satisfeito. Assim, temos que
 \begin{equation} \label{eq:minASS_orientado_menor_ou_igual_minASS}
     \text{minASS}_{\recttotal}(P) \leq \text{minASS}(P).
 \end{equation}
 
 \section{Guloso futurista orientado}
 
-Definimos agora dois algoritmos muito parecidos com o guloso futurista visto no capítulo anterior, que nos ajudarão a descrever delimitações inferiores em sequências de buscas. 
+Definimos agora dois algoritmos muito parecidos com o guloso futurista visto no capítulo anterior, que nos ajudarão a descrever delimitações inferiores para sequências de acessos. 
 
-Chamaremos de guloso \textit{futurista}-$\rectpos$ o seguinte algoritmo que recebe um conjunto $P_X$ de pontos que representa uma sequência $X$ de buscas. O algoritmo começa com $P = P_X$ e desliza uma reta horizontal $r$ que começa em $y = 1$ e vai até $y = m$. O algoritmo mantém o invariante que todos os pares de pontos de $P$ em $r$ ou abaixo de $r$ são $\rectpos$-satisfeitos. Esse algoritmo garante essa propriedade adicionando a $P$ o menor número de pontos na linha $r$ durante cada iteração. Ao fim da execução, o conjunto $P$ de pontos é $\rectpos$-satisfeito. O algoritmo guloso futurista-$\rectneg$ é definido de maneira simétrica considerando a $\rectneg$-satisfação.
+Chamaremos de guloso \textit{futurista}-$\rectpos$ o seguinte algoritmo que recebe um conjunto $P_X$ de pontos que representa uma sequência $X$ de acessos. O algoritmo começa com $P = P_X$ e desliza uma reta horizontal $r$ que começa em $y = 1$ e vai até $y = m$. O algoritmo mantém o invariante que o conjunto de pontos de $P$ em $r$ ou abaixo de $r$ é $\rectpos$-satisfeito. Esse algoritmo garante essa propriedade adicionando a $P$ o menor número de pontos na linha $r$ durante cada iteração. Ao fim da execução, o conjunto $P$ de pontos é $\rectpos$-satisfeito. O algoritmo guloso futurista-$\rectneg$ é definido de maneira simétrica considerando a $\rectneg$-satisfação.
 
 Chamaremos de Fut$_{\rectpos}(P)$ o conjunto de pontos adicionados durante a execução do algoritmo guloso futurista-$\rectpos$ para um conjunto $P$ de pontos. Todas essas definições valem simetricamente para o algoritmo guloso futurista-$\rectneg$.
 Veja a Figura~\ref{fig:greedy_sign}.
@@ -602,11 +602,11 @@ Veja a Figura~\ref{fig:greedy_sign}.
             \draw[black, line width=0.5pt] (0,0) rectangle (11,11); 
         \end{tikzpicture}
     \end{minipage}
-    \caption{Em preto, o conjunto $P_X$ da sequência $X = (3,8,10,4,5,2,6,9,1,7)$ de acessos. Em azul, o conjunto obtido pelo \protect\rectpos-futurista para $P_X$ e em vermelho, o do \protect\rectneg-futurista.}
+    \caption{Em preto, o conjunto $P_X$ da sequência $X = (3,8,10,4,5,2,6,9,1,7)$ de acessos. Em azul, o conjunto obtido pelo guloso futurista-\protect\rectpos para $P_X$ e em vermelho, o do guloso futurista-\protect\rectneg.}
 \label{fig:greedy_sign}
 \end{figure}
 
-Definimos $R(q)$ como o par de pontos $(a,b)$ do conjunto inicial tal que $q$ foi um ponto adicionado durante algum dos algoritmo gulosos futuristas orientados e o $\{a,b\}$-retângulos possui $q$ em um de seus vértices superiores. Esse par de pontos existe e é bem definido. Ele existe, pois os algoritmos gulosos futuristas orientados apenas adicionam o mínimo de pontos durante cada iteração para satisfazer arboreamente o conjunto de pontos que estão na linha descrita ou abaixo dela. Se não houvesse tal par de pontos, então o ponto $q$ foi adicionado para satisfazer um outro par de pontos $(c,d)$ onde $c$ e/ou $d$ são pontos que também adicionados pelo algoritmo. Porém, se $c$ e/ou $d$ foram adicionados pelo algoritmo então deve existir algum par de pontos mais ao extremo nos mesmo sentidos de $c$ e $d$ que fazem parte do conjunto inicial, ou seja, existe o par $(a,b)$. Esse par de pontos é bem definido, pois assumimos que os conjuntos de pontos analisados nesse capítulo possuem as propriedades de x e y-coordenada distintas.
+Definimos $R(q)$ como o par de pontos $(a,b)$ do conjunto inicial tal que $q$ foi um ponto adicionado durante algum dos algoritmos gulosos futuristas orientados e o $\{a,b\}$-retângulo possui $q$ em um de seus vértices superiores. Esse par de pontos existe e é bem definido. Ele existe, pois os algoritmos gulosos futuristas orientados apenas adicionam o mínimo de pontos durante cada iteração para satisfazer arboreamente o conjunto de pontos que estão na linha descrita ou abaixo dela. Se não houvesse tal par de pontos, então o ponto $q$ foi adicionado para satisfazer um outro par de pontos $(c,d)$ onde $c$ e/ou $d$ são pontos que também foram adicionados pelo algoritmo. Porém, se $c$ e/ou $d$ foram adicionados pelo algoritmo então deve existir algum par de pontos mais ao extremo no mesmo sentido de $c$ e $d$ com pontos que fazem parte do conjunto inicial, ou seja, existe o par $(a,b)$. Esse par de pontos é bem definido, pois assumimos que os conjuntos de pontos analisados nesse capítulo possuem as propriedades de $x$ e $y$-coordenadas distintas.
 
 Esses algoritmos terão um papel essencial para a última seção desse capítulo, onde buscamos delimitações inferiores de custo para sequências de acesso.
 
@@ -661,7 +661,7 @@ Um conjunto $I$ de retângulos é \textit{independente} se todos os retângulos 
         \fill (3,2) circle (0.15);
         \fill (2,3) circle (0.15);
     \end{tikzpicture}
-    \caption{Todas as combinações de dois \protect\rectpos-retângulos que compartilham área no interior. À esquerda, pares de retângulos independentes e à direita, pares retângulos dependentes.}
+    \caption{Todas as combinações de dois \protect\rectpos-retângulos que compartilham área no seu interior. À esquerda, pares de retângulos independentes e, à direita, pares de retângulos dependentes.}
 \label{fig:retangulos_independentes}
 \end{figure}
 
@@ -671,7 +671,7 @@ Um conjunto $I$ de retângulos é \textit{independente} se todos os retângulos 
 
 %CHEIO DE PROBLEMAS!!!
 \begin{proof}
-    Para todo ponto $q$ em Fut$_{\rectpos}(P_X)$, sejam $r$ e $s$ o par de pontos de $R(q)$, sendo $r$ o ponto de $P_X$ abaixo de $q$ e $s$ o ponto de $P_X$ a direita de $q$. Como $R(q)$ é bem definido, então $R(q) = R(t)$ se e somente se $q = t$. Seja \( \text{IRB}_{\rectpos}(P_X) = \{ R(q) \mid q \in \text{Fut}_{\rectpos}(P_X) \} \). Obviamente $|\text{IRB}_{\rectpos}(P_X)| = |\text{Fut}_{\rectpos}(P_X)|$ e por construção nenhum ponto de Fut$_{\rectpos}(P_X) \cup P_X$ está estritamente dentro de algum retângulo de IRB$_{\rectpos}$ e o vértice superior esquerdo de todos os retângulos de $\text{IRB}_{\rectpos}(P_X)$ estão em $\text{Fut}_{\rectpos}(P_X) \cup P_X$.
+    Para todo ponto $q$ em Fut$_{\rectpos}(P_X)$, sejam $r$ e $s$ o par de pontos de $R(q)$, sendo $r$ o ponto de $P_X$ abaixo de $q$ e $s$ o ponto de $P_X$ à direita de $q$. Como $R(q)$ é bem definido, então $R(q) = R(t)$ se e somente se $q = t$. Seja \( \text{IRB}_{\rectpos}(P_X) = \{ R(q) \mid q \in \text{Fut}_{\rectpos}(P_X) \} \). Obviamente $|\text{IRB}_{\rectpos}(P_X)| = |\text{Fut}_{\rectpos}(P_X)|$ e por construção nenhum ponto de Fut$_{\rectpos}(P_X) \cup P_X$ está estritamente dentro de algum retângulo de IRB$_{\rectpos}$ e o vértice superior esquerdo de cada retângulo de $\text{IRB}_{\rectpos}(P_X)$ está em $\text{Fut}_{\rectpos}(P_X) \cup P_X$.
 \end{proof}
 
 Para visualizar a ideia da prova acima, veja a Figura~\ref{fig:IRB_igual_add}. Note que analogamente à prova, o conjunto de $\rectpos$-retângulos independentes mostrado possui o vértice superior esquerdo localizado em algum ponto adicionado pelo algoritmo guloso futurista-$\rectpos$. 
@@ -715,17 +715,17 @@ Para visualizar a ideia da prova acima, veja a Figura~\ref{fig:IRB_igual_add}. N
 
         \draw[black, line width=0.5pt] (0,0) rectangle (6,6);
     \end{tikzpicture}
-    \caption{Em preto, os pontos de $P_X$ para a sequência de acessos $X = (3,1,4,2,5)$. À esquerda, a execução do guloso futurista-$\protect\rectpos$. À direita, está destacado um conjunto independente de $\protect\rectpos$-retângulos.}
+    \caption{Em preto, os pontos de $P_X$ para a sequência $X = (3,1,4,2,5)$ de acessos. À esquerda, a execução do guloso futurista-$\protect\rectpos$. À direita, está destacado um conjunto independente de $\protect\rectpos$-retângulos.}
 \label{fig:IRB_igual_add}
 \end{figure}
 
 \begin{lemma} \label{lema_6.2}
-    Considere um conjunto $\rectpos$-satisfeito $Y$ de pontos com x-coordenadas inteiras, dois pontos $a$ e $b$ não ortogonalmente colineares tais que $a,b \in Y$, e uma linha vertical $\ell$ com x-coordenada não inteira estritamente entre $a.x$ e $b.x$. Então, é possível encontrarmos dois pontos $p,q \in Y$ tais que $p.y = q.y$, $p$ está à esquerda de $\ell$ e $q$ está à direita de $\ell$ e não há nenhum ponto de $Y$ no segmento de reta horizontal que conecta $p$ e $q$. 
+    Considere um conjunto $\rectpos$-satisfeito $Y$ de pontos com $x$-coordenadas inteiras, dois pontos $a$ e $b$ não ortogonalmente colineares tais que $a,b \in Y$, e uma linha vertical $\ell$ com $x$-coordenada não inteira estritamente entre $a.x$ e $b.x$. Então, existem dois pontos $p,q \in Y$ tais que $p.y = q.y$, $p$ está à esquerda de $\ell$ e $q$ está à direita de $\ell$ e não há nenhum ponto de $Y$ no segmento de reta horizontal que conecta $p$ e $q$. 
 \end{lemma}
 
 \begin{proof}
     Assuma sem perda de generalidade que $a.x < b.x$.
-    Seja $p$ o ponto de $Y$ mais à direita e mais acima do $\{a,b\}$-retângulo que está à esquerda de $\ell$ e seja $q$ o ponto de $Y$ mais abaixo e mais a esquerda que esteja na mesma altura ou acima de $q$ do $\{a,b\}$-retângulo e esteja à direita de $\ell$. Esses pontos existem pois $a$ e $b$ satisfazem as restrições de $p$ e $q$ respectivamente e $Y$ é $\rectpos$-satisfeito. Por construção, $p$ está à esquerda de $\ell$ e $q$ à direita. Nota-se que $p.y = q.y$ obrigatoriamente, pois caso contrário o $\{p,q\}$-retângulo estaria insatisfeito, o que é contradiz o que assumimos. Veja a Figura~\ref{fig:contraexemplo_contradicao} para uma ilustração dessa contradição.
+    Seja $p$ o ponto de $Y$ à esquerda de $\ell$ mais à direita e, dentre estes, o mais acima no $\{a,b\}$-retângulo e seja $q$ o ponto de $Y$ à direita de $\ell$ mais abaixo e, dentre estes, o mais à esquerda que esteja na mesma altura ou acima de $q$ no $\{a,b\}$-retângulo. Esses pontos existem pois $a$ e $b$ satisfazem as restrições de $p$ e $q$ respectivamente e $Y$ é $\rectpos$-satisfeito. Por construção, $p$ está à esquerda de $\ell$ e $q$ à direita. Nota-se que $p.y = q.y$ obrigatoriamente, caso contrário o $\{p,q\}$-retângulo estaria insatisfeito, o que contradiz o que fato de $Y$ ser $\rectpos$-satisfeito. Veja a Figura~\ref{fig:contraexemplo_contradicao} para uma ilustração dessa contradição.
 \end{proof}
 
 \begin{figure}
@@ -743,13 +743,13 @@ Para visualizar a ideia da prova acima, veja a Figura~\ref{fig:IRB_igual_add}. N
 \label{fig:contraexemplo_contradicao}
 \end{figure}
 \begin{lemma} \label{lema_6.3}
-    Para um conjunto independente $I$ de retângulos de um conjunto $P$ de pontos tal que todo ponto tem x-coordenada distinta e inteira, existe um $\{a,b\}$-retângulo com $(a,b) \in I$, e uma reta vertical $\ell$ que cruza o eixo x num valor não inteiro estritamente entre $a.x$ e $b.x$ tal que dentro deste $\{a,b\}$-retângulo, $\ell$ não intersecta nenhum outro retângulo de $I$.
+    Para um conjunto independente $I$ de retângulos de um conjunto $P$ de pontos tal que todo ponto tem $x$-coordenada distinta e inteira, existe um $\{a,b\}$-retângulo com $(a,b) \in I$, e uma reta vertical $\ell$ que cruza o eixo $x$ num valor não inteiro estritamente entre $a.x$ e $b.x$ tal que, dentro deste $\{a,b\}$-retângulo, $\ell$ não intersecta nenhum outro retângulo de $I$.
 \end{lemma}
 
 \begin{proof}
-    Sejam $a$ e $b$ os dois vértice do retângulo com máxima largura em $I$, ou seja, o retângulo com maior comprimento horizontal. Assuma por simetria que $a < b$. Como $I$ é um conjunto independente de retângulos, então nenhum retângulo de $I$ possui estritamente em seu interior algum vértice de outro retângulo de $I$. 
+    Sejam $a$ e $b$ os dois vértice de um retângulo com largura máxima em $I$, ou seja, o retângulo com maior comprimento horizontal. Assuma por simetria que $a.x < b.x$. Como $I$ é um conjunto independente de retângulos, então nenhum retângulo de $I$ possui estritamente em seu interior algum vértice de outro retângulo de $I$. 
     
-    Assim, existem três tipos possíveis de retângulos de $I$ que compartilham alguma parte da área interna com o $\{a,b\}$-retângulo: o tipo-1 são os retângulos que possuem $a$ como um de seus vértices, o tipo-2 são os retângulos que possuem $b$ como um de seus vértices e o tipo-3 são os retângulos que não possuem nem $a$ nem $b$ como um de seus vértices. Note que os retângulos do tipo-3 não podem ser mais largos que o $\{a,b\}$-retângulo, pois o $\{a,b\}$-retângulo é o retângulo com máxima largura em $I$. Veja a Figura~\ref{fig:retangulo_wider} para a visualização desses três tipos.
+    Assim, existem três tipos possíveis de retângulos de $I$ que compartilham alguma parte da área interna com o $\{a,b\}$-retângulo: o tipo-1 são os retângulos que possuem $a$ como um de seus vértices, o tipo-2 são os retângulos que possuem $b$ como um de seus vértices e o tipo-3 são os retângulos que não possuem nem $a$ nem $b$ como um de seus vértices. Note que os retângulos do tipo-3 não podem ser mais largos que o $\{a,b\}$-retângulo, pois o $\{a,b\}$-retângulo é o retângulo com largura máxima em $I$. Veja a Figura~\ref{fig:retangulo_wider} para a visualização desses três tipos de retângulos.
 
 \begin{figure}
     \begin{tikzpicture}[scale=0.85]
@@ -789,9 +789,9 @@ Para visualizar a ideia da prova acima, veja a Figura~\ref{fig:IRB_igual_add}. N
 \label{fig:retangulo_wider}
 \end{figure}
 
-    Perceba que só é possível a criação de 3 blocos de retângulos. À esquerda, pode ser criado um bloco de retângulos do tipo-1 e do tipo-3. Ao meio, pode ser criado um bloco de retângulos do tipo-3. À direita, pode ser criado um bloco de retângulos do tipo-2 e do tipo-3. O bloco de retângulos à esquerda e o bloco de retângulos ao meio não podem ter áreas compartilhadas, pois o conjunto $I$ é independente e o conjunto $P$ tem x-coordenada distinta. O mesmo argumento vale para mostrar que o bloco de retângulos ao meio não pode ter área compartilhada com o bloco de retângulos à direita.
+    Perceba que só é possível a criação de três blocos de retângulos. À esquerda, pode ser criado um bloco de retângulos do tipo-1 e do tipo-3. Ao meio, pode ser criado um bloco de retângulos do tipo-3. À direita, pode ser criado um bloco de retângulos do tipo-2 e do tipo-3. O bloco de retângulos à esquerda e o bloco de retângulos ao meio não podem ter áreas compartilhadas, pois o conjunto $I$ é independente e o conjunto $P$ tem $x$-coordenada distinta. O mesmo argumento vale para mostrar que o bloco de retângulos ao meio não pode ter área compartilhada com o bloco de retângulos à direita.
 
-    Como os pontos de $P$ possuem x-coordenada inteira, então é possível definir uma reta $\ell$ vertical que cruza o eixo x num valor não inteiro estritamente entre a x-coordenada do ponto mais a direita de $P$ pertencente a um dos retângulos do primeiro bloco e a x-coordenada do ponto mais a esquerda de $P$ pertencente a um dos retângulos do segundo bloco. O mesmo poderia ser feito para o segundo e terceiro bloco. A reta $\ell$, dentro do $\{a,b\}$-retângulo, não intersecta nenhum retângulo além do $\{a,b\}$-retângulo.
+    Como os pontos de $P$ possuem $x$-coordenada inteira, então é possível definir uma reta $\ell$ vertical que cruza o eixo $x$ num valor não inteiro estritamente entre a $x$-coordenada do ponto mais à direita de $P$ pertencente a um dos retângulos do primeiro bloco e a $x$-coordenada do ponto mais à esquerda de $P$ pertencente a um dos retângulos do segundo bloco. O mesmo poderia ser feito para o segundo e terceiro bloco. A reta $\ell$, dentro do $\{a,b\}$-retângulo, não intersecta nenhum retângulo além do $\{a,b\}$-retângulo.
 \end{proof}
 
 
@@ -804,7 +804,7 @@ Para visualizar a ideia da prova acima, veja a Figura~\ref{fig:IRB_igual_add}. N
 
     Quando removemos um $\{a,b\}$-retângulo de $I$, por conta da propriedade de toda reta vertical $\ell$ não interceptar nenhum outro retângulo dentro da área do $\{a,b\}$-retângulo analisado, então nota-se que nenhum outro retângulo de $I$ possui em seu interior simultaneamente tanto $p$ quanto $q$. Assim, nota-se que cada par de pontos só será marcado uma única vez.
 
-    Como $P_X$ possui apenas um ponto por coordenada $y$, então para cada par de pontos marcado, no máximo um ponto pertence a $P_X$, então pelo menos um deles pertence apenas ao superconjunto $Y$. Logo, o número de pontos de $Y \setminus X$ é pelo menos o número de retângulos em $I$. 
+    Como $P_X$ possui apenas um ponto por $y$-coordenada então, para cada par de pontos marcado, no máximo um ponto pertence a $P_X$. Logo, pelo menos um deles pertence apenas ao superconjunto $Y$. E assim, o número de pontos de $Y \setminus X$ é pelo menos o número de retângulos em $I$. 
 \end{proof}
 
 \begin{lemma}\label{lema_minASS_para_Fut}
@@ -812,7 +812,7 @@ Para visualizar a ideia da prova acima, veja a Figura~\ref{fig:IRB_igual_add}. N
 \end{lemma}
 
 \begin{proof}
-    Após a execução do algoritmo $\rectpos$-futurista para um conjunto de pontos $P_X$ representando a sequência de acessos $X$, o conjunto de pontos $P$ resultante desse algoritmo possui tamanho $|$Fut$_{\rectpos}(P_X)| + |P_X|$. Pelo Lema~\ref{lema_6.1}, existe um conjunto independente IRB$_{\rectpos}$$(P_X)$ de $\rectpos$-retângulos tal que $|$IRB$_{\rectpos}(P_X)| = |$Fut$_{\rectpos}(P_X)|$. Pelo Lema~\ref{lema_6.4}, como existe esse tal conjunto IRB$_{\rectpos}$$(P_X)$, então qualquer superconjunto $Y$ de $P_X$ que seja $\rectpos$-satisfeito possui cardinalidade maior ou igual a $|$IRB$_{\rectpos}$$(P_X)| + |P_X|$. Como o conjunto de pontos $P$ é $\rectpos$-satisfeito e possui tamanho $|$Fut$_{\rectpos}(P_X)| + |P_X| = |$IRB$_{\rectpos}$$(P_X)| + |P_X|$, então esse é o superconjunto $\rectpos$-satisfeito minimal de $P_X$ e minASS$_{\rectpos}(P_X) = |$Fut$_{\rectpos}(P_X)| + |P_X|$.
+    Após a execução do algoritmo $\rectpos$-futurista para um conjunto $P_X$ de pontos representando a sequência $X$ de acessos, o conjunto $P$ de pontos resultante desse algoritmo possui tamanho $|$Fut$_{\rectpos}(P_X)| + |P_X|$. Pelo Lema~\ref{lema_6.1}, existe um conjunto independente IRB$_{\rectpos}$$(P_X)$ de $\rectpos$-retângulos tal que $|$IRB$_{\rectpos}(P_X)| = |$Fut$_{\rectpos}(P_X)|$. Pelo Lema~\ref{lema_6.4}, como existe esse tal conjunto IRB$_{\rectpos}$$(P_X)$, então qualquer superconjunto $Y$ de $P_X$ que seja $\rectpos$-satisfeito possui cardinalidade maior ou igual a $|$IRB$_{\rectpos}$$(P_X)| + |P_X|$. Como o conjunto $P$ de pontos é $\rectpos$-satisfeito e possui tamanho $|$Fut$_{\rectpos}(P_X)| + |P_X| = |$IRB$_{\rectpos}$$(P_X)| + |P_X|$, então esse é um superconjunto $\rectpos$-satisfeito minimal de $P_X$ e minASS$_{\rectpos}(P_X) = |$Fut$_{\rectpos}(P_X)| + |P_X|$.
 \end{proof}
 
 \begin{theorem}\label{teorema_retangulos_independentes}
@@ -820,30 +820,30 @@ Para visualizar a ideia da prova acima, veja a Figura~\ref{fig:IRB_igual_add}. N
 \end{theorem}
 
 \begin{proof}
-    Seja $Z$ qualquer conjunto $\recttotal$-satisfeito em relação ao $P_X$, onde $Z_{\rectpos} \cup P_X$ é $\rectpos$-satisfeito e  $Z_{\rectneg} \cup P_X$ é $\rectneg$-satisfeito. Seja $I_{\rectpos}$ o conjunto independente de $\rectpos$-retângulos de $I$ e analogamente $I_{\rectneg}$ o conjunto independente de $\rectneg$-retângulos de $I$. De acordo com o Lema~\ref{lema_6.4}, $|Z_{\rectpos} \cup P_X| \geq |I_{\rectpos}| + |P_X|$ e também $|Z_{\rectneg} \cup P_X| \geq |I_{\rectneg}| + |P_X|$. Suponha por simetria que $|I_{\rectpos}| \geq |I_{\rectneg}|$, então $|I_{\rectpos}| \geq |I|/2$. Logo, $|Z| \geq |Z_{\rectpos} \cup P_X| \geq |I_{\rectpos}| + |P_X| \geq |I|/2 + |P_X|$. Como todos os conjuntos $\recttotal$-satisfeito em relação ao $P_X$ possuem essa propriedade, então o conjunto de tamanho minASS$_{\recttotal}(P_X)$ também deve ter.
+    Seja $Z$ qualquer conjunto $\recttotal$-satisfeito em relação ao $P_X$, onde $Z_{\rectpos} \cup P_X$ é $\rectpos$-satisfeito e  $Z_{\rectneg} \cup P_X$ é $\rectneg$-satisfeito. Seja $I_{\rectpos}$ o conjunto independente de $\rectpos$-retângulos de $I$ e, analogamente, seja $I_{\rectneg}$ o conjunto independente de $\rectneg$-retângulos de $I$. De acordo com o Lema~\ref{lema_6.4}, $|Z_{\rectpos} \cup P_X| \geq |I_{\rectpos}| + |P_X|$ e também $|Z_{\rectneg} \cup P_X| \geq |I_{\rectneg}| + |P_X|$. Suponha por simetria que $|I_{\rectpos}| \geq |I_{\rectneg}|$, então $|I_{\rectpos}| \geq |I|/2$. Logo, $|Z| \geq |Z_{\rectpos} \cup P_X| \geq |I_{\rectpos}| + |P_X| \geq |I|/2 + |P_X|$. Como todos os conjuntos $\recttotal$-satisfeitos em relação ao $P_X$ possuem essa propriedade, então o conjunto de tamanho minASS$_{\recttotal}(P_X)$ também deve ter.
 \end{proof}
 
 \section{Delimitação dos retângulos independentes}
 
-De acordo com o Teorema~\ref{teorema_retangulos_independentes}, conjuntos independentes de retângulos estão atrelados intimamente com delimitações inferiores de custo. Assim, se conseguirmos encontrar o maior conjunto independente de retângulos, então encontraremos o melhor delimitante de custo, ou seja, o delimitante que mais se aproxima de OPT$(X)$.
+De acordo com o Teorema~\ref{teorema_retangulos_independentes}, conjuntos independentes de retângulos estão atrelados intimamente com delimitações inferiores de custo. Assim, se conseguirmos encontrar um conjunto independente maior de retângulos, então encontraremos o melhor delimitante de custo, ou seja, o delimitante que mais se aproxima de \OPT$(X)$.
 
-Denotemos por maxIRB$(P_X)$ como o maior conjunto independente de retângulos para o conjunto de pontos $P_X$ que representa uma sequência $X$ de buscas. Não se sabe se há uma maneira de encontrar o valor de $|$maxIRB$(P_X)|$ em tempo polinomial, muito menos se há uma maneira de encontrar o próprio conjunto independente de retângulos.
+Denotemos por \maxIRB$(P_X)$ o maior conjunto independente de retângulos para o conjunto $P_X$ de pontos que representa uma sequência $X$ de acessos. Não se sabe se há uma maneira de encontrar o valor de $|\maxIRB(P_X)|$ em tempo polinomial, muito menos se há uma maneira de encontrar o próprio conjunto independente de retângulos.
 %Uma maneira conhecida de encontrar conjuntos independentes de retângulos são as delimitações propostas por Wilber \cite{lowerbound_wilber}. Esse tema será explorado com profundidade no próximo capítulo, por ora basta saber que Alt$(P_X)$ e Funil$(P_X)$ são maneiras de encontrar conjuntos independentes de retângulos em tempo polinomial.
 \begin{align*}
-    \frac{1}{2}maxIRB(P_X) + |P_X| &\leq minASS_{\recttotal}(P_X) \quad & \text{pelo Teorema~\ref{teorema_retangulos_independentes}},\\
-    &\leq minASS_{\rectpos}(P_X) + minASS_{\rectneg}(P_X) \quad & \text{pela Equação~\ref{eq:minASStotal_menorouigual_soma_de_minASSs}},\\
+    \frac{1}{2}|\maxIRB(P_X)| + |P_X| &\leq \minASS_{\recttotal}(P_X) \quad & \text{pelo Teorema~\ref{teorema_retangulos_independentes}},\\
+    &\leq \minASS_{\rectpos}(P_X) + \minASS_{\rectneg}(P_X) \quad & \text{pela Equação~(\ref{eq:minASStotal_menorouigual_soma_de_minASSs})},\\
     &= |Fut_{\rectpos}(P_X)| + |Fut_{\rectneg}(P_X)| + 2|P_X| \quad & \text{pelo Lema~\ref{lema_minASS_para_Fut}},\\
     &= |\text{IRB}_{\rectpos}(P_X)| + |\text{IRB}_{\rectneg}(P_X)| + 2|P_X| \quad & \text{pelo Lema~\ref{lema_6.1}},\\
-    &\leq 2maxIRB(P_X) + 2|P_X|,\\
-    &< 2maxIRB(P_X) + 4|P_X|,\\
-    &\leq 4minASS_{\recttotal}(P_X) \quad & \text{pelo Teorema~\ref{teorema_retangulos_independentes}},\\
-    &\leq 4minASS(P_X) \quad & \text{pela Equação~\ref{eq:minASS_orientado_menor_ou_igual_minASS}}.
+    &\leq 2|\maxIRB(P_X)| + 2|P_X|,\\
+    &< 2|\maxIRB(P_X)| + 4|P_X|,\\
+    &\leq 4\minASS_{\recttotal}(P_X) \quad & \text{pelo Teorema~\ref{teorema_retangulos_independentes}},\\
+    &\leq 4\minASS(P_X) \quad & \text{pela Equação~(\ref{eq:minASS_orientado_menor_ou_igual_minASS})}.
 \end{align*}
 
-Uma maneira de encontrar um conjunto independente de retângulos é utilizando os algoritmos gulosos futuristas orientados. Isso será feito da seguinte maneira, rode os algoritmos $\rectpos$-futurista e $\rectneg$-futurista e escolha o que colocar mais pontos. Sabemos que todos os pontos adicionados por algum dos algoritmos gulosos futuristas orientados foram para satisfazer um retângulo insatisfeito que se traduz em um retângulo independente na entrada. Seguindo os mesmos passos da expressão acima, temos
+Uma maneira de encontrar um conjunto independente de retângulos é utilizando os algoritmos gulosos futuristas orientados. Isso será feito da seguinte maneira: rode os algoritmos $\rectpos$-futurista e $\rectneg$-futurista e escolha o que colocar mais pontos. Seguindo os mesmos passos da expressão acima, temos
 \begin{align*}
-    max\{|Fut_{\rectpos}(P_X)| + |Fut_{\rectneg}(P_X)|\} + |P_X| &\geq \frac{1}{2}(|Fut_{\rectpos}(P_X)| + |Fut_{\rectneg}(P_X)|) + |P_X|,\\
-    &\geq \frac{1}{4}maxIRB + \frac{1}{2}|P_X|.
+    \max\{|Fut_{\rectpos}(P_X)| + |Fut_{\rectneg}(P_X)|\} + |P_X| &\geq \frac{1}{2}(|Fut_{\rectpos}(P_X)| + |Fut_{\rectneg}(P_X)|) + |P_X|,\\
+    &\geq \frac{1}{4}\maxIRB(P_X) + \frac{1}{2}|P_X|.
 \end{align*}
 
 Dessa maneira, o tamanho do conjunto independente de retângulos encontrado pelo melhor algoritmo guloso futurista orientado para um determinado conjunto de pontos $P_X$ está em um fator constante do tamanho do maior conjunto independente de retângulos.

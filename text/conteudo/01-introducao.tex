@@ -40,7 +40,7 @@ Em geral, durante a execução de um acesso, uma série de nós distintos são a
 
 O pior caso acontece quando a chave procurada está em um nó folha mais profundo. Nesse caso o algoritmo tem que passar por toda a altura da árvore até chegar a essa folha. Assim o custo do pior caso é proporcional à altura da árvore, que pode ser em princípio linear em $n$.
 
-Com intuito de mitigar o custo do pior caso, algumas ABBs estrategicamente utilizam da operação primitiva 4 (rotação) para balancear o tamanho das subárvores e assim diminuir a altura da árvore. Um exemplo famoso, sobre o qual daremos mais detalhes à frente, é a árvore splay. Essa ABB executa rotações baseando-se na heurística ``move to front'' e assim balanceia a árvore durante as buscas. Essa árvore não utiliza armazenamento adicional para isso, ou seja, seus nós não têm campos extra.
+Com intuito de mitigar o custo do pior caso, algumas ABBs estrategicamente utilizam a operação primitiva 4 (rotação) para balancear o tamanho das subárvores e assim diminuir a altura da árvore. Um exemplo famoso, sobre o qual daremos mais detalhes à frente, é a árvore splay. Essa ABB executa rotações baseando-se na heurística ``move to front'' e assim balanceia a árvore durante as buscas. Essa árvore não utiliza armazenamento adicional para isso, ou seja, seus nós não têm campos extras.
 
 O custo para executar um acesso nesse modelo está relacionado com o número de operações primitivas executadas até encontrar a chave procurada durante um acesso. 
 
@@ -54,12 +54,12 @@ ABBs \textit{online} são ABBs que apenas possuem informações sobre os acessos
 
 Uma ABB é chamada de \textit{offline} se tem conhecimento da sequência $X$ de acessos antes de começar os acessos às chaves de $X$. Nesse contexto, o comportamento do algoritmo não depende unicamente do histórico de acessos passados, uma vez que o algoritmo possui conhecimento prévio de toda a sequência de chaves a serem acessadas.
 
-Dada uma sequência $X$ de acessos, uma ABB é considerada \textit{ótima} se executa os acessos de $X$ com o menor custo possível. Podemos definir OPT$(X)$ como o número de nós visitados por uma ABB ótima para a sequência $X$. Em outras palavras, OPT$(X)$ é o número mínimo necessário de visitas a nós para uma ABB concluir todos os acessos de $X$. 
+Dada uma sequência $X$ de acessos, uma ABB é considerada \textit{ótima} se executa os acessos de $X$ com o menor custo possível. Podemos definir \OPT$(X)$ como o número de nós visitados por uma ABB ótima para a sequência $X$. Em outras palavras, \OPT$(X)$ é o número mínimo necessário de visitas a nós para uma ABB concluir todos os acessos de $X$. 
 
-ABBs balanceadas estabelecem que OPT$(X)$ = $\Oh(m \log n)$, onde $n$ é o número de chaves armazenadas na árvore e $m$ é o comprimento de $X$. Como todo acesso tem custo maior ou igual a 1, então $\text{OPT}(X) \geq m$. Wilber \cite{lowerbound_wilber} provou que OPT$(X)$ = $\Theta$$(m \log n)$ para algumas classes de sequências $X$. 
+ABBs balanceadas estabelecem que \OPT$(X)$ = $\Oh(m \log n)$, onde $n$ é o número de chaves armazenadas na árvore e $m$ é o comprimento de $X$. Como todo acesso tem custo maior ou igual a 1, então $\text{\OPT}(X) \geq m$. Wilber \cite{lowerbound_wilber} provou que \OPT$(X)$ = $\Theta$$(m \log n)$ para algumas classes de sequências $X$. 
 
 % JÁ USEI ESSA FRASE!
-Uma ABB online é \textit{dinamicamente ótima} se, para todas as sequências $X$, seu algoritmo de busca tem custo $\Oh$(OPT($X$)). De maneira mais geral, uma ABB online é \textit{$c$-competitiva} se executa todos os acessos da sequências $X$ suficientemente longas com custo no máximo $c$\,OPT($X$).
+Uma ABB online é \textit{dinamicamente ótima} se, para todas as sequências $X$, seu algoritmo de busca tem custo $\Oh$(\OPT$(X)$). De maneira mais geral, uma ABB online é \textit{$c$-competitiva} se executa todos os acessos de sequências $X$ suficientemente longas com custo no máximo $c$\,\OPT$(X)$.
 
 Todo esse estudo foi feito para tentar responder à pergunta: ``\textit{Existe uma ABB online dinamicamente ótima?}".
 
@@ -67,7 +67,7 @@ Uma das tentativas de responder tal pergunta foi a árvore splay de Sleator e Ta
 
 Apesar de existirem muitas ABBs muito bem documentadas com tempo por busca logarítmico em $n$, essas estruturas normalmente não conseguem alcançar uma eficiência superior a isso independentemente da entrada. Padrões de acesso do mundo real muitas vezes possuem estruturas repetitivas, como por exemplo bancos de dados que recebem solicitações frequentes para um pequeno número de elementos de alto tráfego. Em alguns desses casos, é possível ter uma performance melhor que $\Theta(\log n)$ por acesso utilizando uma árvore splay, uma vez que essa eventualmente ficaria com as chaves mais acessadas mais próximas à raiz da árvore. 
 
-Há uma conjectura não resolvida no artigo \cite{selfadjustingbst} que diz que as árvores splay são dinamicamente ótimas. Essa conjectura ficou conhecida como a Conjectura da Otimalidade Dinâmica.
+Há uma conjectura não resolvida proposta por Sleator e Tarjan \cite{selfadjustingbst} que diz que as árvores splay são dinamicamente ótimas. Essa conjectura ficou conhecida como a Conjectura da Otimalidade Dinâmica.
 
 %A árvore conhecida que mais se aproxima de uma árvore ótima é a árvores tango~\cite{dynamicoptimality}. Tal estrutura é $\Oh(\lg \lg n)$-competitiva. Esta árvore, proposta por Demaine, Harmon, Iacono e Pătrașcu \cite{dynamicoptimality}, utiliza $\Oh(\lg \lg n)$ bits a mais por nó e o custo para determinar a próxima operação primitiva a ser executada é amortizadamente constante.
 
@@ -79,6 +79,6 @@ Há uma conjectura não resolvida no artigo \cite{selfadjustingbst} que diz que 
 
 %Durante os \textit{acessos}, os \textit{filhos preferidos} podem ser alterados e isso provocará mudanças nas estruturas da árvores auxiliares para manter a estrutura da árvore tango coerentes com o comportamento descrito acima.
 
-Nesse texto, abordaremos uma série de aspectos diferentes em relação a delimitações de custo em algoritmos de busca em ABBs e implementações visando o menor custo possível. No Capítulo 2, será discutido o problema de encontrar uma ABB estática de custo mínimo para uma determinada sequência de acessos. No Capítulo 3, abordaremos o funcionamento e o custo de acessos das árvores splay e apresentaremos a Conjectura da Otimalidade Dinâmica. 
-No Capítulo 4 e 5, examinaremos como tratar buscas em ABBs de maneira geométrica por meio de conjuntos arboreamente satisfeitos e será proposto um algoritmo online guloso para encontrar superconjuntos arboreamente satisfeitos a partir de conjuntos de pontos arbitrários.
-No Capítulo 6, ampliaremos a análise geométrica para desenvolver uma nova delimitação relacionada a retângulos independentes. O Capítulo 7 tratará das delimitações de Wilber e no Capítulo 8 explicaremos como elas se relacionam. Por fim, no capítulo 9, apresentaremos uma redução de um problema NP-completo no problema de buscas múltiplas em ABBs.
+Nesse texto, abordaremos uma série de aspectos diferentes em relação a delimitações de custo em algoritmos de busca em ABBs e implementações visando o menor custo possível. No Capítulo 2, abordaremos o funcionamento e o custo de acessos das árvores splay e apresentaremos a Conjectura da Otimalidade Dinâmica. 
+No Capítulo 3 e 4, examinaremos como tratar buscas em ABBs de maneira geométrica por meio de conjuntos arboreamente satisfeitos e será proposto um algoritmo online guloso para encontrar superconjuntos arboreamente satisfeitos a partir de conjuntos de pontos arbitrários.
+No Capítulo 5, ampliaremos a análise geométrica para desenvolver uma nova delimitação relacionada a retângulos independentes. O Capítulo 6 tratará das delimitações de Wilber e no Capítulo 7 explicaremos como elas se relacionam. Por fim, no Capítulo 8, apresentaremos uma redução de um problema NP-completo ao problema de buscas múltiplas em ABBs e no Capítulo 9 elaboraremos uma conclusão que sintetiza os principais pontos discutidos ao longo do texto.

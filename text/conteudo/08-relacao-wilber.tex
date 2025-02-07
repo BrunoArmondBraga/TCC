@@ -8,13 +8,8 @@
 
 Nesta capítulo estabeleceremos uma relação entre a delimitação da alternância e a delimitação do funil. Faremos isso por meio de um argumento geométrico a partir de uma caracterização nova de z-retângulos proposta por Lecomte e Weistein \cite{new_boundaries}.
 
-%\section{Revisão histórica}
-
-%Por muitos ano
-
-
 \section{Rotação e inversão de conjuntos de pontos}
-Pouco se sabe sobre a relação entre a delimitação da alternância e do funil para sequências de acessos sem restrições. Assim, neste capítulo consideraremos apenas sequências de acessos sem repetições.
+Pouco se sabe sobre a relação entre a delimitação da alternância e do funil para sequências de acessos arbitrárias. Assim, neste capítulo consideraremos apenas sequências de acessos sem repetições.
 
 Seja $P$ um conjunto de pontos. Definimos a inversão temporal de um ponto $p \in P$ como $\widebar{p} = (p.x,-p.y)$. Definimos a inversão temporal de um conjunto de pontos $P$ como $\widebar{P} = \{\widebar{p} \mid p \in P\}$. Na prática, a inversão temporal de um conjunto de pontos é o conjunto resultante do espelhamento de cada um dos seus pontos em relação ao eixo das abscissas. Veja a Figura~\ref{fig:inversao}.
 
@@ -50,7 +45,7 @@ Seja $P$ um conjunto de pontos. Definimos a inversão temporal de um ponto $p \i
 \label{fig:inversao}
 \end{figure}
 
-Analogamente, definimos a rotação 90°(em sentido anti-horário) de um ponto $p \in P$ como $p^{\perp} = (-p.y,p.x)$. A rotação 90° em sentido anti-horário de um conjunto de pontos $P$ é definida por $P^{\perp} = \{p^{\perp} \mid p \in P\}$. Veja a figura~\ref{fig:rotacao}.
+Analogamente, definimos a rotação de 90° em sentido anti-horário de um ponto $p \in P$ como $p^{\perp} = (-p.y,p.x)$. A rotação de 90° em sentido anti-horário de um conjunto de pontos $P$ é definida por $P^{\perp} = \{p^{\perp} \mid p \in P\}$. Veja a figura~\ref{fig:rotacao}.
 
 \begin{figure}
     \centering
@@ -80,213 +75,72 @@ Analogamente, definimos a rotação 90°(em sentido anti-horário) de um ponto $
 
         \node[anchor=south west] at (-0.1,6.2) {\huge$P^{\perp}$};
     \end{tikzpicture}
-    \caption{À esquerda, o conjunto de pontos $P_X$ relativo a sequência de acessos $X =(6,3,5,4,2,1,7) $. À direita, a inversão temporal de $P_X$.}
+    \caption{À esquerda, o conjunto de pontos $P_X$ relativo à sequência $X =(6,3,5,4,2,1,7)$ de acessos. À direita, a inversão temporal de $P_X$.}
 \label{fig:rotacao}
 \end{figure}
 
-\section{Relacionando a alternância com o funil e sua inversão temporal}
+\section{Relação da alternância com o funil e a inversão temporal}
 
-Primeiramente, é necessário entender como a inversão temporal de um ponto influencia a sua delimitação do funil.
-
-\begin{comment}
-\begin{lemma}
-    Seja $p$ um ponto de um conjunto $P$. Se $p \in P_E$ então $f(P,p) \geq f(P_E,p)$ e $f(\widebar{P},\widebar{p}) \geq f(\widebar{P_E},\widebar{p})$. Se $p \in P_D$ então $f(P,p) \geq f(P_D,p)$ e $f(\widebar{P},\widebar{p}) \geq f(\widebar{P_D},\widebar{p})$.
-\end{lemma}
-
-\begin{proof}
-    Suponha que $p \in P_E$. Como $p$ pertence a $P_E$ 
-    Perceba que todos os pontos do funil esquerdo de $p$  
-    
-    Todos os pontos à esquerda de $p$ também pertencem a $P_E$, ou seja, $F_E(P_E,p) = F_E(P,p)$.
-\end{proof}
-\end{comment}
+Primeiramente, é necessário entender como a delimitação da alternância para um conjunto $P$ de pontos está relacionada com a delimitação do funil de $P$ e de $\widebar{P}$.
 
 \begin{lemma} \label{lemma:relacao-alt-com-funil}
-    Seja $P_X$ a visão geométrica de uma sequência de acessos sem repetições e $\cT$ uma árvore de referência em relação à $P_X$. Funil$(P_X) + $ Funil$(\widebar{P_X}) \geq $ Alt$_{\cT}(P_X)$.
+    Seja $P_X$ a visão geométrica de uma sequência de acessos sem repetições e $\cT$ uma árvore de referência em relação a $P_X$. Então, $\Funil(P_X) +  \Funil(\widebar{P_X}) \geq  \Alt_{\cT}(P_X)$.
 \end{lemma}
 
 \begin{proof}
-    Faremos uma prova por indução em $k$ que, toda árvore $\cT$ de $k$ nós satisfaz a inequação do Lema.
+    Provaremos, por indução em $k$, que toda árvore $\cT$ com $k$ nós satisfaz a desigualdade do lema.
 
-    Para $k = 1$, a árvore de referência $\cT$ possui um único nó. Assim, Alt$_{\cT}(P_X) = 0$ e a inequação é valida.
+    Para $k = 1$, a árvore de referência $\cT$ possui um único nó. Assim, \Alt$_{\cT}(P_X) = 0$ e a desigualdade é válida trivialmente.
 
-    Suponha agora que $k > 1$ e que a propriedade vale para toda árvore com menos que $k$ nós. Seja $\cT_{L}$ e $\cT_{R}$ respectivamente a subárvore esquerda e a subárvore direita da raiz de $\cT$. Seja $P_L = \{p \in P_X \mid p.x \in \cT_L\}$ e $P_R = \{p \in P_X \mid p.x \in \cT_R\}$. Pela hipótese de indução, temos
+    Suponha agora que $k > 1$ e que a propriedade vale para toda árvore com menos que $k$ nós. Sejam $\cT_{E}$ e $\cT_{D}$ respectivamente a subárvore esquerda e a subárvore direita da raiz de $\cT$. Sejam $P_E = \{p \in P_X \mid p.x \in \cT_E\}$ e $P_D = \{p \in P_X \mid p.x \in \cT_D\}$. Pela hipótese de indução, temos
     \begin{center}
-    $\text{Funil}(P_E) +  \text{Funil}(\widebar{P_E}) \geq  \text{Alt}_{\cT_E}(P_E)$,
-
-    $\text{Funil}(P_D) +  \text{Funil}(\widebar{P_D}) \geq  \text{Alt}_{\cT_D}(P_D)$.
+    $\Funil(P_E) +  \Funil(\widebar{P_E}) \geq  \Alt_{\cT_E}(P_E)$ \mbox{e} $\Funil(P_D) +  \Funil(\widebar{P_D}) \geq  \Alt_{\cT_D}(P_D)$.
     \end{center}
-    Assim, temos 
+    Assim, temos que
     \begin{align}
-        \text{Alt}_{\cT}(P_X) &= a(P_X,\cT) + \text{Alt}_{\cT_E}(P_X) + \text{Alt}_{\cT_D}(P_X), \notag \\
-        &\leq a(P_X,\cT) + \text{Funil}(P_E) +  \text{Funil}(\widebar{P_E}) + \text{Funil}(P_D) +  \text{Funil}(\widebar{P_D}). \label{eq:inicio}
+        \Alt_{\cT}(P_X) &= a(P_X,\cT) + \Alt_{\cT_E}(P_X) + \Alt_{\cT_D}(P_X), \notag \\
+        &\leq a(P_X,\cT) + \Funil(P_E) +  \Funil(\widebar{P_E}) + \Funil(P_D) +  \Funil(\widebar{P_D}). \label{eq:inicio}
     \end{align}
 
-    Agora, é necessário entender como a delimitação do funil é afetada pela inversão temporal.
-    Seja $p$ um ponto de $P_X$. Mostraremos que se $p \in P_E$, então $f(P_X,p) \geq f(P_E,p)$ e $f(\widebar{P_X},\widebar{p}) \geq f(\widebar{P_E},\widebar{p})$. De maneira simétrica, se $p \in P_D$ então $f(P_X,p) \geq f(P_D,p)$ e $f(\widebar{P_X},\widebar{p}) \geq f(\widebar{P_D},\widebar{p})$.
+    Agora, é necessário entender como a delimitação do funil é afetada pela inversão temporal do conjunto de pontos.
+    Seja $p$ um ponto de $P_X$. Lembre-se das definições de $F_E$,$F_D$ e $f$ da Seção~\ref{seção:funil}.
+    Mostraremos que se $p \in P_E$, então $f(P_X,p) \geq f(P_E,p)$ e $f(\widebar{P_X},\widebar{p}) \geq f(\widebar{P_E},\widebar{p})$. De maneira simétrica, se $p \in P_D$ então $f(P_X,p) \geq f(P_D,p)$ e $f(\widebar{P_X},\widebar{p}) \geq f(\widebar{P_D},\widebar{p})$.
 
-    Suponha que $p \in P_E$. Como $p$ pertence à $P_E$, então todos os pontos à esquerda de $p$ também pertencem à $P_E$, ou seja, $F_E(P_E,p) = F_E(P_X,p)$. Além disso, todos os pontos que pertencem à $P_E$ e estão à direita de $p$ pertencem a tanto o funil direito de $p$ em relação à $P_E$ quanto em relação à $P_X$, ou seja, $F_D(P_E,p) \subseteq F_D(P_X,p)$. Veja a Figura~\ref{fig:funis}. Assim, $mix(F_E(P_E,p).y,F_D(P_E,p).y)$ é uma subsequência de $mix(F_E(P_X,p).y,F_D(P_X,p).y)$, logo 
-
+    Suponha que $p \in P_E$. Como $p$ pertence a $P_E$, então todos os pontos a esquerda de $p$ também pertencem a $P_E$, ou seja, $F_E(P_E,p) = F_E(P_X,p)$. Além disso, todos os pontos que pertencem a $P_E$ e estão à direita de $p$ pertencem ao lado direito do funil de $p$ tanto em relação a $P_E$ quanto em relação a $P_X$, ou seja, $F_D(P_E,p) \subseteq F_D(P_X,p)$. Veja a Figura~\ref{fig:funis}. Assim, $mix(F_E(P_E,p).y,F_D(P_E,p).y)$ é uma subsequência de $mix(F_E(P_X,p).y,F_D(P_X,p).y)$, logo 
     \begin{center}
-        $blocos(mix(F_E(P_E,p), F_D(P_E,p))) \leq blocos(mix(F_E(P_X,p), F_D(P_X,p)))$,
-
+        $blocos(mix(F_E(P_E,p), F_D(P_E,p))) \leq blocos(mix(F_E(P_X,p), F_D(P_X,p)))$ \mbox{e}
         $f(P_E,p) \leq f(P_X,p)$.
     \end{center}
-    O argumento simetricamente vale para os outros casos.
-    \begin{comment}
-    \begin{figure}
-        \centering
-        \begin{minipage}[t]{0.3\textwidth}
-        \begin{tikzpicture}[scale=0.75,
-            node/.style={circle,draw,minimum size=2em, thick, font=\large},
-            nodeGray/.style={circle,draw,minimum size=2em, thick, font=\large, fill=gray!55}]
-            
-            %\node[node] (D) at (0,0) {};
-            %\node[node] (B) at (-1.5,-1.5) {};
-            %\node[node] (A) at (-2.3,-3) {$1$};
-            %\node[node] (C) at (-0.8,-3) {$2$};
-            %\node[node] (E) at (0.8,-3) {$3$};
-            %\node[node] (F) at (1.5,-1.5) {};
-            %\node[node] (G) at (2.3,-3) {};
-            %\node[node] (H) at (1.8,-4.5) {$4$};
-            %\node[node] (I) at (2.9,-4.5) {$5$};
-            
-            \node[node] (D) at (0,0) {};
-            \node[node] (B) at (-2,-1.5) {};
-            \node[node] (A) at (-3.3,-3) {};
-            \node[node] (C) at (-0.7,-3) {};
-            \node[node] (E) at (0.7,-3) {$5$};
-            \node[node] (F) at (2,-1.5) {};
-            \node[node] (G) at (3.3,-3) {};
-            \node[node] (H) at (2.6,-4.5) {$6$};
-            \node[node] (I) at (3.9,-4.5) {$7$};
-            \node[node] (J) at (-3.9,-4.5) {$1$};
-            \node[node] (K) at (-2.6,-4.5) {$2$};
-            \node[node] (L) at (-1.3,-4.5) {$3$};
-            \node[node] (M) at (-0.1,-4.5) {$4$};
-            
-            \draw[thick, ->] (D) -- (B);%node[midway, left, yshift=0.15cm, xshift=0.08cm] {\textbf{E}};
-            \draw[thick, ->] (B) -- (A);%node[midway, left, yshift=0.15cm, xshift=0.08cm] {\textbf{E}};
-            \draw[thick, ->] (B) -- (C);%node[midway, right, yshift=0.15cm, xshift=-0.08cm] {\textbf{D}};
-            \draw[thick, ->] (G) -- (I);%node[midway, right, yshift=0.15cm, xshift=-0.08cm] {\textbf{D}};
-            \draw[thick, ->] (G) -- (H);%node[midway, left, yshift=0.15cm, xshift=0.08cm] {\textbf{E}};
-            \draw[thick, ->] (A) -- (J);%node[midway, left, yshift=0.15cm, xshift=0.08cm] {\textbf{E}};
-            \draw[thick, ->] (A) -- (K);%node[midway, left, yshift=0.15cm, xshift=0.08cm] {\textbf{E}};
-            \draw[thick, ->] (C) -- (L);%node[midway, left, yshift=0.15cm, xshift=0.08cm] {\textbf{E}};
-            \draw[thick, ->] (C) -- (M);%node[midway, left, yshift=0.15cm, xshift=0.08cm] {\textbf{E}};
-            
-            \draw[thick, ->] (D) -- (F);%node[midway, right, yshift=0.15cm, xshift=-0.08cm] {\textbf{D}};
-            \draw[thick, ->] (F) -- (E);%node[midway, left, yshift=0.15cm, xshift=0.08cm] {\textbf{E}};
-            \draw[thick, ->] (F) -- (G);%node[midway, right, yshift=0.15cm, xshift=-0.08cm] {\textbf{D}};
-        
-        \end{tikzpicture}
-        \end{minipage}
-        \hfill    
-        \begin{minipage}[t]{0.7\textwidth}
-        \begin{tikzpicture}[scale=0.45]
-            \draw[very thin, gray!70] (0,0) grid (8,8);
-            \draw[fill=gray!90, gray!90] (8,0) rectangle (4.5,8);
-    
-            \draw[color_of_analysed_point, dashed, line width=1.5pt] (3,0) -- (3,8);
-            
-            %\draw[red, line width=1.2pt] (1,5) rectangle (4,7);
-            %\draw[red, line width=1.2pt] (3,3) rectangle (4,7);
-            
-            \filldraw[black] (4,1) circle (7pt);
-            \filldraw[black] (6,2) circle (7pt);
-            \filldraw[red] (2,3) circle (7pt);
-            \filldraw[black] (5,4) circle (7pt);
-            \filldraw[red] (1,5) circle (7pt);
-            \filldraw[black] (7,6) circle (7pt);
-            \filldraw[color_of_analysed_point] (3,7) circle (7pt);
-            \draw[black, line width=0.5pt] (0,0) rectangle (8,8);
-        \end{tikzpicture}
-        \begin{tikzpicture}[scale=0.45]
-            \draw[very thin, gray!70] (0,0) grid (8,8);
-            \draw[fill=gray!90, gray!90] (8,0) rectangle (4.5,8);
-    
-            \draw[color_of_analysed_point, dashed, line width=1.5pt] (3,0) -- (3,8);
-            
-            %\draw[red, line width=1.2pt] (1,5) rectangle (4,7);
-            %\draw[red, line width=1.2pt] (3,3) rectangle (4,7);
-            
-            \filldraw[red] (4,1) circle (7pt);
-            \filldraw[black] (6,2) circle (7pt);
-            \filldraw[black] (2,3) circle (7pt);
-            \filldraw[black] (5,4) circle (7pt);
-            \filldraw[black] (1,5) circle (7pt);
-            \filldraw[black] (7,6) circle (7pt);
-            \filldraw[color_of_analysed_point] (3,7) circle (7pt);
-            \draw[black, line width=0.5pt] (0,0) rectangle (8,8);
-        \end{tikzpicture}  
-        \\
-        \begin{tikzpicture}[scale=0.45]
-            \draw[very thin, gray!70] (0,0) grid (8,8);
-    
-            \draw[color_of_analysed_point, dashed, line width=1.5pt] (3,0) -- (3,8);
-            
-            %\draw[red, line width=1.2pt] (1,5) rectangle (4,7);
-            %\draw[red, line width=1.2pt] (3,3) rectangle (4,7);
-            
-            \filldraw[black] (4,1) circle (7pt);
-            \filldraw[black] (6,2) circle (7pt);
-            \filldraw[red] (2,3) circle (7pt);
-            \filldraw[black] (5,4) circle (7pt);
-            \filldraw[red] (1,5) circle (7pt);
-            \filldraw[black] (7,6) circle (7pt);
-            \filldraw[color_of_analysed_point] (3,7) circle (7pt);
-            \draw[black, line width=0.5pt] (0,0) rectangle (8,8);
-        \end{tikzpicture}
-        \begin{tikzpicture}[scale=0.45]
-            \draw[very thin, gray!70] (0,0) grid (8,8);
-    
-            \draw[color_of_analysed_point, dashed, line width=1.5pt] (3,0) -- (3,8);
-            
-            %\draw[red, line width=1.2pt] (1,5) rectangle (4,7);
-            %\draw[red, line width=1.2pt] (3,3) rectangle (4,7);
-            
-            \filldraw[red] (4,1) circle (7pt);
-            \filldraw[black] (6,2) circle (7pt);
-            \filldraw[black] (2,3) circle (7pt);
-            \filldraw[red] (5,4) circle (7pt);
-            \filldraw[black] (1,5) circle (7pt);
-            \filldraw[red] (7,6) circle (7pt);
-            \filldraw[color_of_analysed_point] (3,7) circle (7pt);
-            \draw[black, line width=0.5pt] (0,0) rectangle (8,8);
-        \end{tikzpicture} 
-        \end{minipage}
-        \caption{Oi}
-    \end{figure}
-    \end{comment}
+    Por simetria, o argumento vale para os outros casos.
     \begin{figure}
         \centering
         \includegraphics[scale=1.04]{imagens/funis.pdf}
-        \caption{À esquerda, uma árvore de referência $\cT$ em relação à visão geométrica da sequência de acessos $X = (4,6,2,5,1,7,3)$. Note que $P_E = \{1,2,3,4\}$. À direita, 4 conjuntos de pontos. Denotemos por $p$ o ponto $(3,7)$ destacado de azul. Os conjuntos de pontos vermelhos de cima representam respectivamente, $F_E(P_E,p)$ e $F_D(P_E,p)$. Os conjuntos de pontos vermelhos embaixo representam respectivamente, $F_E(P_X,p)$ e $F_D(P_X,p)$. Perceba que $F_E(P_E,p) = F_E(P_X,p)$ e $F_D(P_E,p) \subseteq F_D(P_X,p)$.}
-        \label{fig:funis}
+        \caption{À esquerda, uma árvore de referência $\cT$ em relação à visão geométrica da sequência de acessos $X = (4,6,2,5,1,7,3)$. Note que $P_E = \{1,2,3,4\}$. À direita, quatro conjuntos de pontos. Denotemos por $p$ o ponto $(3,7)$ destacado de azul. Os conjuntos de pontos vermelhos de cima representam respectivamente $F_E(P_E,p)$ e $F_D(P_E,p)$. Os conjuntos de pontos vermelhos embaixo representam respectivamente $F_E(P_X,p)$ e $F_D(P_X,p)$. Perceba que $F_E(P_E,p) = F_E(P_X,p)$ e $F_D(P_E,p) \subseteq F_D(P_X,p)$.}
+    \label{fig:funis}
     \end{figure}
 
     Ao somarmos $f(P_X,p)$ para todo $p \in P_X$, temos
     \begin{align}
-        \text{Funil}(P_X) &= \sum_{p \, \in \, P_X}f(P_X,p), \notag\\
+        \Funil(P_X) &= \sum_{p \, \in \, P_X}f(P_X,p), \notag\\
         &\geq \sum_{p \, \in \, P_E}f(P_E,p) + \sum_{p \, \in \, P_D}f(P_D,p), \notag \\
-        &= \text{Funil}(P_E) + \text{Funil}(P_D). \label{eq:funil}
+        &= \Funil(P_E) + \Funil(P_D). \label{eq:funil}
     \end{align}
 
-    Analogamente para a inversão temporal, temos
+    Analogamente, para a inversão temporal, temos que
     \begin{align}
-        \text{Funil}(\widebar{P_X}) &= \sum_{p \, \in \, P_X}f(\widebar{P_X},\widebar{p}), \notag\\
+        \Funil(\widebar{P_X}) &= \sum_{p \, \in \, P_X}f(\widebar{P_X},\widebar{p}), \notag\\
         &\geq \sum_{p \, \in \, P_E}f(\widebar{P_E},\widebar{p}) + \sum_{p \, \in \, P_D}f(\widebar{P_D},\widebar{p}), \notag \\
-        &= \text{Funil}(\widebar{P_E}) + \text{Funil}(\widebar{P_D}). \label{eq:funil_barra}
+        &= \Funil(\widebar{P_E}) + \Funil(\widebar{P_D}). \label{eq:funil_barra}
     \end{align}
 
-    Combinando as Equações \ref{eq:inicio}, \ref{eq:funil} e \ref{eq:funil_barra}, concluímos
+    Combinando as Equações (\ref{eq:inicio}), (\ref{eq:funil}) e (\ref{eq:funil_barra}), concluímos que
     \begin{align}
-        \text{Funil}(P) + \text{Funil}(\widebar{P}) &\geq \text{Funil}(P_E) + \text{Funil}(P_D) + \text{Funil}(\widebar{P_E}) + \text{Funil}(\widebar{P_D}), \notag \\
-        &\geq \text{Alt}_{\cT}(P_X) - a(P_X,\cT).
+        \Funil(P_X) + \Funil(\widebar{P_X}) &\geq \Funil(P_E) + \Funil(P_D) + \Funil(\widebar{P_E}) + \Funil(\widebar{P_D}), \notag \\
+        &\geq \Alt_{\cT}(P_X) - a(P_X,\cT).
         \label{eq:medio}
     \end{align}
 
-    Para terminar a indução, basta retirar o termo $a(P_X,\cT)$ da Equação~\ref{eq:medio}. Para isso, precisamos entender como a intercalação é afetada quando consideramos $P_X$ e apenas um dos conjuntos $P_E$, $P_D$, $\widebar{P_E}$ e $\widebar{P_D}$.
+    Para terminar a indução, basta retirar o termo $a(P_X,\cT)$ da Equação~(\ref{eq:medio}). Para isso, precisamos entender como a intercalação é afetada quando consideramos $P_X$ e apenas um dos conjuntos $P_E$, $P_D$, $\widebar{P_E}$ e $\widebar{P_D}$.
 
     Vamos definir quatro propriedades que serão utilizadas a seguir:
     \begin{enumerate}[label=(\alph*)]  % Usando letras com parênteses
@@ -296,20 +150,20 @@ Primeiramente, é necessário entender como a inversão temporal de um ponto inf
         \item $p \in \cT_D$ e $f(\widebar{P_X},\widebar{p}) \geq f(\widebar{P_D},\widebar{p}) + 1$.
     \end{enumerate}
 
-    Vamos enumerar os pontos de $P_X$ de maneira cronológica com y-coordenada crescente como $p_1,\ldots,p_m$ e dividiremos a análise em 6 casos.
-    Como $a(P_X,\cT) = intercala(P_E.y,P_D.y)$ e $P_E$ e $P_D$ não são vazios, então $a(P_X,\cT) \geq 2$. Assim, quando analisamos cronologicamente os pontos de $P_X$, há $a(P_X,\cT) - 1 \geq 1$ alternações entre pontos de $P_E$ e pontos de $P_D$. Logo, há exatamente $a(P_X,\cT) - 2$ pares de pontos consecutivos em relação ao seu funil orientado (funil esquerdo ou direito) que possuem diferença no eixo $y$ de mais de 1 unidade. Formalmente, há exatamente $a(P_X,\cT) - 2$ pares de índices $(i,j)$ tal que $i + 1 < j$ que 
+    Vamos enumerar os pontos de $P_X$ de maneira cronológica com $y$-coordenada crescente como $p_1,\ldots,p_m$ e dividiremos a análise em seis casos.
+    Como $a(P_X,\cT) = \emph{intercala}(P_E.y,P_D.y)$ e $P_E$ e $P_D$ não são vazios pois $k > 1$, então $a(P_X,\cT) \geq 2$. Assim, quando analisamos cronologicamente os pontos de $P_X$, há $a(P_X,\cT) - 1 \geq 1$ alternâncias entre pontos de $P_E$ e pontos de $P_D$. Logo, há exatamente $a(P_X,\cT) - 2$ pares de pontos consecutivos em relação ao lado esquerdo ou direito do seu funil que possuem diferença no eixo $y$ de mais de uma unidade. Formalmente, há exatamente $a(P_X,\cT) - 2$ pares $(i,j)$ de índices tais que $i + 1 < j$ para os quais 
     \begin{center}
         caso 1: $p_i,p_j \in P_E$ e $p_{i+1},\ldots,p_{j-1} \in P_D$,\\
         caso 2: $p_i,p_j \in P_D$ e $p_{i+1},\ldots,p_{j-1} \in P_E$.
     \end{center}
 
-    Além disso, há um índice $i^{*} > 1$ que representa o primeiro ponto do lado que começa a aparecer depois, ou seja,
+    Além disso, há um índice $i^{*} > 1$ que representa o primeiro ponto do lado do funil que não possui o ponto mais baixo de $P_X$, ou seja,
     \begin{center}
         caso 3: $p_{i^{*}} \in P_E$ e $p_1,\ldots,p_{i^{*}-1} \in P_D$,\\
         caso 4: $p_{i^{*}}  \in P_D$ e $p_1,\ldots,p_{i^{*}-1} \in P_E$.
     \end{center}
 
-    E por último, há um índice $j^{*} < m$ que representa o último ponto do lado que termina primeiro, ou seja,
+    Por último, há um índice $j^{*} < m$ que representa o último ponto do lado do funil que não possui o ponto mais alto de $P_X$, ou seja,
     \begin{center}
         caso 5: $p_{j^{*}} \in P_E$ e $p_{j^{*} + 1},\ldots,p_m \in P_D$,\\
         caso 6: $p_{j^{*}}  \in P_D$ e $p_{j^{*} + 1},\ldots,p_m \in P_E$.
@@ -369,43 +223,45 @@ Primeiramente, é necessário entender como a inversão temporal de um ponto inf
     
             \draw[black, line width=0.5pt] (0,0) rectangle (10,10);
         \end{tikzpicture}
-        \caption{À esquerda, está destacada a delimitação do funil para o ponto $(5,9)$ da visão geométrica da sequência de acesso $X = (6,4,7,3,8,2,9,1,5)$ e, à direita, estão numerados de $1$ a $8$ os pontos desse funil. Perceba que os pares de índices $(2,4),(4,6),(6,8)$ representam o caso 1. Os pares de índices $(1,3),(3,5),(5,7)$ representam o caso 2. Além disso, o caso 3 acontece com índice $i^{*} = 2$ e também o caso 6 com índice $j^{*} = 7$.}
-    \label{fig:espelhamento-de-funil}
+        \caption{À esquerda, está destacada a delimitação do funil para o ponto $(5,9)$ da visão geométrica da sequência $X = (6,4,7,3,8,2,9,1,5)$ de acessos e, à direita, estão numerados de $1$ a $8$ os pontos do funil deste ponto. Perceba que os pares de índices $(2,4),(4,6),(6,8)$ representam o caso 1. Os pares de índices $(1,3),(3,5),(5,7)$ representam o caso 2. Além disso, o caso 3 acontece com índice $i^{*} = 2$ e também o caso 6 com índice $j^{*} = 7$.}
+    \label{fig:espelhamento-de-funil-inicial}
     \end{figure}
 
-    Assim, percebemos que os caso 3 e 4 são complementares assim como os casos 5 e 6. Logo, sempre acontece exatamente 1 caso de cada um desses pares. Como os primeiros dois casos acontecem $a(P_X,\cT) - 2$ vezes, então somados temos $a(P_X,\cT)$ ocorrência de todos os 6 casos.
+    Assim, percebemos que os casos 3 e 4 não ocorrem simultaneamente, assim como os casos 5 e 6. Logo, sempre acontece exatamente 1 caso de cada um desses pares. Como os primeiros dois casos acontecem $a(P_X,\cT) - 2$ vezes, então somados temos $a(P_X,\cT)$ ocorrências de todos os seis casos. Veja a Figura~\ref{fig:espelhamento-de-funil-inicial}.
 
-    Cada caso desses implica em uma propriedade descrita anteriormente. A descrição exata é
-    \begin{center}
+    Cada caso desses implica em uma das propriedades dentre (a), (b), (c) e (d). Mais precisamente,
+
+    
+    \begin{tabular}{l}
         caso 1 implica que $p_j$ possui a propriedade (a) ou $p_i$ possui a propriedade (b),\\
         caso 2 implica que $p_j$ possui a propriedade (c) ou $p_i$ possui a propriedade (d),\\
         caso 3 implica que $p_{i^{*}}$ possui a propriedade (a),\\
         caso 4 implica que $p_{i^{*}}$ possui a propriedade (c),\\
         caso 5 implica que $p_{j^{*}}$ possui a propriedade (b),\\
         caso 6 implica que $p_{j^{*}}$ possui a propriedade (d).
-    \end{center}
+    \end{tabular}
+    
+    Provaremos a afirmação para o caso 1 e para o caso 3. O restante dos casos é análogo.
 
-    Provaremos para o caso 1 e para o caso 3. O restante dos casos são análogos.
+    Para o caso 1, se $p_i.x < p_j.x$, então vamos provar que $f(P_X,p_j) \geq f(P_E,p_j) + 1$. Veja que $p_i$ está no lado esquerdo do funil de $p_j$ tanto em relação a $P_X$ quanto em relação a $P_E$. Mas, em relação a $P_X$, $p_{j-1}$ é um ponto adicional do funil de $p_j$ quando comparado com o funil de $p_j$ em relação a $P_E$. Assim, $f(P_X,p_j) \geq f(P_E,p_j) + 1$.
+    Se $p_i.x > p_j.x$, é possível usar o mesmo argumento para $\widebar{P_X}$ e $\widebar{P_E}$ analisando o ponto $p_i$ e concluir que, $f(\widebar{P_X},\widebar{p_i}) \geq f(\widebar{P_E},\widebar{p_i}) + 1$.
 
-    Para o caso 1, se $p_i.x < p_j.x$, então $p_i$ está no funil esquerdo de $p_j$ tanto em relação à $P_X$ quanto em relação à $P_E$. Mas, em relação à $P_X$, $p_{j-1}$ é um ponto adicional ao funil esquerdo quando comparado com o funil esquerdo em relação à $P_E$. Assim, $f(P_X,p_j) \geq f(P_E,p_j) + 1$.
-    Se $p_i.x > p_j.x$, é possível usar o mesmo argumento para $\widebar{P_X}$ e $\widebar{P_E}$ analisando o ponto $p_i$. Assim, $f(\widebar{P_X},\widebar{p_i}) \geq f(\widebar{P_E},\widebar{p_i}) + 1$.
+    Para provar o caso 3, basta perceber que ambos os funis de $p_{i^{*}}$ em relação a $P_E$ são vazios por não existirem pontos abaixo de $p_{i^{*}}$ que pertença a $P_E$. Já em relação a $P_X$, o lado direito do funil de $p_{i^{*}}$ possui pelo menos o ponto $p_{i^{*} - 1}$. Logo, $f(P,p_{i^{*}}) \geq 1 = f(P_E,p_{i^{*}}) + 1$, já que $f(P_E,p_{i^{*}}) = 0$. 
 
-    Para provar o caso 3, basta perceber que ambos os funis de $p_{i^{*}}$ em relação à $P_E$ são vazios por não existirem pontos abaixo de $p_{i^{*}}$ que pertença à $P_E$. Já em relação à $P_X$, o funil direito de $p_{i^{*}}$ possui pelo menos o ponto $p_{i^{*} - 1}$. Logo, $f(P,p_{i^{*}}) \geq 1 = f(P_E,p_{i^{*}}) + 1$, já que $f(P_E,p_{i^{*}}) = 0$. 
-
-    Assim, é possível recombinar as Equações \ref{eq:inicio}, \ref{eq:funil} e \ref{eq:funil_barra}, se utilizando deste fato para concluir
+    Assim, é possível recombinar as Equações (\ref{eq:inicio}), (\ref{eq:funil}) e (\ref{eq:funil_barra}), e concluir que na verdade
     \begin{align*}
-        \text{Funil}(P) + \text{Funil}(\widebar{P}) &\geq \text{Funil}(P_E) + \text{Funil}(P_D) + \text{Funil}(\widebar{P_E}) + \text{Funil}(\widebar{P_D}) + a(P_X,\cT), \notag \\
-        &\geq \text{Alt}_{\cT}(P_X).
+        \Funil(P) + \Funil(\widebar{P}) &\geq \Funil(P_E) + \Funil(P_D) + \Funil(\widebar{P_E}) + \Funil(\widebar{P_D}) + a(P_X,\cT), \notag \\
+        &\geq \Alt_{\cT}(P_X).
     \end{align*}
 
     Assim, terminamos a prova indutiva.
 \end{proof}
 
-Apesar do Lema~\ref{lemma:relacao-alt-com-funil} relacionar as duas delimitações com a ajuda da inversão temporal de $P_X$, não é de grande utilidade isolada, pois não sabemos como Funil$(P)$ e Funil$(\widebar{P})$ se relacionam.
+Apesar do Lema~\ref{lemma:relacao-alt-com-funil} relacionar as duas delimitações com a ajuda da inversão temporal de $P_X$, ele não é de grande utilidade isolada, pois não sabemos como \Funil$(P)$ e \Funil$(\widebar{P})$ se relacionam.
 
-\section{Relacionando o funil e sua inversão temporal}
+\section{Relação do funil e sua inversão temporal}
 
-Precisamos entender agora como transformações geométricas afetam a delimitação do funil. A delimitação não é afetada por espelhamentos no eixo $Y$. Isso acontece pois o número de intercalações entre os funis se mantém igual e assim a função $intercala$ para cada ponto não tem seu valor alterado. Veja a Figura~\ref{fig:espelhamento-de-funil}.
+Precisamos entender agora como as transformações geométricas afetam a delimitação do funil. A delimitação não é afetada por espelhamentos no eixo $y$. Isso porque o número de intercalações entre os funis se mantém igual e assim a função \emph{intercala} para cada ponto não tem seu valor alterado. Veja a Figura~\ref{fig:espelhamento-de-funil}.
 
 \begin{figure}
     \begin{tikzpicture}[scale=0.85]
@@ -448,11 +304,11 @@ Precisamos entender agora como transformações geométricas afetam a delimitaç
 
         \draw[black, line width=0.5pt] (0,0) rectangle (6,6);
     \end{tikzpicture}
-    \caption{À esquerda, está destacado o funil do ponto azul. À direita, está destacado o funil do mesmo ponto no conjunto inicial espelhado em relação ao eixo $Y$. Perceba que em ambos os casos há o mesmo número de intercalações entre os funis esquerdo e direito do ponto azul.}
+    \caption{À esquerda, está destacado o funil do ponto azul. À direita, está destacado o funil do mesmo ponto no conjunto inicial espelhado em relação ao eixo $y$. Em ambos os casos há o mesmo número de alternâncias entre o lado esquerdo e o direito do funil do ponto azul.}
 \label{fig:espelhamento-de-funil}
 \end{figure}
 
-Porém o valor da delimitação pode alterar com a inversão temporal. Veja a Figura~\ref{fig:espelhamento-de-funil-2}.
+Porém o valor da delimitação pode se alterar com a inversão temporal. Veja a Figura~\ref{fig:espelhamento-de-funil-2}.
 
 \begin{figure}
     \begin{tikzpicture}[scale=1]
@@ -481,13 +337,13 @@ Porém o valor da delimitação pode alterar com a inversão temporal. Veja a Fi
 
         \draw[black, line width=0.5pt] (0,0) rectangle (4,4);
     \end{tikzpicture}
-    \caption{À esquerda, a visão geométrica da sequência de acessos $X = (1,3,2)$. À direita, a inversão temporal de $P_X$. Acima de cada ponto está o valor de sua delimitação do funil. Assim, Funil$(P_X) = 0 + 1 + 2 = 3$, enquanto que Funil$(\protect \widebar{P_X}) = 0 + 1 + 1 = 2$.}
+    \caption{À esquerda, a visão geométrica da sequência $X = (1,3,2)$ de acessos. À direita, a inversão temporal de $P_X$. Acima de cada ponto está o valor de sua delimitação do funil. Assim, \Funil$(P_X) = 0 + 1 + 2 = 3$, enquanto que \Funil$(\protect \widebar{P_X}) = 0 + 1 + 1 = 2$.}
 \label{fig:espelhamento-de-funil-2}
 \end{figure}
 
-Assim, a princípio Funil$(P)$ e Funil$(\widebar{P})$ podem ter valores muito diferentes. Para entender essa relação precisamos caracterizar a delimitação do funil de maneira invariante em relação a rotações de 90°. 
+Assim, a princípio \Funil$(P)$ e \Funil$(\widebar{P})$ podem ter valores muito diferentes. Para entender essa relação, precisamos caracterizar a delimitação do funil de maneira invariante em relação a rotações de 90°. 
 
-Para um conjunto de pontos $P$, chamamos de \textit{z-retângulo} qualquer conjunto de 4 pontos $(p,q,r,s) \in P^4$ com as seguintes propriedades: $q.x < p.x < r.x < s.x$, $r.y < q.y < s.y < p.y$ e $P \cap [q.x,s.x] \times [r.y,p.y]$. Na prática, z-retângulo é um conjunto de 4 pontos de $P$ que cronologicamente possuem x-coordenada relativa 3,1,4,2 e o retângulo que contém todos os 4 pontos em seu perímetro não possui nenhum outro ponto de $P$ em sua área. Veja a Figura~\ref{fig:z-retangulo-isolado}. Definimos por \textit{zRet(P)} o número de z-retângulos de P.
+Para um conjunto $P$ de pontos, chamamos de \textit{z-retângulo} qualquer sequência de quatro pontos $(p,q,r,s) \in P^4$ com as seguintes propriedades: $q.x < p.x < r.x < s.x$, \ $r.y < q.y < s.y < p.y$ e $P \cap [q.x,s.x] \times [r.y,p.y]  = \{p,q,r,s\}$. Na prática, um z-retângulo é uma sequência de 4 pontos de $P$ que cronologicamente possuem $x$-coordenadas relativas 3,1,4,2 e o retângulo que contém todos os quatro pontos em seu perímetro não possui nenhum outro ponto de $P$. Veja a Figura~\ref{fig:z-retangulo-isolado}. Definimos por \textit{zRet(P)} o número de z-retângulos de $P$.
 
 \begin{figure}
     \begin{tikzpicture}[scale=0.85]
@@ -504,7 +360,7 @@ Para um conjunto de pontos $P$, chamamos de \textit{z-retângulo} qualquer conju
 
         \draw[black, line width=0.5pt] (0,0) rectangle (7,7);
     \end{tikzpicture}
-    \caption{O único z-retângulo da visão geométrica da sequência de acessos $X = (6,4,2,5,1,3)$.}
+    \caption{O único z-retângulo da visão geométrica da sequência $X = (6,4,2,5,1,3)$ de acessos.}
 \label{fig:z-retangulo-isolado}
 \end{figure}
 
@@ -513,19 +369,19 @@ Para um conjunto de pontos $P$, chamamos de \textit{z-retângulo} qualquer conju
 \end{lemma}
 
 \begin{proof}
-    Ao rotacionar $P$, o z-retângulo $(p,q,r,s)$ de $P$ se tornará o z-retângulo $(s^{\perp},p^{\perp},q^{\perp},r^{\perp},)$ em $P^{\perp}$. Uma maneira simples de perceber esse fenômeno é rotacionar a Figura~\ref{fig:z-retangulo-isolado}. Perceba que a x-coordenada relativa 3,1,4,2 é invariante em relação à rotações de 90°.
+    Ao rotacionar $P$, o z-retângulo $(p,q,r,s)$ de $P$ se tornará o z-retângulo $(s^{\perp},p^{\perp},q^{\perp},r^{\perp})$ em $P^{\perp}$. Uma maneira simples de perceber esse fenômeno é rotacionar a Figura~\ref{fig:z-retangulo-isolado}. Perceba que a $x$-coordenada relativa 3,1,4,2 é invariante em relação a rotações de 90°.
 \end{proof}
 
 \begin{lemma}
-    Para qualquer ponto $p$ de um conjunto $P$ de pontos, é possível encontrar $\lfloor f(P,p)/2 \rfloor - 1$ z-retângulos formados por $p$ e três de pontos de seu funil.
+    Para qualquer ponto $p$ de um conjunto $P$ de pontos, existem $\lfloor f(P,p)/2 \rfloor - 1$ z-retângulos formados por $p$ e três de pontos de seu funil.
 \end{lemma}
 
 \begin{proof} \label{lema:passo-intermediario}
-    Para um ponto $p \in P$ com $l$ pontos em seu funil, enumeremos os pontos de seu funil de maneira cronológica $(a_1,a_2,\ldots,a_l)$, onde $a_1.y < a_2.y < \ldots < a_l.y$. Suponha que $f(P,p) \geq 4$, pois caso contrário a delimitação é imediata.
+    Para um ponto $p \in P$ com $l$ pontos em seu funil, enumeremos os pontos de seu funil de maneira cronológica $(a_1,a_2,\ldots,a_l)$, onde $a_1.y < a_2.y < \cdots < a_l.y$. Suponha que $f(P,p) \geq 4$, caso contrário a delimitação é imediata.
 
-    Chamamos um par $(i,j)$ de índices de \textit{separadores esquerdos} se $i + 1 < j, a_i.x > p.x, a_j.x > p.x$ e para todo $k$, com $i < k < j$, $a_k.x < p.x$. Em outras palavras, chamamos um par $(i,j)$ de índices de separadores esquerdo se ambos os pontos $a_i$ e $a_j$ estão à direita de $p$ e todos os pontos com índice $k$ entre $i$ e $j$ estão à esquerda de $p$.
+    Chamamos um par $(i,j)$ de índices de \textit{separador esquerdo} se $i + 1 < j$, $a_i.x > p.x$, $a_j.x > p.x$ e para todo $k$ com $i < k < j$, $a_k.x < p.x$. Em outras palavras, chamamos um par $(i,j)$ de índices de separador esquerdo se ambos os pontos $a_i$ e $a_j$ estão à direita de $p$ e todos os pontos com índice $k$ entre $i$ e $j$ estão à esquerda de $p$.
 
-    Sabemos que há $f(P,p)$ intercalações entre o funil esquerdo e o funil direito de $p$. Como os funis de $p$ se alternam entre si $f(P,p) -1$ vezes, então, no pior dos casos onde as intercalações se iniciam e terminam no funil esquerdo, existem  $\lfloor f(P,p)/2 \rfloor - 1$ pares de índices separadores de $p$. Veja a Figura~\ref{fig:bound-z-rets}.
+    Sabemos que há $f(P,p)$ intercalações entre o lado esquerdo e o lado direito do funil de $p$. Como os funis de $p$ se alternam $f(P,p) -1$ vezes, então, no pior dos casos onde as intercalações se iniciam e terminam no lado esquerdo do funil de $p$, existem  $\lfloor f(P,p)/2 \rfloor - 1$ pares separadores de índices de $p$. Veja a Figura~\ref{fig:bound-z-rets}.
 
     %figure!
     \begin{figure}
@@ -549,13 +405,13 @@ Para um conjunto de pontos $P$, chamamos de \textit{z-retângulo} qualquer conju
     
             \draw[black, line width=0.5pt] (0,0) rectangle (7,7);
         \end{tikzpicture}
-        \caption{Em azul, o ponto $p = (4,6)$ do conjunto $P$ de pontos. Em vermelho, os pontos de seu funil e suas intercalações. Perceba que $f(P,p) = 5$, o ponto mais alto e mais baixo do funil de $p$ pertencem ao funil esquerdo e há apenas $\lfloor f(P,p)/2 \rfloor - 1 = 1$ par de índices separadores esquerdos.}
+        \caption{Em azul, o ponto $p = (4,6)$ do conjunto $P$ de pontos. Em vermelho, os pontos de seu funil e suas intercalações. Perceba que $f(P,p) = 5$. Os pontos mais alto e mais baixo do funil de $p$ pertencem ao lado esquerdo de seu funil e há apenas $\lfloor f(P,p)/2 \rfloor - 1 = 1$ pares separadores esquerdos de índices.}
     \label{fig:bound-z-rets}
     \end{figure}
 
-    Assim, para cada par de índices $(i,j)$ separadores esquerdos, note que os pontos $(p,a_{i+1},a_i,a_j)$ caracterizam um z-retângulo. Pela ordem dos índices, é fácil perceber que $p.y > a_j.y > a_{i+1}.y > a_i.y$. Como todos os pontos do funil direito possuem x-coordenada cronologicamente crescente, então sabemos que $a_j.x > a_i.x > p.x > a_{i+1}.x$. Assim, concluímos que as posições relativas estão corretas.
+    Assim, para cada par separador esquerdo de índices $(i,j)$, note que os pontos $(p,a_{i+1},a_i,a_j)$ caracterizam um z-retângulo. Pela ordem dos índices, é fácil perceber que $p.y > a_j.y > a_{i+1}.y > a_i.y$. Como as $x$-coordenadas dos pontos do lado direito do funil estão em ordem cronológica crescente, então sabemos que $a_j.x > a_i.x > p.x > a_{i+1}.x$. Assim, concluímos que as posições relativas estão corretas, formando um z-retângulo.
 
-    Por fim, é necessário garantir que $P \cap [a_{i+1}.x,a_j.x] \times [a_i.y,p.y]$. Por $a_i$ e $a_j$ serem pontos consecutivos do funil direito, sabemos que não há nenhum ponto no funil direito com y-coordenada entre $a_i.y$ e $a_j.y$. Como os pontos do funil esquerdo possuem x-coordenada cronologicamente decrescente e não existe nenhum ponto do funil de $p$ com y-coordenada entre $a_i.y$ e $a_{i+1}.y$, então conclui-se que não há nenhum ponto $q$, $q \in P \setminus \{p,a_i,a_{i+1},a_j\}$, na área descrita pelo $\{a_i,a_{i+1}\}$-retângulo, pelo $\{a_j,a_{i+1}\}$-retângulo e pelo $\{p,a_{i+1}\}$-retângulo. Por fim, pelos pontos do funil direito possuírem x-coordenada cronologicamente crescente, então também não há um ponto $q$, $q \in P \setminus \{p,a_j\}$, no $\{p,a_j\}$-retângulo. Veja a Figura~\ref{fig:representacao-areas}. 
+    Por fim, é necessário garantir que $P \cap [a_{i+1}.x,a_j.x] \times [a_i.y,p.y] = \{p,a_i,a_{i+1},a_j\}$, ou seja, não há nenhum outro ponto de $P$ dentro da área delimitada pelo retângulo que possui os pontos $p$, $a_i$, $a_{i+1}$ e $a_j$ em seu perímetro. Por $a_i$ e $a_j$ serem pontos consecutivos do lado direito do funil de $p$, sabemos que não há nenhum ponto no lado direito do funil de $p$ com $y$-coordenada entre $a_i.y$ e $a_j.y$. Como os pontos do lado esquerdo do funil de $p$ possuem $x$-coordenada cronologicamente decrescente e não existe nenhum ponto do funil de $p$ com $y$-coordenada entre $a_i.y$ e $a_{i+1}.y$, então conclui-se que não há nenhum ponto $q \in P \setminus \{p,a_i,a_{i+1},a_j\}$, no $\{a_i,a_{i+1}\}$-retângulo, no $\{a_j,a_{i+1}\}$-retângulo ou no $\{p,a_{i+1}\}$-retângulo. Por fim, pelos pontos do lado direito do funil possuírem $x$-coordenada cronologicamente crescente, então também não há um ponto $q \in P \setminus \{p,a_j\}$ no $\{p,a_j\}$-retângulo. Veja a Figura~\ref{fig:representacao-areas}. 
 
     %\fill[pattern=vertical lines] (A) -- (C) -- (end) -- (start) -- cycle;
     \begin{figure}
@@ -589,29 +445,29 @@ Para um conjunto de pontos $P$, chamamos de \textit{z-retângulo} qualquer conju
 \end{proof}
 
 \begin{lemma} \label{lemma:zrets-funil}
-    Para qualquer conjunto $P$ de pontos, $zRet(P) \geq Funil(P)/2 - \Oh(m)$.
+    Para qualquer conjunto $P$ de $m$ pontos, $zRet(P) \geq \Funil(P)/2 - \Theta(m)$.
 \end{lemma}
 
 \begin{proof}
-    De acordo com o Lema~\ref{lema:passo-intermediario}, para cada ponto $p \in P$, é possível encontrar $\lfloor f(P,p)/2 \rfloor - 1$ z-retângulos distintos de $P$. Pelo Lema, para cada $p$, os z-retângulos encontrados referentes a esse ponto são formados por $p$ e três pontos de seu funil, assim é fácil concluir que os z-retângulos encontrados para cada $p \in P$ são distintos entre si. Somando para todos os pontos, temos
+    De acordo com o Lema~\ref{lema:passo-intermediario}, para cada ponto $p \in P$, é possível encontrar $\lfloor f(P,p)/2 \rfloor - 1$ z-retângulos distintos de $P$. Pelo lema, para cada $p$, os z-retângulos encontrados referentes a esse ponto são formados por $p$ e três pontos de seu funil, assim é fácil concluir que os z-retângulos encontrados para diferentes pontos de $P$ são distintos. Somando para todos os $P$ pontos, temos
     \begin{align}
         zRet(P) &\geq \sum_{p \in P} (\lfloor f(P,p)/2 \rfloor - 1) , \notag \\
         &\geq \sum_{p \in P} (f(P,p)/2 - 2) , \notag \\
         &= \frac{1}{2} \sum_{p \in P} (f(P,p)) - 2m , \notag \\
-        &= \text{Funil}(P)/2 - \Oh(m). \notag
+        &= \Funil(P)/2 - \Theta(m). \notag
     \end{align}
 \end{proof}
 
 \begin{lemma} \label{lemma:funil-zrets}
-    Para qualquer conjunto $P$ de pontos, $\text{Funil}(P) \geq 2 \cdot zRet(P)$.
+    Para qualquer conjunto $P$ de pontos, $\Funil(P) \geq 2 \cdot zRet(P)$.
 \end{lemma}
 
 \begin{proof}
-    Fixe um ponto $p \in P$. Suponha que o número de z-retângulos formados por $p$ e três pontos abaixo de $p$ seja $k$. Rotule os pontos dos $k$ z-retângulos desse formato em ordem crescente em relação a y-coordenada do ponto mais baixo por $(p,q_1,r_1,s_1)$ até $(p,q_k,r_k,s_k)$.
+    Fixe um ponto $p \in P$. Suponha que o número de z-retângulos formados por $p$ e três pontos abaixo de $p$ seja $k$. Rotule os pontos dos $k$ z-retângulos desse formato em ordem crescente em relação a $y$-coordenada do ponto mais baixo por $(p,q_1,r_1,s_1)$ até $(p,q_k,r_k,s_k)$.
 
-    Considere dois z-retângulos consecutivos $(p,q_i,r_i,s_i)$ e $(p,q_{i+1},r_{i+1},s_{i+1})$. Pela definição de z-retângulos sabemos que $r_i.y < q_i.y < s_i.y$ e $r_{i+1}.y < q_{i+1}.y < s_{i+1}.y$. Por conta da rotulação em ordem crescente na y-coordenada do ponto mais baixo dos z-retângulos, sabemos que $r_i.y < r_{i+1}.y$. Assim, $s_i.x \leq r_{i+1}.y$ pois caso contrário o ponto $r_{i+1}$ está dentro do z-retângulo $(p,q_i,r_i,s_i)$. Por consequência, $s_i.y \leq r_{i+1}.y$, pois caso contrário o ponto $s_i$ está dentro do z-retângulo $(p,q_{i+1},r_{i+1},s_{i+1})$. Para auxiliar a visualização, veja a Figura~\ref{fig:funil-2-z-rets}. Agrupando essas propriedades, deduzimos que $r_i.y < q_i.y < s_i.y \leq r_{i+1}.y < q_{i+1}.y < s_{i+1}.y$. Assim, notamos que $q_1.y < s_1.y < q_2.y < s_2.y < \ldots < q_k.y < s_k.y$ para os z-retângulos considerados.
+    Considere dois z-retângulos consecutivos $(p,q_i,r_i,s_i)$ e $(p,q_{i+1},r_{i+1},s_{i+1})$. Pela definição de z-retângulo, sabemos que $r_i.y < q_i.y < s_i.y$ e $r_{i+1}.y < q_{i+1}.y < s_{i+1}.y$. Por conta da rotulação em ordem crescente na $y$-coordenada do ponto mais baixo dos z-retângulos, sabemos que $r_i.y < r_{i+1}.y$. Assim, $s_i.x \leq r_{i+1}.y$, caso contrário o ponto $r_{i+1}$ estaria dentro do z-retângulo $(p,q_i,r_i,s_i)$. Por consequência, $s_i.y \leq r_{i+1}.y$, caso contrário o ponto $s_i$ estaria dentro do z-retângulo $(p,q_{i+1},r_{i+1},s_{i+1})$. Para auxiliar a visualização, veja a Figura~\ref{fig:funil-2-z-rets}. Agrupando essas propriedades, deduzimos que $r_i.y < q_i.y < s_i.y \leq r_{i+1}.y < q_{i+1}.y < s_{i+1}.y$. Assim, notamos que $q_1.y < s_1.y < q_2.y < s_2.y < \cdots < q_k.y < s_k.y$ para os z-retângulos considerados.
 
-    Pela definição de z-retângulos, sabemos que os pontos $q_1,s_1,\ldots,q_k,s_k$ pertencem ao funil de $p$. Assim, sabemos que há pelo menos $2k$ intercalações entre o funil esquerdo e o direito de $p$, ou seja, $f(P,p) = intercala(F_E(P,p).y, F_D(P,p).y) \geq 2k$. Sabemos que o conjunto de z-retângulos formados por um ponto $q \in P$ é disjunto do conjunto de z-retângulos formado pelo ponto $r \in P$, tal que $r \neq q$. Assim, ao somarmos para todos os pontos de $P$, temos que $\text{Funil}(P) \geq 2 \cdot zRet(P)$.
+    Pela definição de z-retângulo, sabemos que os pontos $q_1,s_1,\ldots,q_k,s_k$ pertencem ao funil de $p$. Assim, sabemos que há pelo menos $2k$ intercalações entre os lados esquerdo e direito do funil de  $p$, ou seja, $f(P,p) = \emph{intercala}(F_E(P,p).y, F_D(P,p).y) \geq 2k$. Sabemos que o conjunto de z-retângulos formados por um ponto $q \in P$ é disjunto do conjunto de z-retângulos formado pelo ponto $r \in P$, desde que $r \neq q$. Assim, ao somarmos para todos os pontos de $P$, obtemos que $\Funil(P) \geq 2 \cdot zRet(P)$.
 
     \begin{figure}
         \begin{tikzpicture}[scale=0.85]
@@ -642,39 +498,35 @@ Para um conjunto de pontos $P$, chamamos de \textit{z-retângulo} qualquer conju
             % Limite do quadrado
             \draw[black, line width=0.5pt] (0,0) rectangle (8,8);
         \end{tikzpicture}
-    \caption{Estão descritos dois z-retângulos consecutivos. Note que $s_i$ e $r_{i+1}$ podem ser rótulos do mesmo ponto.}
+    \caption{Estão ilustrados dois z-retângulos consecutivos formados por $p$ e pontos de seu funil em~$P$. Note que $s_i$ e $r_{i+1}$ podem ser rótulos de um mesmo ponto de $P$.}
     \label{fig:funil-2-z-rets}
     \end{figure}
 \end{proof}
 
 \begin{corollary} \label{corollario:final} %COROLÁRIO!!!
-    Para qualquer sequência $X$ de acessos, $\text{Funil}(P_X) \geq \text{Funil}(\widebar{P_X}) - \Oh(m)$.
+    Para qualquer sequência $X$ de acessos, $\Funil(P_X) \geq \Funil(\widebar{P_X}) - \Theta(m)$.
 \end{corollary}
 
 \begin{proof}
     \begin{align*}
-        \text{Funil}(P_X) &\geq 2 \cdot zRet(P_X) \quad & \text{pelo Lema~\ref{lemma:funil-zrets}}, \\
+        \Funil(P_X) &\geq 2 \cdot zRet(P_X) \quad & \text{pelo Lema~\ref{lemma:funil-zrets}}, \\
         &= 2 \cdot zRet(P_X^{\perp}) \quad & \text{pelo Lema~\ref{lemma:p-inversivel}}, \\
         &= 2 \cdot zRet(P_X^{\perp\perp}) \quad & \text{novamente pelo Lema~\ref{lemma:p-inversivel}}, \\
         &= 2 \cdot zRet(\widebar{P_X}), \\
-        &\geq \text{Funil}(\widebar{P_X}) - \Oh(m) \quad & \text{pelo Lema~\ref{lemma:zrets-funil}}. \\
+        &\geq \Funil(\widebar{P_X}) - \Theta(m) \quad & \text{pelo Lema~\ref{lemma:zrets-funil}}. \\
     \end{align*}
 \end{proof}
 
 \begin{theorem}
-    Para toda sequência $X$ de acessos sem repetições e para toda árvore de referência $\cT$ em relação à $P_X$, $\text{Alt}(P_X) \leq \Oh(\text{Funil}(P_X) + m)$.
+    Para toda sequência $X$ de acessos sem repetições e para toda árvore de referência $\cT$ em relação a $P_X$, $\Alt(P_X) \leq \Oh(\Funil(P_X) + m)$.
 \end{theorem}
 
 \begin{proof}
     \begin{align*}
-        \text{Alt}_{\cT}(P_X) &\leq \text{Funil}(P_X) +  \text{Funil}(\widebar{P_X}) \quad & \text{pelo Lema~\ref{lemma:relacao-alt-com-funil}}, \\
-        &\leq \text{Funil}(P_X) +  \text{Funil}(P_X) + \Oh(m) \quad & \text{pelo Corolário~\ref{corollario:final}}, \\
-        &= \Oh(\text{Funil}(P_X) + m).
+        \Alt_{\cT}(P_X) &\leq \Funil(P_X) +  \Funil(\widebar{P_X}) \quad & \text{pelo Lema~\ref{lemma:relacao-alt-com-funil}}, \\
+        &\leq \Funil(P_X) +  \Funil(P_X) + \Theta(m) \quad & \text{pelo Corolário~\ref{corollario:final}}, \\
+        &= \Oh(\Funil(P_X) + m).
     \end{align*}
 \end{proof}
 
-Esses resultados são bastante impressionantes dado que delimitações construídas a partir de z-retângulos são invariantes em relação à rotações. Além disso, os z-retângulos nos mostram que rotações dos conjuntos de pontos de visões geométricas de sequência de acessos tem seu custo relacionado, ou seja, de grosso modo, fazer $m$ buscas no conjunto de chaves de $1$ a $n$ tem seu custo relacionado com inverter os eixos e fazer as $n$ buscas correspondentes no conjunto de chaves de $1$ a $m$. Esse resultado é bastante impressionante. 
-
-
-
-%Além disso, os z-retângulos nos mostram que rotações dos conjuntos de pontos das visões geométricas têm seu custo relacionado e isso é um resultado bem pouco intuitivo.
+Esses resultados são bastante impressionantes dado que delimitações construídas a partir de z-retângulos são invariantes em relação a rotações. Além disso, os z-retângulos nos mostram que rotações dos conjuntos de pontos de visões geométricas de sequência de acessos têm seu custo relacionado, ou seja, a grosso modo, fazer $m$ buscas no conjunto de chaves de $1$ a $n$ tem seu custo relacionado com inverter os eixos e fazer as $n$ buscas correspondentes no conjunto de chaves de $1$ a $m$. Esse resultado é fascinante. 

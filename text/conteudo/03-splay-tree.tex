@@ -12,7 +12,7 @@ Neste capítulo apresentaremos as árvores splay, desenvolvidas por Sleator e Ta
 
 
 \section{Introdução}
-A altura de uma árvore binária de busca é o comprimento de um caminho mais longo da raiz da árvore a uma de suas folhas. É sabido que a altura de uma ABB com $n$ nós é um valor entre $\lg n$ e $n-1$. O pior caso das operações de busca, inserção, remoção e outras em árvores binárias de busca é exatamente a altura da árvore. Por isso, surgiram na literatura várias propostas de implementações de ABBs que mantém alguma propriedade que implica que a altura da árvore se mantém logarítmica no número de nós da ABB. Tais implementações, em geral, carregam informação extra nos nós da árvore e executam rotações durante as inserções e remoções porém não alteram a árvore durante as buscas.
+A altura de uma árvore binária de busca é o comprimento de um caminho mais longo da raiz da árvore a uma de suas folhas. É sabido que a altura de uma ABB com $n$ nós é um valor entre $\lg n$ e $n-1$. O pior caso das operações de busca, inserção, remoção e outras em árvores binárias de busca é exatamente a altura da árvore. Por isso, surgiram na literatura várias propostas de implementações de ABBs que mantêm alguma propriedade que implica que a altura da árvore se mantém logarítmica no número de nós da ABB. Tais implementações, em geral, carregam informação extra nos nós da árvore e executam rotações durante as inserções e remoções, porém não alteram a árvore durante as buscas.
 
 Uma alternativa a essas estratégias é a árvore splay. Árvore Splay é uma árvore binária de busca balanceada proposta por Sleator e Tarjan \cite{selfadjustingbst}. Diferentemente das árvores binárias balanceadas citadas anteriormente, a árvore splay não utiliza armazenamento adicional e se reestrutura após toda operação, inclusive após as buscas.
 
@@ -20,7 +20,7 @@ Uma alternativa a essas estratégias é a árvore splay. Árvore Splay é uma á
 %A árvore splay é uma ABB que segue a heurística “move to front”, ou seja, a ideia central é que a medida que operações são realizadas na estrutura, os elementos são movidos para perto da raiz de uma maneira particular com intuito de manter na raiz o nó que guarda a última chave acessada.
 %Com a tendência dos nós com chave mais recentemente acessadas estarem próximos da raiz, o custo de sequências de acessos repetitivos tende a diminuir e essas reestruturações também auxiliam a árvore splay a dispor seus nós de maneira mais balanceada, reduzindo a altura total da árvore em alguns casos.
 
-A árvore splay segue a heurística “move to front”, assim a cada operação a árvore aciona a rotina splay para garantir que o nó mais profundo visitado seja movido para a raiz. Dessa maneira, buscas a chaves que foram recentemente buscadas têm seu custo reduzido porque seus nós estão mais próximos da raiz. Além disso, em alguns casos a rotina splay pode diminuir a altura total da árvore e assim reduzir custo de o pior custo de operações futuras.
+A árvore splay segue a heurística “move to front”, assim a cada operação a árvore aciona a rotina splay para garantir que o nó mais profundo visitado seja movido para a raiz. Dessa maneira, buscas a chaves que foram recentemente buscadas têm seu custo reduzido porque seus nós estão mais próximos da raiz. Além disso, usualmente a rotina splay diminui a altura total da árvore e assim reduz o custo de o pior caso de operações futuras.
 
 {
     \tikzset{
@@ -33,7 +33,7 @@ A árvore splay segue a heurística “move to front”, assim a cada operação
     edge from parent/.append style={-, shorten >= 0, shorten <= 0}
     }
 
-\section{Operação Splay}
+\section{Operação splay}
 
 A essência da árvore splay está na operação splay. A operação splay é a responsável por mover um nó específico para a raiz por meio de sucessivos passos splay. Essa operação é fundamental para o funcionamento da estrutura e é utilizada por todas as outras operações.
 
@@ -196,7 +196,7 @@ Como a operação splay se encerra quando o nó analisado chega à raiz, estas r
 \end{comment}
 
 Em algumas estruturas são definidas rotações direitas e esquerdas. %Seguiremos o modelo de computação adotado. 
-A operação primitiva de rotação do modelo de computação adotado rotaciona o nó corrente com seu pai. Essencialmente rotações para a direita e esquerda são rotações de um nó com um de seus filhos que precisa ser definido enquanto que rotações de um nó com seu pai é uma operação bem definida.
+A operação primitiva de rotação do modelo de computação adotado rotaciona o nó corrente com seu pai. Veja o Programa~\ref{prog:rotação}, que consome $\Oh(1)$. Essencialmente rotações para a direita e esquerda são rotações de um nó com um de seus filhos que precisa ser definido enquanto que rotações de um nó com seu pai é uma operação bem definida.
 
 \begin{programruledcaption}{Função de rotação.\label{prog:rotação}}
     \noindent\textbf{Entrada}: Recebe um vértice $x$ de uma ABB que possui um vértice pai.\\
@@ -213,21 +213,21 @@ A operação primitiva de rotação do modelo de computação adotado rotaciona 
     (*@\bfseries\scshape{Função}@*) rotação_com_pai(x)
         y := x.pai
         z := y.pai
-        se x == y.esq
-            (*@\textbf{então}@*) y.esq = x.dir
-            (*@\hspace{1.09cm}@*)x.dir = y
+        se x = y.esq
+            (*@\textbf{então}@*) y.esq := x.dir
+            (*@\hspace{1.09cm}@*)x.dir := y
             (*@\hspace{1.09cm}@*)se y.esq != NULL
-                (*@\hspace{1.09cm}@*)(*@\textbf{então}@*) y.esq.pai = y
-            (*@\textbf{senão}@*) y.dir = x.esq
-            (*@\hspace{1.08cm}@*)x.esq = y
+                (*@\hspace{1.09cm}@*)(*@\textbf{então}@*) y.esq.pai := y
+            (*@\textbf{senão}@*) y.dir := x.esq
+            (*@\hspace{1.08cm}@*)x.esq := y
             (*@\hspace{1.09cm}@*)se y.dir != NULL
-                (*@\hspace{1.09cm}@*)(*@\textbf{então}@*) y.dir.pai = y
-        x.pai = z
-        y.pai = x
+                (*@\hspace{1.09cm}@*)(*@\textbf{então}@*) y.dir.pai := y
+        x.pai := z
+        y.pai := x
         se z != NULL
             se z.esq = y
-                (*@\textbf{então}@*) z.esq = x
-                (*@\textbf{senão}@*) z.dir = x
+                (*@\textbf{então}@*) z.esq := x
+                (*@\textbf{senão}@*) z.dir := x
 
     \end{lstlisting}
     \vspace{-0.5\baselineskip}
@@ -249,16 +249,15 @@ A seguir veja o código da operação splay no Programa~\ref{prog:splay} que se 
     ]
     (*@\bfseries\scshape{Função}@*) splay(x)
         y := x.pai
-        se y == NULL (*@ \hfill @*) // x é raiz
+        se y = NULL (*@ \hfill @*) // x é raiz
             (*@\textbf{retorne}@*)
-        se y.pai == NULL (*@ \hfill @*) // zig/zag
+        se y.pai = NULL (*@ \hfill @*) // zig/zag
             (*@\textbf{então}@*) rotação_com_pai(x)
-        (*@\textbf{senão}@*) se y.esq == x e y.pai.esq == y ou y.dir == x e y.pai.dir == y (*@ \hfill @*) // zig-zig/zag-zag
+        (*@\textbf{senão}@*) se y.esq = x e y.pai.esq = y ou y.dir = x e y.pai.dir = y (*@ \hfill @*) // zig-zig/zag-zag
             (*@\textbf{então}@*) rotação_com_pai(y)
             (*@\hspace{1.045cm}@*)rotação_com_pai(x)
-        (*@\textbf{senão}@*) se y.esq == x e y.pai.dir == y ou y.dir == x e y.pai.esq == y (*@ \hfill @*) // zig-zag/zag-zig
-            (*@\textbf{então}@*) rotação_com_pai(x)
-            (*@\hspace{1.045cm}@*)rotação_com_pai(x)
+        (*@\textbf{senão}@*) rotação_com_pai(x) (*@ \hfill @*) // zig-zag/zag-zig
+            (*@\hspace{0.4cm}@*)rotação_com_pai(x)
         splay(x)
     \end{lstlisting}
     \vspace{-0.5\baselineskip}
@@ -266,16 +265,16 @@ A seguir veja o código da operação splay no Programa~\ref{prog:splay} que se 
 
 \begin{figure}
     \includegraphics[scale=0.77]{imagens/fullsplay2.pdf}
-    \caption{Execução da operação splay após acesso na chave 4.}
+    \caption{Execução da operação splay após acesso à chave 4.}
 \label{fig:fullsplay}
 \end{figure}
 
 Uma série de operações podem ser implementadas nessas estruturas como inserção, remoção, busca, junção e divisão. Todas essas operações chamam a operação splay no nó mais profundo visitado durante sua execução. É essencial entender que ao final de cada acesso, o nó com a chave acessada será levado para a raiz pela operação splay. O código da busca em árvores splay pode ser visto no Programa~\ref{prog:busca}.
 
-No escopo desse trabalho só são consideradas buscas bem-sucedidas, porém com poucas modificações nos códigos, é possível tratar de buscas mal-sucedidas. A diferença é que o nó mais profundo visitado não será o nó com chave buscada, então o nó que a rotina splay levará para a raiz é uma das folhas que possui chave perto da chave buscada. O mesmo acontece para remoções mal-sucedidas que também não são consideradas nesse texto.
+No escopo desse trabalho só são consideradas buscas bem-sucedidas, porém com poucas modificações nos códigos, é possível tratar buscas mal-sucedidas. A diferença é que o nó mais profundo visitado não será o nó com chave buscada, então o nó que a rotina splay levará para a raiz é uma das folhas que possui chave vizinha à chave buscada. O mesmo acontece para remoções mal-sucedidas que também não são consideradas nesse texto.
 
 \begin{programruledcaption}{Função de busca em árvores splay.\label{prog:busca}}
-    \noindent\textbf{Entrada}: Recebe um inteiro $z$ no intervalo [1,n] e um nó $x$ de uma árvore splay.\\
+    \noindent\textbf{Entrada}: Recebe um inteiro $z$ no intervalo $[1,n]$ e um nó $x$ de uma árvore splay.\\
     \textbf{Saída}: Acessa o nó com chave $z$ e chama a rotina splay nele.
     \vspace{-0.5\baselineskip}
     \begin{lstlisting}[
@@ -287,7 +286,7 @@ No escopo desse trabalho só são consideradas buscas bem-sucedidas, porém com 
         escapeinside={(*@}{@*)},
     ]
     (*@\bfseries\scshape{Função}@*) busca(z, x)
-        se x.val == z
+        se x.val = z
             (*@\textbf{então}@*) splay(x)
             (*@\textbf{retorne}@*)
         se x.val > z
@@ -303,37 +302,34 @@ No escopo desse trabalho só são consideradas buscas bem-sucedidas, porém com 
 Definimos o custo da operação splay como o número de rotações realizadas durante sua execução. Caso nenhuma rotação seja realizada, definimos o custo dessa operação como 1. 
 %ONDE EU USEI QUE A ROTAÇÃO TEM CUSTO 1?
 
-Faremos uma análise amortizada da estrutura pelo método do potencial. Seja $S$ a árvore splay sendo analisada. Definimos $s^{i}(x)$ como o tamanho da subárvore enraizada no nó $x$ de $S$ depois do passo splay $i$ de uma rotina splay. Definimos o potencial local do nó $x$ logo depois do passo splay $i$ como $r^{i}(x) = \lg(s^{i}(x))$. Por fim, definimos $c$ como o custo real de uma operação splay, \( \hat{c}\) como o custo amortizado de uma operação splay e $\Phi^{i}(S)$ como o potencial da árvore $S$ depois do passo splay $i$ que é a somatória do potencial local de todos os nós de $S$ nesse instante de tempo.
+Faremos uma análise amortizada da estrutura pelo método do potencial. Seja $S$ a árvore splay sendo analisada. Definimos $s^{i}(x)$ como o tamanho da subárvore enraizada no nó $x$ de $S$ depois do passo splay $i$ de uma rotina splay. Definimos o potencial local do nó $x$ logo depois do passo splay $i$ como $r^{i}(x) = \lg(s^{i}(x))$. Por fim, definimos $c$ como o custo real de uma operação splay, \( \hat{c}\) como o custo amortizado de uma operação splay e $\Phi^{i}(S)$ como o potencial da árvore $S$ depois do passo splay $i$, que é a somatória do potencial local de todos os nós de $S$ nesse instante de tempo.
 
 Para deduzir o custo amortizado de uma operação splay($x$), vamos calcular o custo amortizado de cada passo splay realizado dentro da operação splay. Note que todos esses passos envolvem o nó $x$.
 
 \begin{lemma}
-    O custo amortizado de um passo splay simples no nó $x$ é $< 3(r^{j}(x) - r^{j-1}(x)) + 1$, onde esse passo splay é o $j$-ésimo de uma rotina splay.
+    Se o $j$-ésimo passo splay de uma rotina splay é um passo splay simples, então seu custo amortizado é menor que $3(r^{j}(x) - r^{j-1}(x)) + 1$.
+    %O custo amortizado de um passo splay simples no nó $x$ é $< 3(r^{j}(x) - r^{j-1}(x)) + 1$, onde esse passo splay é o $j$-ésimo de uma rotina splay.
 \end{lemma}
 
 \begin{proof}
-    Denotemos por $y$ o nó pai de $x$ que é a raiz da árvore splay logo antes do último passo splay.
-
-    \textit{Caso zig}.   
+    Denotemos por $y$ o nó pai de $x$ que é a raiz da árvore splay logo antes do último passo splay. Se o passo splay simples é um passo zig, então $c = 1$ e
     \begin{align*}
         \hat{c} &= c + \Delta \Phi,\\
         &= 1 + r^{j}(x) + r^{j}(y) - r^{j-1}(x) - r^{j-1}(y), \quad & \text{}\\
         &< 1 + r^{j}(x) - r^{j-1}(x) \quad & \text{pois $r^{j-1}(y) > r^{j}(y)$},\\
         &< 1 + 3(r^{j}(x) - r^{j-1}(x)) \quad & \text{pois $r^{j}(x) > r^{j-1}(x)$}.\\
     \end{align*}
-
-    Simetricamente vale para o caso zag.
+    O mesmo vale simetricamente para o caso zag.
 \end{proof}
 
 \newpage
 
 \begin{lemma}
-    O custo amortizado de qualquer passo splay duplo no nó $x$ é $< 3(r^{j}(x) - r^{j-1}(x)) + 1$, onde esse passo splay é o $j$-ésimo de uma rotina splay.
+    Se o $j$-ésimo passo splay de uma rotina splay é um passo splay duplo, então seu custo amortizado é menor que $3(r^{j}(x) - r^{j-1}(x))$.
+    %O custo amortizado de qualquer passo splay duplo no nó $x$ é $< 3(r^{j}(x) - r^{j-1}(x)) + 1$, onde esse passo splay é o $j$-ésimo de uma rotina splay.
 \end{lemma}
 
 \begin{proof}
-    Denotemos por $y$ o nó pai de $x$ antes do passo splay analisado e por $z$ o avô de $x$ no mesmo instante, se $z$ existir.
-
     Para os próximos resultados será essencial entender uma propriedade da função logaritmo. A função logaritmo é côncava, ou seja, $\frac{\lg(a) + \lg(b)}{2} \leq \lg(\frac{a+b}{2})$. Isso pode ser evidenciado pela Figura~\ref{fig:log}.
 
     \begin{figure}
@@ -380,8 +376,8 @@ Para deduzir o custo amortizado de uma operação splay($x$), vamos calcular o c
     \caption{Na imagem estão destacados pontos $a$ e $b$ arbitrários na função. Como a função é côncava, o ponto com $y = \frac{\lg(a) + \lg(b)}{2}$ nunca estará acima do ponto com $y = \lg(\frac{a+b}{2})$.}
     \label{fig:log}
     \end{figure}
-    
-    \textit{Caso zig-zig}.   
+
+    Denotemos por $y$ o nó pai de $x$ antes do passo splay analisado e por $z$ o avô de $x$ no mesmo instante. Se o passo splay duplo é um passo zig-zig, então $c = 2$ e
     \begin{align*}
         %\hat{c} &= c + \Delta \Phi, & \hspace*{-1.2cm} \text{amortizado = custo + diferença de potencial}, \\
         \hat{c} &= c + \Delta \Phi,\\
@@ -390,14 +386,14 @@ Para deduzir o custo amortizado de uma operação splay($x$), vamos calcular o c
         &< 2 + r^{j}(y) + r^{j}(z) - 2r^{j-1}(x) \quad & \text{pois $r^{j-1}(y) > r^{j-1}(x)$}, \\
         &< 2 + r^{j}(x) + r^{j}(z) - 2r^{j-1}(x) \quad & \text{pois $r^{j}(x) > r^{j}(y)$}.
     \end{align*}
-    Por conta da propriedade da função $\lg$ vista acima, temos que:
+    Por conta da concavidade da função $\lg$ vista acima, temos que:
     \begin{align*}
         %\hat{c} &= c + \Delta \Phi, & \hspace*{-1.2cm} \text{amortizado = custo + diferença de potencial}, \\
         r^{j-1}(x) + r^{j}(z) &= \lg(s^{j-1}(x)) + \lg(s^{j}(z)), \quad & \text{}\\
         &= 2 \cdot \frac{\lg(s^{j-1}(x)) + \lg(s^{j}(z))}{2}, \quad & \text{} \\
-        &\leq 2 \lg(\frac{s^{j-1}(x) + s^{j}(z)}{2}) \quad & \text{propriedade de $\lg$}, \\
+        &\leq 2 \lg(\frac{s^{j-1}(x) + s^{j}(z)}{2}) \quad & \text{concavidade de $\lg$}, \\
         &< 2 \lg(\frac{s^{j}(x)}{2}) \quad & \text{pois $s^{j}(x) > s^{j-1}(x) + s^{j}(z)$}, \\
-        &= 2 (\lg(s^{j}(x)) - \lg(2)) \quad & \text{propriedade de $\lg$}, \\
+        &= 2 (\lg(s^{j}(x)) - \lg(2)),\\
         &= 2 (r^{j}(x) - 1).
     \end{align*}
     Assim, retornando ao problema original,
@@ -406,10 +402,7 @@ Para deduzir o custo amortizado de uma operação splay($x$), vamos calcular o c
         &< 2 + r^{j}(x) +  2 (r^{j}(x) - 1) - r^{j-1}(x) - 2r^{j-1}(x), \\
         &= 3(r^{j}(x) - r^{j-1}(x)). \\
     \end{align*}
-
-    O simétrico vale para o caso zag-zag.
-
-    \textit{Caso zig-zag}.   
+    O mesmo vale para o caso zag-zag por simetria. \\ \\ Se o passo splay duplo é um passo zig-zag, então $c = 2$ e
     \begin{align*}
         %\hat{c} &= c + \Delta \Phi, & \hspace*{-1.2cm} \text{amortizado = custo + diferença de potencial}, \\
         \hat{c} &= c + \Delta \Phi,\\
@@ -419,8 +412,7 @@ Para deduzir o custo amortizado de uma operação splay($x$), vamos calcular o c
         &< 2 + r^{j}(x) - 2r^{j-1}(x) \quad & \text{pois $r^{j}(y) + r^{j}(z) < r^{j}(x)$},\\
         &< 3(r^{j}(x) - r^{j-1}(x)). \\
     \end{align*}
-
-    O simétrico vale para o caso zag-zig.
+    O mesmo vale para o caso zag-zig por simetria.
 \end{proof}
 
 \begin{theorem}
@@ -430,12 +422,12 @@ Para deduzir o custo amortizado de uma operação splay($x$), vamos calcular o c
 \begin{proof}
     Caso a operação splay não faça rotações, o custo é 1 e a delimitação é imediata. Caso contrário, o custo amortizado da operação splay no nó $x$ é a soma dos custos amortizados dos passos splay realizados durante a operação.
 
-    Denotemos por $\hat{c}_{\textit{splay}}$ o custo amortizado da operação splay e por $\hat{c}_{i}$ o custo amortizado do $i$-ésimo passo splay realizado durante o Splay($x$). Denotemos por $t$ o número de passos splay realizados por essa operação.
+    Denotemos por $\hat{c}_{\textit{splay}}$ o custo amortizado da operação splay e por $\hat{c}_{i}$ o custo amortizado do $i$-ésimo passo splay realizado durante o Splay($x$). Denotemos por $t$ o número de passos splay realizados por essa operação. Então
     \begin{align*}
         \hat{c}_{\textit{splay}} &= \sum_{i = 1}^{t} \hat{c}_{i}, \\
         &< \sum_{i = 1}^{t} {3(r^{i}(x) - r^{i-1}(x)) + 1}, \\
         &= 3(r^{t}(x) - r^{0}(x)) + 1, \\ 
-        &\leq 3(r^{t}(x)) + 1 \quad & \text{pois $r^{i}(x) \geq 0, \forall i,x$}, \\  
+        &\leq 3(r^{t}(x)) + 1 \quad & \text{pois $r^{0}(x) \geq 0$}, \\  
         &= 3\lg n + 1 \quad & \text{pois $r^{t}(x) = \lg(n)$}, \\ 
         &= \Oh(\lg n).
     \end{align*}
@@ -443,24 +435,24 @@ Para deduzir o custo amortizado de uma operação splay($x$), vamos calcular o c
 \newpage
 
 \begin{theorem}
-    Se $m = \Omega(n)$, onde $m$ é o tamanho da sequência de busca, então uma sequência de buscas em uma árvore splay possui custo $\Oh(m \lg n)$.
+    Se $m = \Omega(n)$, então uma sequência de $m$ acessos em uma árvore splay possui custo $\Oh(m \lg n)$.
 \end{theorem}
 
 \begin{proof}
-Note que $\Phi^{t}(S)$ para um $t$ qualquer é a soma do potencial local de todos os nós de $S$ durante esse instante de tempo. Assim, sabemos que 
+Note que $\Phi^{0}(S)$ é a soma do potencial local de todos os nós de $S$ durante esse instante de tempo. Assim, sabemos que 
 \begin{align*}
-    \Phi^{t}(S) &= \sum_{x = 1}^{n}r^{t}(x) \quad & \text{definição de $\Phi^{t}(S)$},\\
-    &= \sum_{x = 1}^{n}\lg(s^{t}(x)) \quad & \text{definição de $r^{t}(x)$},\\
-    &\leq \sum_{x = 1}^{n}\lg(n) \quad & \text{pois $s^{t}(x) \leq n$},\\
+    \Phi^{0}(S) &= \sum_{x = 1}^{n}r^{0}(x) \quad & \text{pela definição de $\Phi^{0}(S)$},\\
+    &= \sum_{x = 1}^{n}\lg(s^{0}(x)) \quad & \text{pela definição de $r^{0}(x)$},\\
+    &\leq \sum_{x = 1}^{n}\lg n \quad & \text{pois $s^{0}(x) \leq n$},\\
     &= n\lg n.\\
 \end{align*}
 
-Essa propriedade será utilizada abaixo. Considere uma sequência de $m$ buscas em uma árvore splay $S$.
+Essa propriedade será utilizada abaixo. Considere uma sequência de $m$ acessos em uma árvore splay $S$. Então
 \begin{align*}
-    \sum_{i = 1}^{m} c_i &= \sum_{i = 1}^{m} (\hat{c}_i + \Phi^{i}(S) - \Phi^{i-1}(S)),\\
-    &= \sum_{i = 1}^{m} \hat{c}_i + \Phi^{m}(S) - \Phi^{0}(S),\\
-    &\leq \sum_{i = 1}^{m} \hat{c}_i + \Phi^{m}(S) \quad & \text{pois $\Phi^{0}(S) \geq 0$},\\
-    &\leq m(3\lg n + 1) + n\lg n \quad & \text{pois $\Phi^{m}(S) \leq n\lg n$},\\
+    \sum_{i = 1}^{m} c_i &= \sum_{i = 1}^{m} (\hat{c}_i + \Phi^{i-1}(S) - \Phi^{i}(S)),\\
+    &= \sum_{i = 1}^{m} \hat{c}_i + \Phi^{0}(S) - \Phi^{m}(S),\\
+    &\leq \sum_{i = 1}^{m} \hat{c}_i + \Phi^{0}(S) \quad & \text{pois $\Phi^{m}(S) \geq 0$},\\
+    &\leq m(3\lg n + 1) + n\lg n \quad & \text{pois $\Phi^{0}(S) \leq n\lg n$},\\
     &= (3m + n)(\lg n) + m, \\
     &= \Oh(m \lg n) \quad & \text{se $m = \Omega(n)$}.
 \end{align*}
@@ -468,9 +460,8 @@ Essa propriedade será utilizada abaixo. Considere uma sequência de $m$ buscas 
 
 \section{Conjectura da Otimalidade Dinâmica}
 
-Uma ABB online é \textit{dinamicamente ótima} se, para todas as sequências $X$ de acessos, seu algoritmo de busca tem custo $\Oh(\textit{OPT(X)})$. De maneira mais geral, uma ABB online é \textit{$c$-competitiva} se executa todas as buscas para sequências $X$ suficientemente longas com custo no máximo $c$\,$OPT(X)$.
+Uma ABB online é \textit{dinamicamente ótima} se, para todas as sequências $X$ de acessos, seu algoritmo de busca tem custo $\Oh(\text{\OPT}(X))$. De maneira mais geral, uma ABB online é \textit{$c$-competitiva} se executa todas as buscas para sequências $X$ suficientemente longas com custo no máximo $c$\,\OPT$(X)$.
 
-Sleator e Tarjan \cite{selfadjustingbst} conjecturaram que a árvore splay é dinamicamente ótima. Essa conjectura é conhecida por Conjectura da Otimalidade Dinâmica. Os cientistas nas últimas décadas vêm buscando provar propriedades que o $OPT$ e as árvores splay possuem em comum. Uma série de características foram encontradas e o ramo de pesquisa se mantém ativo. É impressionante como essa conjectura continua a intrigar cientistas pela sua dificuldade mesmo em uma área tão amplamente pesquisada que é a área de estrutura de dados.
-%Diversos pesquisadores já investigaram essa conjectura mas ainda pouco se sabe sobre ela. Os resultados obtidos com essas décadas de pesquisa não obtiveram sucesso provando ou refutando essa hipótese, porém provou-se que a árvore splay é uma estrutura que possui uma serie de propriedades que o $OPT$ também tem. 
+Sleator e Tarjan \cite{selfadjustingbst} conjecturaram que a árvore splay é dinamicamente ótima. Essa conjectura é conhecida por Conjectura da Otimalidade Dinâmica. Os cientistas nas últimas décadas vêm buscando provar propriedades que \OPT$(X)$ e as árvores splay possuem em comum. Uma série de características foram detectadas e o ramo de pesquisa se mantém ativo. É impressionante que em uma área tão amplamente pesquisada como a área de estrutura de dados, essa conjectura continue em aberto, intrigando cientistas pela sua dificuldade.
 
-Pouco se sabe sobre o $OPT(X)$ para uma sequência $X$ de acessos. No próximo capítulo abordaremos uma visão geométrica de buscas e em seguida buscaremos entender quais são as características de $OPT(X)$ dentro dessa abordagem. 
+Pouco se sabe sobre o valor de \OPT$(X)$ para uma sequência $X$ de acessos. No próximo capítulo abordaremos uma visão geométrica de buscas e em seguida buscaremos entender quais são as características de \OPT$(X)$ dentro dessa abordagem. 

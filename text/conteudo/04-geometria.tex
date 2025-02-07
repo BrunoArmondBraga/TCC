@@ -12,7 +12,7 @@ Neste capítulo explicaremos a visão geométrica proposta por Demaine, Harmon, 
 
 Chamamos dois pontos $a$ e $b$ de \textit{ortogonalmente colineares} se $a$ e $b$ estão na mesma linha horizontal ou vertical. Se $a$ e $b$ não são ortogonalmente colineares, denotamos por \textit{$\{a,b\}$-retângulo} o retângulo ortogonal que tem $a$ e $b$ como vértices.
 
-Um par de pontos $\{a,b\}$ de um conjunto de pontos $P$ é \textit{arboreamente satisfeito} se $a$ e $b$ são ortogonalmente colineares ou se há pelo menos um ponto do conjunto \( P \setminus \{a,b\} \) que está dentro da região delimitada pelo \{a,b\}-retângulo, incluindo seu perímetro. Um conjunto $P$ de pontos é \textit{arboreamente satisfeito} se todos os pares de pontos do conjunto são arboreamente satisfeitos. Veja a Figura~\ref{fig:geometria-inicial}.
+Um par de pontos $\{a,b\}$ de um conjunto de pontos $P$ é \textit{arboreamente satisfeito} se $a$ e $b$ são ortogonalmente colineares ou se há pelo menos um ponto do conjunto \( P \setminus \{a,b\} \) que está dentro da região delimitada pelo $\{a,b\}$-retângulo, incluindo seu perímetro. Um conjunto $P$ de pontos é \textit{arboreamente satisfeito} se todos os pares de pontos do conjunto são arboreamente satisfeitos. Veja a Figura~\ref{fig:geometria-inicial}.
 
 \begin{figure}[h!]
     \centering
@@ -109,11 +109,11 @@ Em um conjunto arboreamente satisfeito $P$, para todo par de pontos $\{a,b\}$ n�
     %Se $c$ for diferente de $b$, então obrigatoriamente existe um ponto de $P$ com mesma coordenada $x$ de $c$ na aresta horizontal inferior, pois, caso contrário, $c$ e o ponto com maior coordenada $x$ na aresta horizontal inferior que possua coordenada $x$ menor que $c$ formariam um par de pontos arboreamente insatisfeito.
     %Se $c$ for igual a $b$, então obrigatoriamente $d$ é diferente de $b$, e pelo mesmo argumento geométrico, deve existir um ponto de $P$ com mesma coordenada $y$ na aresta vertical esquerda, pois caso contrário, o ponto $d$ e o ponto com maior coordenada $y$ na aresta vertical esquerda que possua coordenada $y$ menor que $d$ formariam um par de pontos arboreamente insatisfeito.
 
-    Vamos provar por indução em $k$ que, todo $\{a,b\}$-retângulo com $k$ pontos em seu interior satisfaz a propriedade do Lema.
+    Vamos provar, por indução em $k$, que todo $\{a,b\}$-retângulo com $k$ pontos em seu interior satisfaz a propriedade do Lema.
 
-    Para $k = 0$, todo $\{a,b\}$-retângulo possui um ponto de $P \setminus \{a,b\}$ em um de seus vértices ou possui dois pontos de $P \setminus \{a,b\}$ em seu perímetro alinhados verticalmente ou horizontalmente. Caso o $\{a,b\}$-retângulo possua um ponto de $P \setminus \{a,b\}$ em um de seus vértices, então a propriedade é válida. Caso o $\{a,b\}$-retângulo possua dois pontos de $P \setminus \{a,b\}$ em seu perímetro alinhados verticalmente ou horizontalmente, então um desses pontos está em um dos lados do $\{a,b\}$-retângulo que incide em $a$ e o outro está em um dos lados do $\{a,b\}$-retângulo que incide em $b$, satisfazendo a propriedade do lema.
+    Para $k = 0$, todo $\{a,b\}$-retângulo possui um ponto de $P \setminus \{a,b\}$ em um de seus vértices ou possui dois pontos de $P \setminus \{a,b\}$ em seu perímetro alinhados verticalmente ou horizontalmente. Caso o $\{a,b\}$-retângulo possua um ponto de $P \setminus \{a,b\}$ em um de seus vértices, então a propriedade do lema é válida. Caso o $\{a,b\}$-retângulo possua dois pontos de $P \setminus \{a,b\}$ em seu perímetro alinhados verticalmente ou horizontalmente, então um desses pontos está em um dos lados do $\{a,b\}$-retângulo que incide em $a$ e o outro está em um dos lados do $\{a,b\}$-retângulo que incide em $b$, satisfazendo a propriedade do lema.
 
-    Suponha agora que $k > 0$ e que a propriedade vale para todo retângulo com menos que $k$ pontos de $P$ em seu interior. Seja $e$ um ponto de $P$ no interior do $\{a,b\}$-retângulo. O $\{a,e\}$-retângulo e o $\{e,b\}$-retângulo são retângulos de $P$ com menos que $k$ pontos, logo a propriedade vale para esses retângulos. Como os lados do $\{a,b\}$-retângulo que incidem em $a$ contém os lados do $\{a,e\}$-retângulo que incidem $a$ e os lados do $\{a,b\}$-retângulo que incidem em $b$ contém os lados do $\{e,b\}$-retângulo que incidem $b$, então a propriedade vale também para o $\{a,b\}$-retângulo.
+    Suponha agora que $k > 0$ e que a propriedade vale para todo retângulo com menos que $k$ pontos de $P$ em seu interior. Seja $e$ um ponto de $P$ no interior do $\{a,b\}$-retângulo. O $\{a,e\}$-retângulo e o $\{e,b\}$-retângulo são retângulos de $P$ com menos que $k$ pontos em seu interior, logo a propriedade vale para esses retângulos. Como os lados do $\{a,b\}$-retângulo que incidem em $a$ contêm os lados do $\{a,e\}$-retângulo que incidem $a$ e os lados do $\{a,b\}$-retângulo que incidem em $b$ contêm os lados do $\{e,b\}$-retângulo que incidem $b$, então a propriedade do lema vale também para o $\{a,b\}$-retângulo.
 \end{proof}
 
 \section{Visão geométrica de buscas}
@@ -132,8 +132,8 @@ Dada uma sequência $X = (x_{1},\ldots,x_{m})$ de $m$ acessos às chaves $1,2,\l
             grid=major,
             xmin=0, xmax=11,
             ymin=0, ymax=11,
-            xtick={0,2,4,6,8,10},
-            ytick={0,2,4,6,8,10}
+            xtick={0,1,2,3,4,5,6,7,8,9,10},
+            ytick={0,1,2,3,4,5,6,7,8,9,10}
         ]
         \addplot[only marks, mark=*, mark size=2.5pt] coordinates {
             (1,9)
@@ -233,28 +233,26 @@ A \textit{visão geométrica da execução de um algoritmo de busca em ABB} para
 Seja $P$ a visão geométrica da execução de um algoritmo de busca em uma ABB $T$ para alguma sequência $X$ de buscas.
 Suponha, por contradição, que $P$ não é um conjunto arboreamente satisfeito. Dessa maneira, há pelo menos um par $\{p,q\}$ de pontos de $P$ que não é arboreamente satisfeito, onde $p = (a,i)$ e $q = (b,j)$. Assumiremos sem perda de generalidade que $i < j$ e $a < b$.
 
-Seja $r$ o nó de $T$ com chave $a$ e seja $s$ o nó de $T$ com chave $b$.
-
 Dois lados do $\{p,q\}$-retângulo terão um papel a seguir na prova. São eles:
 \begin{itemize}
     \item $\ell_1$ = \{$(x,y)$ | $a \leq x < b$ e $y = j$\}, e
     \item $\ell_2$ = \{$(x,y)$ | $x = b$ e $i \leq y < j$\},
 \end{itemize}
-onde, dentro do contexto da ABB $T$, $\ell_1$ representa as visitas aos nós com chave no intervalo $[a,b)$ no instante $j$ e $\ell_2$ representa as visitas ao nó $s$ entre os instantes de tempo $i$ e $j$.
+onde, dentro do contexto da ABB $T$, $\ell_1$ representa as visitas aos nós com chave no intervalo $[a,b)$ no instante $j$ e $\ell_2$ representa as visitas ao nó $s$ entre os instantes de tempo $i$ e $j-1$.
 
-Como $\{p,q\}$ é um par de pontos arboreamente insatisfeito, nota-se que não há nenhum ponto de $P$ tanto nas bordas quanto no interior do $\{p,q\}$-retângulo. Logo, $(\ell_1 \cup \ell_2) \cap P = \emptyset$.
+Como $\{p,q\}$ é um par de pontos arboreamente insatisfeito, nota-se que não há nenhum ponto de $P \setminus \{p,q\}$ nas bordas ou no interior do $\{p,q\}$-retângulo. Logo, $(\ell_1 \cup \ell_2) \cap P = \emptyset$.
 
 Sejam $c_1$ e $c_3$ respectivamente as chaves de dois nós $n_1$ e $n_3$ de uma ABB com $c_1 \leq c_3$. Se $n_2$ é o ancestral comum mais profundo dos nós $n_1$ e $n_3$ e sua chave é $c_2$, então sabemos que $c_1 \leq c_2 \leq c_3$ e, mais importante, $n_2$ é ancestral dos nós $n_1$ e $n_3$ nesta ABB, e assim os nós $n_1$ e $n_3$ têm profundidade maior ou igual a $n_2$. Logo, $n_2$ está no caminho da raiz desta ABB até qualquer nó com chave no intervalo $[c_1,c_3]$. Em outras palavras, para visitar qualquer nó da ABB com chave no intervalo $[c_1,c_3]$, é necessário visitar o ancestral comum mais profundo entre $n_1$ e $n_3$, que neste caso é $n_2$.
 
 \begin{center}
 \begin{minipage}[t]{0.6\textwidth}
-    Seja $c$ a chave do ancestral comum mais profundo de $r$ e $s$ em $T$ imediatamente antes da busca $i$. Seja $d$ a chave do ancestral comum mais profundo de $r$ e $s$ em $T$ imediatamente antes da busca $j$.
+    Seja $r$ o nó de $T$ com chave $a$ e $s$ o nó de $T$ com chave $b$. Seja $c$ a chave do ancestral comum mais profundo de $r$ e $s$ em $T$ imediatamente antes da busca $i$. Seja $d$ a chave do ancestral comum mais profundo de $r$ e $s$ em $T$ imediatamente antes da busca $j$.
     
     Como $\ell_1 \cap P = \emptyset$, então obrigatoriamente $d = b$. Por outro lado, como $\ell_2 \cap P = \emptyset$, temos que $c \neq b$ e, em algum instante $h$, com $i \leq h < j$, o nó $s$ teve que ser visitado para ser rotacionado e se tornar o ancestral comum mais profundo entre $r$ e $s$ no instante imediatamente antes de $j$, logo $\ell_2 \cap P \neq \emptyset$, uma contradição.
 \end{minipage}\hfill
 \begin{minipage}[t]{0.4\textwidth}
     \centering
-    \vspace{-0.65cm}
+    \vspace{-0.30cm}
     \begin{figure}[H]
         \centering
         \begin{adjustbox}{valign=t}
@@ -316,7 +314,7 @@ onde o mínimo sobre o conjunto vazio é $\infty$.
 
 É possível criar uma treap com as chaves $1,\ldots,n$ que é um heap mínimo nas prioridades a partir de $P$. Para cada $j \in \{1,\ldots,n\}$, adicione um nó na forma ($j$, $N(j,0)$), ou seja, adicione um nó com chave $j$ e prioridade $N(j,0)$. Essa é a nossa treap inicial.
 
-Com essa treap criada, nota-se que já temos uma ABB que possui $n$ nós. Se conseguirmos descrever uma maneira de, para cada instante de tempo $h \in \{1,\ldots,m\}$, visitarmos todos os nós com chave $z$ tais que que $(z,h) \in P$ e reestruturamos a treap de maneira a manter sua estrutura sem visitar nós extras, então descrevemos uma execução de um algoritmo offline de busca em uma ABB no modelo de computação adotado.
+Com essa treap criada, nota-se que já temos uma ABB que possui $n$ nós. Se conseguirmos descrever uma maneira de, para cada instante de tempo $h \in \{1,\ldots,m\}$, visitarmos todos os nós com chave $z$ tais que $(z,h) \in P$ e reestruturarmos a treap de maneira a manter sua estrutura sem visitar nós extras, então descrevemos uma execução de um algoritmo offline de busca em uma ABB no modelo de computação adotado.
 
 Primeiramente, note que os nós com prioridade mínima induzem uma subárvore da treap que contém a raiz.
 Seja $i$ essa prioridade mínima. Os nós com prioridade $i$ serão visitados no instante $i$ e terão sua prioridade alterada apenas considerando essa subárvore. Queremos mostrar que, ao fazer tais alterações nas prioridades no instante $i$ e reorganizar a treap dessa maneira, a treap toda continua satisfazendo a propriedade de heap.
@@ -358,7 +356,7 @@ Vamos supor, por contradição, que há um nó $q$ cuja prioridade é menor que 
     \caption{Representação da situação descrita. O triângulo é uma representação simplificada de uma ABB. A área destacada representa todos os nós acessados no instante de tempo $i$. O nó $q$ não foi visitado nesse instante de tempo.}
 \label{fig:representacao_grafica}
 \end{figure}
-De maneira informal, os nós $p$ e $q$ são nós pai-filho. Durante o instante de tempo $i$, $p$ será visitado pelo algoritmo de busca e $q$ não. Após o instante $i$, queremos visitar o nó $q$ pela primeira vez no instante $j = N(b,i)$ antes de fazer qualquer outra visita ao nó $p$, porém isso é impossível. Vamos mostrar que, neste caso, o conjunto inicial $P$ não era arboreamente satisfeito.
+De maneira informal, os nós $p$ e $q$ são nós pai-filho ao término do instante $i$. Durante o instante de tempo $i$, $p$ será visitado pelo algoritmo de busca e $q$ não. Após o instante $i$, queremos visitar o nó $q$ pela primeira vez no instante $j = N(b,i)$ antes de fazer qualquer outra visita ao nó $p$, porém isso é impossível. Vamos mostrar que, neste caso, o conjunto inicial $P$ não era arboreamente satisfeito.
 
 Os lados a seguir terão um papel na prova e estão representados na Figura~\ref{fig:area_delimitada}. São eles:
 \begin{itemize}
@@ -419,15 +417,15 @@ Denotemos por $r$ o ponto com coordenadas $(a,i)$ e por $s$ o ponto com coordena
 
 Como $r,s \in P$, então $\{r,s\}$ representa um par de pontos arboreamente satisfeito. De acordo com o Lema~\ref{lem:pontos_em_arestas_incidentes}, como $r$ e $s$ não são ortogonalmente colineares, há pelo menos um outro ponto de $P$ em alguma das arestas do $\{r,s\}$-retângulo que incide em $r$. Como $\ell_1 \cap P = \emptyset$, então $\ell_2 \cap P \neq \emptyset$. Assim, há um ponto de $P$ no lado $\ell_2$ e, consequentemente, algum nó com chave no intervalo $(a,b]$ deve ter sido visitado durante o instante de tempo~$i$.
 
-Como $q$ é filho direito de $p$, então qualquer nó de chave no intervalo ($a,b$) no instante de tempo $i$, pela propriedade da ordenação de ABBs, está na subárvore esquerda do nó $q$. Assim, para visitar qualquer nó com chave neste intervalo é necessário visitar ambos os nós $p$ e $q$, porém pela hipótese o nó $q$ não é visitado em $i$, logo $\ell_2 \cap P = \emptyset$, uma contradição.
+Como $q$ é filho direito de $p$, então qualquer nó de chave no intervalo ($a,b$) no instante de tempo $i$, pela propriedade da ordenação de ABBs, está na subárvore esquerda do nó $q$. Assim, para visitar qualquer nó com chave neste intervalo é necessário visitar ambos os nós $p$ e $q$. Porém, pela hipótese, o nó $q$ não é visitado em $i$, logo $\ell_2 \cap P = \emptyset$, uma contradição.
 
 Assim, nota-se que a reestruturação da treap da maneira proposta é sempre válida em conjuntos de pontos arboreamente satisfeitos e tal reestruturação descreve um algoritmo offline que converte um conjunto de pontos arboreamente satisfeitos em uma execução de um algoritmo de busca em ABB dentro do modelo de computação adotado.
 \end{proof}
 
 %Ao longo dessa pesquisa, uma série de conjuntos de pontos foram analisados. 
-Verificar se um conjunto de pontos é arboreamente satisfeito é demorado se feito à mão. Assim, com o intuito de automatizar e garantir que um conjunto de pontos é arboreamente satisfeito, implementamos a treap proposta na Demonstração~\ref{prova:ASS}. %Essa treap executa um desce heap na raiz múltiplas vezes em cada instante de tempo e detecta se a propriedade de heap mínimo foi violada em algum momento. 
-Se a propriedade não for violada, o código imprime a árvore correspondente a cada instante de tempo, caso a propriedade seja violada, o código imprime todas as árvores correspondentes aos instantes de tempo anteriores ao da violação e imprime o par de pontos que é arboreamente insatisfeito. A implementação pode ser vista \href{https://github.com/BrunoArmondBraga/TCC/blob/main/src/ValidAss.cpp}{aqui}.
+Verificar se um conjunto de pontos é arboreamente satisfeito é demorado se feito à mão. Assim, com o intuito de automatizar e garantir que um conjunto de pontos é arboreamente satisfeito, implementamos a treap proposta na demonstração do Lema~\ref{lema:ASS_vira_visao_geometrica}. %Essa treap executa um desce heap na raiz múltiplas vezes em cada instante de tempo e detecta se a propriedade de heap mínimo foi violada em algum momento. 
+Se a propriedade não for violada, o código imprime a árvore correspondente a cada instante de tempo. Caso a propriedade seja violada, o código imprime todas as árvores correspondentes aos instantes de tempo anteriores ao da violação e imprime o par de pontos que é arboreamente insatisfeito. A implementação pode ser vista \href{https://github.com/BrunoArmondBraga/TCC/blob/main/src/ValidAss.cpp}{aqui}.
 
 É importante notar que essa interpretação geométrica é muito útil para entender buscas em ABBs de maneira simplificada. Essa abordagem convenientemente oculta as rotações da ABB e leva em consideração apenas os nós visitados durante as buscas. É bastante impressionante que a disposição exata dos nós de uma ABB não é uma informação essencial para a análise e pode ser reconstruída a partir dos nós visitados.
 
-Os resultados desse capítulo implicam que o tamanho do menor conjunto de pontos arboreamente satisfeito que contém $P_X$ é exatamente OPT($X$). No próximo capítulo apresentaremos um algoritmo guloso que dada uma sequência de buscas $X$ produz um conjunto arboreamente satisfeito que contém $P_X$ tentando minimizar o tamanho desse conjunto. Esse algoritmo é online.
+Os resultados desse capítulo implicam que o tamanho do menor conjunto de pontos arboreamente satisfeito que contém $P_X$ é exatamente \OPT($X$). No próximo capítulo apresentaremos um algoritmo guloso que, dado uma sequência $X$ de acessos, produz um conjunto arboreamente satisfeito que contém $P_X$ tentando minimizar o tamanho desse conjunto. Esse algoritmo é online e nem sempre obtém um conjunto de tamanhao \OPT$(X)$.

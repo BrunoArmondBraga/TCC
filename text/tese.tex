@@ -92,7 +92,7 @@
 % Estes comandos definem o título e autoria do trabalho e devem sempre ser
 % definidos, pois além de serem utilizados para criar a capa, também são
 % armazenados nos metadados do PDF. O subtítulo é opcional.
-\title{Árvores binárias de busca e a Conjectura da Otimalidade Dinâmica}
+\title{Árvores binárias de busca e \\ a Conjectura da Otimalidade Dinâmica}
 \translatedtitle{Binary search trees and the Dynamic Optimality Conjecture}
 
 \author[masc]{Bruno Armond Braga}
@@ -147,7 +147,7 @@
 %      (CAPES) -- Finance Code 001} % o código é sempre 001
 %
 \apoio{Durante o desenvolvimento deste trabalho, o autor recebeu\\
-      auxílio financeiro da FAPESP -- processo nº 2024/04708-2}
+      auxílio financeiro da FAPESP -- processo nº 2024/04708-2.}
 %
 %\apoio{During the development if this work, the author received\\
 %      financial support from FAPESP -- grant \#aaaa/nnnnn-d}
@@ -189,6 +189,11 @@
 \newtheorem{lemma}[theorem]{Lema}
 \newtheorem{corollary}{Corolário}[theorem]
 \newcommand{\Oh}{\mathrm{O}}
+\newcommand{\minASS}{\ensuremath{\mathrm{minASS}}}
+\newcommand{\maxIRB}{\ensuremath{\mathrm{maxIRB}}}
+\newcommand{\OPT}{\ensuremath{\mathrm{OPT}}}
+\newcommand{\Funil}{\ensuremath{\mathrm{Funil}}}
+\newcommand{\Alt}{\ensuremath{\mathrm{Alt}}}
 %\newcommand{\Oh}{\mathcal{O}}
 
 
@@ -233,7 +238,7 @@ Gostaria de agradecer à minha orientadora Cristina Gomes Fernandes que me apres
 
 Além da Cris, gostaria de agradecer aos professores Carlos Eduardo Ferreira, Jose Coelho de Pina Junior e Yoshiko Wakabayashi, que também foram grandes fontes de inspiração pra mim e me proporcionaram ensinamentos essenciais para a produção desse trabalho.
 
-Por fim, gostaria de agradecer à comunidade imeana e às entidades das quais tive a honra de fazer parte. A sensação de pertencimento à esses espaços fez toda a diferença na minha graduação.
+Por fim, gostaria de agradecer à comunidade imeana e às entidades das quais tive a honra de fazer parte. A sensação de pertencimento a esses espaços fez toda a diferença na minha graduação.
 
 \input{conteudo/resumoabstract}
 
@@ -350,7 +355,7 @@ Por fim, gostaria de agradecer à comunidade imeana e às entidades das quais ti
 \pagestyle{unnumberedchapter}
 \input{conteudo/01-introducao}
 \pagestyle{mainmatter}
-\input{conteudo/02-problema-estatico}
+%\input{conteudo/02-problema-estatico}
 \input{conteudo/03-splay-tree}
 \input{conteudo/04-geometria}
 \input{conteudo/05-guloso}

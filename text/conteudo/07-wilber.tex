@@ -8,16 +8,16 @@
 
 \newcommand{\cT}{\mathcal{T}}
 
-Nesse capítulo buscaremos entender o comportamento do custo $OPT(X)$ para diferentes sequências de acesso $X$. Compreenderemos o funcionamento das delimitações propostas por Wilber~\cite{lowerbound_wilber} e relacionaremos essas delimitações com a delimitação dos retângulos independentes do capítulo anterior.
+Nesse capítulo buscaremos entender o comportamento do custo $\OPT(X)$ para diferentes sequências de acesso $X$. Compreenderemos o funcionamento das delimitações propostas por Wilber~\cite{lowerbound_wilber} e relacionaremos essas delimitações com a delimitação dos retângulos independentes do capítulo anterior.
 
-\section{Visão geral}
+\section{Visão geral} \label{sec:visao_geral}
 
 Wilber foi o pioneiro na área de buscar delimitações inferiores de custo em algoritmos de busca em ABBs que permitem rotações. Durante sua pesquisa, Wilber desenvolveu duas delimitações que ficaram conhecidas como Wilber I e Wilber II. Posteriormente, essas delimitações foram denominadas, respectivamente, delimitação da alternância e delimitação do funil. 
 
-Essas delimitações foram propostas se utilizando de nomenclatura, definições e provas bastante complicadas. Nesse trabalho, ao invés de mostrar tais provas, mostraremos que essas delimitações podem ser interpretadas como ferramentas para encontrar conjuntos de retângulos independentes. Assim, ficará evidente que a delimitação de retângulos independentes é assintoticamente pelo menos tão boa quanto ambas as delimitações propostas por Wilber.
+Essas delimitações foram propostas se utilizando de nomenclatura, definições e provas bastante complicadas. Nesse trabalho, em vez de mostrar tais provas, mostraremos que essas delimitações podem ser interpretadas como ferramentas para encontrar conjuntos de retângulos independentes. Assim, ficará evidente que a delimitação de retângulos independentes é assintoticamente pelo menos tão boa quanto ambas as delimitações propostas por Wilber.
 
 Inicialmente, será necessário definir uma série de conceitos que serão usados posteriormente.
-Dados dois conjuntos $E$ e $D$ finitos e disjuntos de pontos. Denotamos por $mix(E,D)$ a string em $\{$\textbf{E},\textbf{D}$\}^{*}$ obtida pela união $E \cup D$ em ordem crescente, substituindo cada elemento de $E$ por \textbf{E} e cada elemento de $D$ por \textbf{D}. Para os conjuntos $E = \{2,3,6\}$ e $D = \{1,4,5\}$, $mix(E,D)$ = \textbf{DEEDDE}. Essa string final é uma representação das posições relativas dos pontos em ordem crescente.
+Considere dois conjuntos $E$ e $D$ finitos e disjuntos de pontos. Denotamos por $mix(E,D)$ a string em $\{$\textbf{E},\textbf{D}$\}^{*}$ obtida pela união $E \cup D$ em ordem crescente, substituindo cada elemento de $E$ por \textbf{E} e cada elemento de $D$ por \textbf{D}. Para os conjuntos $E = \{2,3,6\}$ e $D = \{1,4,5\}$, $mix(E,D)$ = \textbf{DEEDDE}. Essa string final é uma representação das posições relativas dos pontos em ordem crescente.
 
 Dada uma string $s \in \{$\textbf{E},\textbf{D}$\}^{*}$, definimos $blocos(s)$ como o número de blocos contíguos do mesmo símbolo em $s$. Assim,
 
@@ -31,13 +31,13 @@ blocos(s) =
 
 Por exemplo, blocos(\textbf{DEEDDE}) = 4.
 
-Para finalizar, definimos $intercala(E,D) = blocos(mix(E,D))$. Assim, compactamos as definições acima para produzir a função $intercala$ que recebe dois conjuntos de pontos e retorna um inteiro que representa o número de blocos contíguos do mesmo símbolo da string resultante de $mix(E,D)$. Assim, para o exemplo acima $intercala(E,D) = 4$.
+Para finalizar, definimos $\emph{intercala}(E,D) = blocos(mix(E,D))$. Assim, compactamos as definições acima para produzir a função $\emph{intercala}$ que associa a dois conjuntos de pontos um inteiro que representa o número de blocos contíguos do mesmo símbolo da string resultante de $mix(E,D)$. Assim, para o exemplo acima $\emph{intercala}(E,D) = 4$.
 
 %precisa falar que os conjuntos possuem y-coordenadas distintas?
 
-\section{Delimitação da Alternância}
+\section{Delimitação da alternância}
 
-Seja $P$ um conjunto de pontos. Uma \textit{árvore de referência} $\cT$ em relação à $P$ é uma árvore binária em que todo nó não-folha possui dois filhos e as folhas são rotuladas com os valores de $P$\hspace{-0.05cm}$.x$ em ordem crescente. Veja a Figura~\ref{fig:arvore_de_referencia_exemplo_inicial}. Note que para conjuntos com mais de dois pontos com x-coordenadas distintas, há múltiplas árvores de referência em relação à $P$.
+Seja $P$ um conjunto não-vazio de pontos. Uma \textit{árvore de referência} $\cT$ em relação a $P$ é uma árvore binária em que todo nó não-folha possui dois filhos e as folhas são rotuladas com os valores de $P$\hspace{-0.05cm}$.x$ em ordem crescente. Veja a Figura~\ref{fig:arvore_de_referencia_exemplo_inicial}. Note que, para conjuntos com mais de dois pontos com $x$-coordenadas distintas, há múltiplas árvores de referência em relação a $P$.
 \begin{figure}
     \begin{tikzpicture}
         [node/.style={circle,draw,minimum size=2em, thick, font=\large},
@@ -63,20 +63,22 @@ Seja $P$ um conjunto de pontos. Uma \textit{árvore de referência} $\cT$ em rel
         \draw[thick, ->] (F) -- (G);%node[midway, right, yshift=0.15cm, xshift=-0.08cm] {\textbf{D}};
     
     \end{tikzpicture}
-    \caption{Uma árvore de referência $\cT$ para o conjunto de pontos de $P_X$ da sequência de acessos $X = (3,1,4,2,5)$.}
+    \caption{Uma árvore de referência $\cT$ para o conjunto $P_X$ de pontos da sequência $X = (3,1,4,2,5)$ de acessos.}
 \label{fig:arvore_de_referencia_exemplo_inicial}
 \end{figure}
 
-Definimos Alt$_{\cT}$ de maneira recursiva. Se $\cT$ for um nó único, então Alt$_{\cT} = 0$. Caso contrário, seja $\cT_{E}$ e $\cT_{D}$ respectivamente a subárvore esquerda e a subárvore direita da raiz de $\cT$. Denotamos por $P_E = \{p \in P \mid p.x \in \cT_E\}$ e $P_D = \{p \in P \mid p.x \in \cT_D\}$. 
+Sejam $\cT_{E}$ e $\cT_{D}$ respectivamente a subárvore esquerda e a subárvore direita da raiz de $\cT$, e sejam $P_E = \{p \in P \mid p.x \in \cT_E\}$ e $P_D = \{p \in P \mid p.x \in \cT_D\}$. Definimos $a(P,\cT) = \emph{intercala}(P_E.y, P_D.y)$, que mostra quanto se intercalam os pontos em $P_E$ e $P_D$ de maneira cronológica. Por fim, definimos a \textit{delimitação da alternância} para um conjunto $P$ de pontos em relação à árvore de referência $\cT$ como:
 
-Definimos $a(P,\cT) = intercala(P_E.y, P_D.y)$, que mostra como se intercalaram os pontos em $P_E$ e $P_D$ de maneira cronológica. Por fim, definimos a delimitação da alternância para um conjunto de pontos $P$ em relação à árvore de referência $\cT$ como:
+\begin{center}
+\Alt$_\cT(P) = a(P,\cT) +$ \Alt$_{\cT_E}(P_E) + $ \Alt$_{\cT_D}(P_D)$.
+\end{center}
 
-Alt$_\cT(P) = a(P,\cT) +$ Alt$_{\cT_E}(P_E) + $ Alt$_{\cT_D}(P_D)$.
+Veja um exemplo na Figura~\ref{fig:exemplo_alternancia}.
 
-Note que a delimitação da alternância de um conjunto de pontos $P$ pode ter valores diferentes dependendo da escolha da árvore de referência. Veja a Figura~\ref{fig:alternancia_diferente}. Assim, definimos a delimitação da alternância para uma sequência de acessos $X$ como o valor da maior delimitação da alternância para a visão geométrica de $X$ em relação à uma árvore de referência. Formalmente: 
-
-Alt$(X) = max_\cT$ Alt$_\cT(P_X)$.
-
+Note que a delimitação da alternância de um conjunto de pontos pode ter valores diferentes dependendo da escolha da árvore de referência. Veja a Figura~\ref{fig:alternancia_diferente}. Assim, definimos a delimitação da alternância para uma sequência $X$ de acessos como o valor da maior delimitação da alternância para a visão geométrica de $X$ em relação a uma árvore de referência. Formalmente
+\begin{center}
+\Alt$(X) = \max_\cT$ \Alt$_\cT(P_X)$.
+\end{center}
 \begin{figure}
     \begin{minipage}[c]{0.3\textwidth} % Alinhar ao centro
         \begin{tikzpicture}
@@ -102,17 +104,18 @@ Alt$(X) = max_\cT$ Alt$_\cT(P_X)$.
     \begin{minipage}[c]{0.59\textwidth} % Alinhar ao centro
         \vfill % Preenche o espaço vertical
         \begin{tabular}{>{\centering\arraybackslash}p{1.4cm} >{\centering\arraybackslash}p{5cm} >{\centering\arraybackslash}p{1.5cm}} % Define as larguras das colunas
-            Alt & $blocos(mix(E,D))$ & $intercala$ \\
+            \Alt & $mix(E,D)$ & $\emph{intercala}$ \\
             \hline
-            Alt$_\cT(P)$ & [D], [E,E], [D], [E], [D]  & 5 \\
-            Alt$_{\cT_E}(P_E)$ & [D], [E], [D]  & 3  \\
-            Alt$_{\cT_D}(P_D)$ & [E], [D], [E]  & 3  \\
+            $a(P,\cT)$ & \textbf{DEEDED}  & 5 \\
+            \Alt$_{\cT_E}(P_E)$ & \textbf{DED}  & 3  \\
+            \Alt$_{\cT_D}(P_D)$ & \textbf{EDE}  & 3  \\
             \hline
-            Total  &   & 11  \\
+            \Alt$_\cT(P_X)$  &   & 11  \\
         \end{tabular}
         \vfill % Preenche o espaço vertical
     \end{minipage}
-    \caption{Alt$_\cT(P_X)$ calculada para a árvore de referência $\cT$ acima e para a sequência de acessos $X = (3,2,1,4,2,3)$.}
+    \caption{Árvore de referência $\cT$ e \Alt$_\cT(P_X)$ para a sequência $X = (3,2,1,4,2,3)$ de acessos.}
+\label{fig:exemplo_alternancia}
 \end{figure}
 
 \begin{figure}
@@ -147,21 +150,17 @@ Alt$(X) = max_\cT$ Alt$_\cT(P_X)$.
         
         \draw[thick, ->] (D) -- (F); % node[midway, right, yshift=0.15cm, xshift=-0.08cm] {\textbf{D}};
     \end{tikzpicture}
-    \caption{À esquerda $\cT_1$ e à direita $\cT_2$. Perceba que para a sequência de buscas $X = (1,3,2)$, Alt$_{\cT_1}(P_X) = 4$, enquanto que Alt$_{\cT_2}(P_X) = 5$.}
+    \caption{À esquerda $\cT_1$ e à direita $\cT_2$. Para a sequência $X = (1,3,2)$ de acessos, \Alt$_{\cT_1}(P_X) = 4$, enquanto que \Alt$_{\cT_2}(P_X) = 5$.}
 \label{fig:alternancia_diferente}
 \end{figure}
 
-%Alt$_{\cT_E}(P_E)
+%\Alt$_{\cT_E}(P_E)
 
-Para contribuir com a intuição do leitor, a seguir mostraremos uma maneira alternativa e bem mais informal de entender essa delimitação. Apesar de árvores de referência não serem árvores binárias de busca, uma vez que os nós não possuem atributo chave, é possível contabilizar essa delimitação simulando buscas pelos rótulos das folhas nessa árvore. Para todo nó não-folha de $\cT$, definimos como \textit{filho preferido} deste nó o filho mais recentemente visitado, podendo ser o filho esquerdo, o filho direito ou, se nenhum dos dois filhos tiver sido visitado ainda, o valor nulo.
+Para contribuir com a intuição do leitor, a seguir mostraremos uma maneira alternativa e bem mais informal de entender essa delimitação. Podemos pensar nas árvores de referência como árvores binárias de busca com as chaves armazenadas nas folhas e assim é possível contabilizar essa delimitação simulando buscas pelos rótulos das folhas dessa árvore. Para todo nó não-folha de $\cT$, definimos como \textit{filho preferido} deste nó o filho mais recentemente visitado numa busca, podendo ser o filho esquerdo, o filho direito ou, se nenhum dos dois filhos tiver sido visitado ainda, o valor nulo.
 
-Assim, dado um sequência de acessos $X$ e uma árvore de referência $\cT$ em relação à $P_X$, se simularmos as buscas de $X$ em $\cT$, ou seja, simular um algoritmo de busca que sempre inicializa na raiz de $\cT$ e para cada busca o algoritmo visita apenas os nós de $\cT$ que estão no caminho da raiz de $\cT$ a folha com rótulo buscado. Essa árvore é fixa, ou seja, o algoritmo de busca não pode realizar rotações. Veja a Figura~\ref{fig:alternancia_abordagem_informal}.
+Dada uma sequência $X$ de acessos, considere uma árvore de referência $\cT$ em relação a $P_X$. Simule o algoritmo tradicional de busca em ABB que não faz rotações para buscar os valores de $X$ em $\cT$. Veja a Figura~\ref{fig:alternancia_abordagem_informal}. Assim, \Alt$_\cT(X)$ é o somatório do número de vezes que o filho preferido de cada nó intermediário é alterado durante as buscas de $X$. Analogamente, \Alt$(X) = \max_\cT$ \Alt$_\cT(X)$. Então, \Alt$(X)$ é o somatório do número de vezes que o filho preferido de cada nó intermediário é alterado em uma árvore de referência que maximiza esse número.
 
-Assim, Alt$_\cT(X)$ é o somatório do número de vezes que o filho preferido de cada nó intermediário for alterado. Analogamente, Alt$(X) = max_\cT$ Alt$_\cT(X)$. Então, Alt$(X)$ é o somatório do número de vezes que o filho preferido de cada nó intermediário for alterado em uma árvore de referência que maximiza esse número.
-
-Infelizmente essa delimitação não é justa se permitirmos repetições na sequência $X$. Uma maneira facil de perceber que $OPT(X)$ pode ser muito maior que Alt$(X)$ é observando como a delimitação se comporta quando $X$ possui repetições do mesmo acesso consecutivamente. Quando simulamos a mesma busca consecutivas vezes em uma árvore de referência nenhum filho preferido é alterado, então a delimitação não aumenta.
-
-Sabemos que todo acesso tem custo maior ou igual a 1 e assim $OPT(X) \geq m$, mas devido a essas repetições, é possível que $m$ seja arbitrariamente maior que Alt$(X)$. Para entender o argumento acima, se atente às últimas duas simulações de busca na Figura~\ref{fig:alternancia_abordagem_informal}.
+Infelizmente essa delimitação não é justa se permitirmos repetições na sequência $X$. Uma maneira fácil de perceber que $\OPT(X)$ pode ser muito maior que \Alt$(X)$ é observando como a delimitação se comporta quando $X$ possui repetições do mesmo acesso consecutivamente. Quando simulamos a mesma busca consecutivas vezes em uma árvore de referência, nenhum filho preferido é alterado, então a delimitação não aumenta. Sabemos que todo acesso tem custo maior ou igual a 1 e assim $\OPT(X) \geq m$, mas devido a essas repetições, é possível que $m$ seja arbitrariamente maior que \Alt$(X)$. Para entender melhor o argumento acima, se atente às últimas duas simulações de busca na Figura~\ref{fig:alternancia_abordagem_informal}.
 
 \begin{figure}
     \begin{tikzpicture}
@@ -200,8 +199,8 @@ Sabemos que todo acesso tem custo maior ou igual a 1 e assim $OPT(X) \geq m$, ma
         \draw[thick, dotted, ->] (B) -- (A);%node[midway, left, yshift=0.15cm, xshift=0.08cm] {\textbf{E}};
         \draw[thick, dotted, ->] (B) -- (C);%node[midway, right, yshift=0.15cm, xshift=-0.08cm] {\textbf{D}};
         
-        \draw[thick, ->, red] (D) -- (F);%node[midway, right, yshift=0.15cm, xshift=-0.08cm] {\textbf{D}};
-        \draw[thick, ->, red] (F) -- (E);%node[midway, left, yshift=0.15cm, xshift=0.08cm] {\textbf{E}};
+        \draw[very thick, ->, red] (D) -- (F);%node[midway, right, yshift=0.15cm, xshift=-0.08cm] {\textbf{D}};
+        \draw[very thick, ->, red] (F) -- (E);%node[midway, left, yshift=0.15cm, xshift=0.08cm] {\textbf{E}};
         \draw[thick, dotted, ->] (F) -- (G);%node[midway, right, yshift=0.15cm, xshift=-0.08cm] {\textbf{D}};
     
     \end{tikzpicture}
@@ -237,8 +236,8 @@ Sabemos que todo acesso tem custo maior ou igual a 1 e assim $OPT(X) \geq m$, ma
         \node[node] (F) at (1.5,-1.5) {};
         \node[node] (G) at (2.3,-3) {$4$};
         
-        \draw[thick, ->, red] (D) -- (B);%node[midway, left, yshift=0.15cm, xshift=0.08cm] {\textbf{E}};
-        \draw[thick, ->, red] (B) -- (A);%node[midway, left, yshift=0.15cm, xshift=0.08cm] {\textbf{E}};
+        \draw[very thick, ->, red] (D) -- (B);%node[midway, left, yshift=0.15cm, xshift=0.08cm] {\textbf{E}};
+        \draw[very thick, ->, red] (B) -- (A);%node[midway, left, yshift=0.15cm, xshift=0.08cm] {\textbf{E}};
         \draw[thick, dotted, ->] (B) -- (C);%node[midway, right, yshift=0.15cm, xshift=-0.08cm] {\textbf{D}};
         
         \draw[thick, dotted, ->] (D) -- (F);%node[midway, right, yshift=0.15cm, xshift=-0.08cm] {\textbf{D}};
@@ -280,7 +279,7 @@ Sabemos que todo acesso tem custo maior ou igual a 1 e assim $OPT(X) \geq m$, ma
         
         \draw[thick, ->] (D) -- (B);%node[midway, left, yshift=0.15cm, xshift=0.08cm] {\textbf{E}};
         \draw[thick, dotted, ->] (B) -- (A);%node[midway, left, yshift=0.15cm, xshift=0.08cm] {\textbf{E}};
-        \draw[thick, ->, red] (B) -- (C);%node[midway, right, yshift=0.15cm, xshift=-0.08cm] {\textbf{D}};
+        \draw[very thick, ->, red] (B) -- (C);%node[midway, right, yshift=0.15cm, xshift=-0.08cm] {\textbf{D}};
         
         \draw[thick, dotted, ->] (D) -- (F);%node[midway, right, yshift=0.15cm, xshift=-0.08cm] {\textbf{D}};
         \draw[thick, ->] (F) -- (E);%node[midway, left, yshift=0.15cm, xshift=0.08cm] {\textbf{E}};
@@ -323,9 +322,9 @@ Sabemos que todo acesso tem custo maior ou igual a 1 e assim $OPT(X) \geq m$, ma
         \draw[thick, dotted, ->] (B) -- (A);%node[midway, left, yshift=0.15cm, xshift=0.08cm] {\textbf{E}};
         \draw[thick, ->] (B) -- (C);%node[midway, right, yshift=0.15cm, xshift=-0.08cm] {\textbf{D}};
         
-        \draw[thick, ->, red] (D) -- (F);%node[midway, right, yshift=0.15cm, xshift=-0.08cm] {\textbf{D}};
+        \draw[very thick, ->, red] (D) -- (F);%node[midway, right, yshift=0.15cm, xshift=-0.08cm] {\textbf{D}};
         \draw[thick, dotted, ->] (F) -- (E);%node[midway, left, yshift=0.15cm, xshift=0.08cm] {\textbf{E}};
-        \draw[thick, ->, red] (F) -- (G);%node[midway, right, yshift=0.15cm, xshift=-0.08cm] {\textbf{D}};
+        \draw[very thick, ->, red] (F) -- (G);%node[midway, right, yshift=0.15cm, xshift=-0.08cm] {\textbf{D}};
     \end{tikzpicture}
     \begin{tikzpicture}
         [node/.style={circle,draw,minimum size=2em, thick, font=\large},
@@ -367,15 +366,21 @@ Sabemos que todo acesso tem custo maior ou igual a 1 e assim $OPT(X) \geq m$, ma
         \draw[thick, ->] (F) -- (G);%node[midway, right, yshift=0.15cm, xshift=-0.08cm] {\textbf{D}};
     \end{tikzpicture}
     
-    \caption{Cálculo de Alt$_\cT(X)$ para a sequência de buscas $X = (3,1,2,4,4)$ e a árvore de referência $\cT$ ilustrada. À esquerda, as árvores antes da simulação de buscas. À direita, a simulação de cada busca. Os ponteiros que representam filhos preferidos estão por inteiro enquanto que os ponteiros que representam filhos não-preferidos estão pontilhados. Durante as simulações de busca, estão em vermelho os filhos preferidos que foram alterados durante aquela busca. Note que Alt$_\cT(X) = 7$, pois esse é o número de filhos preferidos alterados (ponteiros vermelhos) durante as buscas.}
+    \caption{Cálculo de \Alt$_\cT(X)$ para a sequência $X = (3,1,2,4,4)$ de acessos e a árvore de referência $\cT$ ilustrada. À esquerda, as árvores antes da simulação de buscas. À direita, a simulação de cada busca. Os ponteiros que representam filhos preferidos estão por inteiro, enquanto que os ponteiros que representam filhos não-preferidos estão pontilhados. Durante as simulações de busca, estão em vermelho os filhos preferidos que foram alterados durante aquela busca. Note que \Alt$_\cT(X) = 7$, pois esse é o número de filhos preferidos alterados (ponteiros vermelhos) durante as buscas de $X$.}
 \label{fig:alternancia_abordagem_informal}
 \end{figure}
 
-\section{Conjunto independente de retângulos a partir da alternância}
+\section{Conjunto independente de retângulos a partir da alternância} \label{sec:alt_com_ret}
 
-Dada uma sequência $X$ de acessos e uma árvore de referência $\cT$ em relação à $P_X$, é possível encontrar o conjunto independente de retângulos associado à esta delimitação a partir do seguinte algoritmo: Inicialize o algoritmo verificando o nó raiz de $\cT$, seja $u$ o maior rótulo de um nó da subárvore esquerda da raiz e $v$ o menor rótulo de um nó da subárvore direita da raiz. Trace uma reta vertical na visão 2D de $P_X$ na coordenada $x = \frac{u + v}{2}$. Desenhe um retângulo para cada par de pontos consecutivos que possuem a propriedade que um dos pontos está a esquerda da reta traçada e o outro a direita. Assim, recursivamente analise o vértice filho esquerdo da raiz de $\cT$ porém considerando apenas os pontos à esquerda da reta traçada anteriormente e também analise o vértice filho direito da raiz de $\cT$ porém considerando apenas os pontos à direita da reta traçada. Veja a Figura~\ref{fig:alternancia-retangulos} para uma visão gráfica desse algoritmo.
+Nessa seção, mostraremos um algoritmo que encontra um conjunto independente de retângulos para $P_X$ a partir de uma sequência $X$ de acessos e uma árvore de referência. Lembre-se que $n$ denota o número de chaves consideradas e que a árvore de referência tem então $n$ folhas. Mostraremos que o conjunto de retângulos produzido pelo algoritmo tem pelo menos \Alt$(P_X) - (n - 1)$ retângulos. Na prática, o algoritmo encontrará pares de pontos de $P_X$ que representam retângulos.
 
-O algoritmo recursivamente encontra pares de pontos. Esses pares de pontos têm a propriedade que um deles está à esquerda da linha vertical analisada e o outro à direita. Por serem pontos consecutivos com essa propriedade, então sabemos que não há nenhum outro ponto dentro da área deste par de pontos e por serem pontos distintos sabemos que não encontramos retângulos repetidos. Seja $n_\cT$ o número de nós de $\cT$. O número de retângulos encontrados por esse algoritmo é no mínimo $(n_\cT + 1)/2$. É necessário retirar de $Alt(P_X)$ o número de nós não-folha de $\cT$ que foram visitados em algum momento das simulações de buscas. Isso acontece, pois alterações de filhos preferidos de valor nulo para qualquer outro valor caracteriza a presença de um único ponto na sequência de acessos, assim apenas as próximas alterações do filho preferido desse nó que corresponderão a um par de pontos que representa um retângulo. Assim, para $m = \Omega(n)$, essa perda é assintoticamente desprezível.
+Para facilitar o entendimento do leitor, aconselhamos acompanhar a descrição do algoritmo utilizando a Figura~\ref{fig:alternancia-retangulos}.
+Considere a visão geométrica $P_X$ de uma sequência $X$ de acessos em um plano 2D e uma árvore de referência $\cT$ em relação a $P_X$ com $n$ folhas. Denotemos por $I$ o conjunto de pares de pontos que o algoritmo retornará ao fim da execução. Para um nó $x$ de $\cT$, seja $u$ o maior rótulo de um nó na subárvore esquerda de $x$ e $v$ o menor rótulo de um nó na subárvore direita de $x$. O algoritmo inicializa $I$ como o conjunto vazio e verifica o nó $r$, raiz de $\cT$, da seguinte forma: considere a reta vertical $\ell(r)$ no plano 2D com $x$-coordenada igual a $\frac{u+v}{2}$, adicione a $I$ todos os pares $(a,b)$ de pontos de $P_X$ consecutivos, onde $a$ está à esquerda de $\ell(r)$ e $b$ está à direita de $\ell(r)$. Em seguida, o algoritmo analisa recursivamente o filho esquerdo de $r$ em $\cT$ porém considerando apenas os pontos de $P_X$ à esquerda de $\ell(r)$ e analisa o filho direito de $r$ em $\cT$ porém considerando apenas os pontos de $P_X$ à direita de $\ell(r)$.
+
+Claramente o conjunto de pares de pontos incluídos em $I$ ao processar um dos nós da árvore representa uma coleção independente de retângulos. Mostraremos que, para dois nós $w$ e $z$ de $\cT$, o conjunto de pares de pontos encontrado durante a análise do algoritmo para o nó $w$ representa retângulos independentes dos representados pelo conjunto de pares de pontos encontrado durante a análise do algoritmo para o nó $z$. Suponha que $w$ e $z$ não são descendentes um do outro em $\cT$. Então o subconjunto de $P_X$ considerado durante a análise do algoritmo para um desses nós está totalmente à esquerda do subconjunto do outro, logo os retângulos representados pelos pares de pontos de $w$ são diferentes e independentes dos retângulos de $z$. Suponha agora que $w$ é descendente de $z$. Então durante a análise do algoritmo para o nó $z$ são encontrados pares de pontos, onde um está à esquerda de $\ell(z)$ e outro está à direita. Porém, por $w$ ser descendente de $z$, o subconjunto de $P_X$ considerado durante a análise de $w$ possui apenas pontos de um lado da reta $\ell(z)$. Logo os conjuntos de pares de pontos encontrados pelo algoritmo para esses nós são disjuntos. Mais do que isso, se um retângulo de $w$ não for independente de um retângulo de $z$, então o par que representa um desses retângulos não era consecutivo quando esse foi incluído em $I$. Como os conjuntos de pares de pontos encontrados pelo algoritmo para dois nós diferentes são disjuntos, então o tamanho do conjunto $I$ ao final da execução do algoritmo é igual a somatória do número de pares de pontos adicionados a $I$ para cada um dos nós de $\cT$.
+
+Perceba que todo par $(a,b)$ de pontos encontrado pelo algoritmo durante a análise do nó $w$ de $\cT$ representa uma alteração do filho preferido de $w$, uma vez que $a$ e $b$ estão em lados opostos da reta $\ell(w)$ e são consecutivos dentro do subconjunto de $P_X$ considerado. Nota-se que a alteração de filho preferido de valor nulo para outro valor é representada pelo ponto com menor $y$-coordenada dentro do subconjunto de $P_X$ considerado, ou seja, esta alteração não é representada por nenhum retângulo de $I$. Assim, nota-se que o tamanho de $I$ ao final da execução do algoritmo é, no mínimo, \Alt$(P_X) - (n - 1)$, pois há $n - 1$ nós intermediários em $\cT$. Se considerarmos $\Alt(P_X) = \Omega(n)$, então o algoritmo encontra $\Oh(\Alt(P_X))$ retângulos e esse desconto de $n - 1$ é assintoticamente absorvido pelo termo $\Omega(n)$.
+
 
 \begin{figure}
     \begin{tikzpicture}[scale=0.75,
@@ -553,23 +558,23 @@ O algoritmo recursivamente encontra pares de pontos. Esses pares de pontos têm 
         \filldraw[black] (7,8) circle (7pt);
         \draw[black, line width=0.5pt] (0,0) rectangle (9,9);
     \end{tikzpicture}
-    \caption{Em cima, uma árvore de referência em relação à visão geométrica da sequência de acessos $X = (5,1,3,4,8,6,2,7)$. Cada nó intermediário está colorido com uma cor diferente. Abaixo, está descrita a execução do algoritmo recursivo que encontra os $\text{Alt}_\protect\cT(P_X) - (n - 1)$ retângulos. Cada linha possui a cor do nó intermediário correspondente.}
+    \caption{Em cima, uma árvore de referência em relação à visão geométrica da sequência de acessos $X = (5,1,3,4,8,6,2,7)$. Cada nó intermediário possui uma cor diferente. Abaixo, está ilustrada a execução do algoritmo recursivo que encontra um conjunto independente de $\Alt_\protect\cT(P_X) - (n - 1)$ retângulos. Cada linha vertical possui a cor do nó intermediário correspondente.}
 \label{fig:alternancia-retangulos}
 \end{figure}
 
-\section{Delimitação do Funil}
+\section{Delimitação do funil} \label{seção:funil}
 
-Seja $P$ um conjunto de pontos. Definimos o \textit{funil esquerdo} de um ponto $p$ de $P$ como o conjunto de pontos de $P$ que possuem as seguintes propriedades: estão à esquerda de $p$, abaixo de $p$ e o retângulo ortogonal que possui $p$ e algum ponto do funil esquerdo de $p$ como vértices não possui nenhum outro ponto de $P$. Formalmente, 
+Seja $P$ um conjunto de pontos. Definimos o \textit{lado esquerdo do funil} de um ponto $p$ de $P$ como o conjunto de pontos de $P$ que possuem as seguintes propriedades: estão à esquerda de $p$, abaixo de $p$ e o retângulo ortogonal que possui $p$ e algum ponto do lado esquerdo do funil de $p$ como vértices não possui nenhum outro ponto de $P$. Formalmente, 
 
-$F_E(P,p) = \{q \in P \mid q.y < p.y \; \land \; q.x < p.x \; \land \; \{p,q\}\text{-retângulo é arboreamente insatisfeito}\}$
+{\centering $F_E(P,p) = \{q \in P \mid q.y < p.y \; e \; q.x < p.x \; e \; \{p,q\}\text{-retângulo é arboreamente insatisfeito}\}.$}
 
-De maneira simétrica definimos o \textit{funil direito},
+De maneira simétrica definimos o \textit{lado direito do funil} de $p$,
 
-$F_D(P,p) = \{q \in P \mid q.y > p.y \; \land \; q.x < p.x \; \land \; \{p,q\}\text{-retângulo é arboreamente insatisfeito}\}$
+{\centering $F_D(P,p) = \{q \in P \mid q.y > p.y \; e \; q.x < p.x \; e \; \{p,q\}\text{-retângulo é arboreamente insatisfeito}\}.$}
 
-Por fim, definimos o \textit{funil} de $p$ como a união do funil esquerdo e do funil direito de $p$, ou seja, $F_E(P,p) \cup F_D(P,p)$. Veja a Figura~\ref{fig:funil-apresentacao}.
+Por fim, definimos o \textit{funil} de $p$ como a união do lado esquerdo do funil e do lado direito do funil de $p$, ou seja, $F_E(P,p) \cup F_D(P,p)$. Veja a Figura~\ref{fig:funil-apresentacao}.
 
-É importante notar que cronologicamente os pontos do funil esquerdo de qualquer ponto $p$ possuem x-coordenada decrescente. De maneira análoga, cronologicamente os pontos do funil direito de qualquer ponto $p$ possuem x-coordenada crescente. Isso acontece por conta da propriedade insatisfação arbórea do ponto $p$ e os pontos de seu funil.
+É importante notar que cronologicamente os pontos do lado esquerdo do funil de qualquer ponto $p$ possuem $x$-coordenadas decrescentes. De maneira análoga, cronologicamente os pontos do lado direito do funil de qualquer ponto $p$ possuem $x$-coordenadas crescentes. Isso acontece por conta da propriedade de insatisfação arbórea do ponto $p$ com os pontos de seu funil.
 
 \begin{comment}
     \begin{tikzpicture}[scale=1]
@@ -658,13 +663,13 @@ Por fim, definimos o \textit{funil} de $p$ como a união do funil esquerdo e do 
         \draw[black, line width=0.5pt] (0,0) rectangle (8,8);
     \end{tikzpicture}
     %\caption{Nesta visão geométrica de uma sequência de acessos, está destacado de azul o ponto (4,7). À esquerda, estão destacados de vermelho os pontos do Funil esquerdo do ponto azul. Ao meio, estão destacados os pontos do Funil direito do ponto azul. À direita, estão destacados os pontos pertencentes ao funil do ponto azul.}
-    \caption{O ponto (4,7) está destacado. À esquerda, os pontos vermelhos pertencem ao funil esquerdo do ponto azul. Ao meio, os pontos vermelhos pertencem ao funil direito do ponto azul. À direita, estão destacados de vermelho os pontos do funil do ponto azul, que são a união dos dois conjuntos anteriores.}
+    \caption{O ponto (4,7) está destacado. À esquerda, os pontos vermelhos pertencem ao lado esquerdo do funil do ponto azul. Ao meio, os pontos vermelhos pertencem ao lado direito do funil do ponto azul. À direita, estão destacados de vermelho os pontos do funil do ponto azul, que são a união dos dois conjuntos anteriores.}
 \label{fig:funil-apresentacao}
 \end{figure}
 
-A delimitação do funil para um ponto conta o número de intercalações entre o funil esquerdo e o funil direito desse ponto, assim para cada ponto $p$ de $P$, definimos $f(P,p) = intercala(F_E(P,p).y, F_D(P,p).y)$. A delimitação do funil para uma sequência~$X$ de acessos é a somatória desse valor para todos os pontos da visão geométrica de $X$, ou seja, Funil$(X) = \sum_{p \in P_X}^{f(P_X,p)}$.
+A delimitação do funil para um ponto conta o número de intercalações entre o lado esquerdo e direito do funil. Assim, para cada ponto $p$ de $P$, definimos $f(P,p) = \emph{intercala}(F_E(P,p).y, F_D(P,p).y)$. A \textit{delimitação do funil} para uma sequência~$X$ de acessos é a somatória desse valor para todos os pontos da visão geométrica de $X$, ou seja, \Funil$(X) = \sum_{p \in P_X}{f(P_X,p)}$. Veja a Figura~\ref{fig:funil-execucao}.
 
-De maneira informal, a ideia central dessa delimitação é somar o valor de $f(P_X,p)$ para cada ponto $p \in P_X$. Assim, para cada ponto de $P_X$, calcule o número de intercalações direita-esquerda dos pontos abaixo dele, indo de cima para baixo, cujas x-coordenadas se aproximam da x-coordenada do ponto analisado.
+Grosseiramente, $f(P,p)$ é o número de intercalações direita-esquerda dos pontos de $P$ abaixo de $p$, indo de cima para baixo, cujas $x$-coordenadas se aproximam da $x$-coordenada de $p$.
 
 \begin{comment}
     \begin{figure}
@@ -1045,19 +1050,26 @@ De maneira informal, a ideia central dessa delimitação é somar o valor de $f(
 
         \draw[black, line width=0.5pt] (0,0) rectangle (7,8);
     \end{tikzpicture}    
-    \caption{Para a sequência de acessos $X = (4,1,2,5,6,3,4)$, o cálculo de $f(P_X,p)$ para todo $p \in P_X$ é o número de linhas vermelhas. Cada imagem representa o cálculo de $f(P_X,p)$ para o ponto azul $p$, os pontos vermelhos são os pontos pertencentes ao funil de $p$ e cada linha vermelha representa uma intercalação dos funis esquerdo-direto desse ponto. Para essa sequência de acessos, Funil$(X) = 10$.}
+    \caption{Para a sequência $X = (4,1,2,5,6,3,4)$ de acessos, o cálculo de $f(P_X,p)$ para todo $p \in P_X$ é o número de linhas vermelhas. Cada imagem representa o cálculo de $f(P_X,p)$ para o ponto azul $p$. Os pontos vermelhos são os pontos pertencentes ao funil de $p$ e cada linha vermelha representa uma intercalação dos lados esquerdo-direto do funil desse ponto. Para essa sequência de acessos, \Funil$(X) = 10$.}
 \label{fig:funil-execucao}
 \end{figure}
 
 \section{Conjunto independente de retângulos a partir do funil}
 
-É possível encontrar um conjunto independente de retângulos associado a esta delimitação a partir do seguinte algoritmo: para cada ponto $p \in P_X$, trace um retângulo com vértices $p$ e $q$ para todo $q \in P_X$ associado à última ocorrência da string $E$ ou $D$ de cada bloco contíguo de $mix(F_E(P,p).y, F_D(P,p).y)$. Em outras palavaras, trace um retângulo com vértices em $p$ e $q$ para todo ponto $q$ que for o ponto mais alto do funil esquerdo ou do funil direito antes de uma intercalação.
+%É possível encontrar um conjunto independente de retângulos associado a esta delimitação a partir do seguinte algoritmo: para cada ponto $p \in P_X$, trace um retângulo com vértices $p$ e $q$ para todo $q \in P_X$ associado à última ocorrência da string $E$ ou $D$ de cada bloco contíguo de $mix(F_E(P,p).y, F_D(P,p).y)$. Em outras palavaras, trace um retângulo com vértices em $p$ e $q$ para todo ponto $q$ que for o ponto mais alto do funil esquerdo ou do funil direito antes de uma intercalação.
 
-Note que todos os pares de ponto $(p,q)$ encontrados possuem o ponto $p$ como o ponto analisado e $q$ como pontos abaixo de $p$. Assim, por construção, todos os retângulos encontrados são distintos. Além disso, por definição, todos os pontos $q$ pertencentes ao funil do ponto $p$ possuem o $\{p,q\}$-retângulo arboreamente insatisfeito, logo o conjunto de retângulos encontrado é independente.
+%Note que todos os pares de ponto $(p,q)$ encontrados possuem o ponto $p$ como o ponto analisado e $q$ como pontos abaixo de $p$. Assim, por construção, todos os retângulos encontrados são distintos. Além disso, por definição, todos os pontos $q$ pertencentes ao funil do ponto $p$ possuem o $\{p,q\}$-retângulo arboreamente insatisfeito, logo o conjunto de retângulos encontrado é independente.
+
+Nessa seção, mostraremos um algoritmo que encontra um conjunto independente $I$ de retângulos para $P_X$ a partir de uma sequência $X$ de acessos. Mostraremos que o conjunto de retângulos produzido pelo algoritmo tem \Funil$(X)$ retângulos. Como na Seção~\ref{sec:alt_com_ret}, o algoritmo encontrará pares de pontos de $P_X$ que representam retângulos.
+
+O algoritmo inicializa $I$ como vazio e, para cada ponto $p \in P_X$, adiciona o par $(p,q)$ de pontos a $I$ para todo ponto $q \in P_X$ associado à última ocorrência de \textbf{E} ou \textbf{D} de cada bloco contíguo de $mix(F_E(P,p).y, F_D(P,p).y)$, como na Seção~\ref{sec:visao_geral}. Em outras palavras, o algoritmo inclui em $I$ todo par de pontos $(p,q)$ tal que $q$ é o ponto mais alto do lado esquerdo ou do lado direito do funil de $p$ antes de uma intercalação. Veja a Figura~\ref{fig:retangulos_no_funil}.
+
+%Mostraremos que $I$ representa um conjunto independente de retângulos de tamanho Funil$(X)$. 
+Note que todos os pares $(p,q)$ de pontos adicionados a $I$ possuem o ponto $p$ como o ponto analisado e $q$ como ponto abaixo de $p$. Assim, por construção, são encontrados $\Funil(X)$ pares de pontos distintos. Além disso, por definição, todos os pontos $q$ pertencentes ao funil de um ponto $p$ possuem o $\{p,q\}$-retângulo arboreamente insatisfeito, logo o conjunto de retângulos encontrado é independente.
 
 \begin{figure}
     \centering
-    \begin{tikzpicture}[scale=0.7]
+    \begin{tikzpicture}[scale=0.679]
         \draw[very thin, gray!70] (0,0) grid (7,8);
         
         %\draw[fill=gray!90, gray!90] (0,0) rectangle (1,2);
@@ -1074,7 +1086,7 @@ Note que todos os pares de ponto $(p,q)$ encontrados possuem o ponto $p$ como o 
 
         \draw[black, line width=0.5pt] (0,0) rectangle (7,8);
     \end{tikzpicture}
-    \begin{tikzpicture}[scale=0.7]
+    \begin{tikzpicture}[scale=0.679]
         \draw[very thin, gray!70] (0,0) grid (7,8);
         
         %\draw[fill=gray!90, gray!90] (0,0) rectangle (1,2);
@@ -1095,7 +1107,7 @@ Note que todos os pares de ponto $(p,q)$ encontrados possuem o ponto $p$ como o 
 
         \draw[black, line width=0.5pt] (0,0) rectangle (7,8);
     \end{tikzpicture}
-    \begin{tikzpicture}[scale=0.7]
+    \begin{tikzpicture}[scale=0.679]
         \draw[very thin, gray!70] (0,0) grid (7,8);
         
         %\draw[fill=gray!90, gray!90] (0,0) rectangle (4,1);
@@ -1116,7 +1128,7 @@ Note que todos os pares de ponto $(p,q)$ encontrados possuem o ponto $p$ como o 
 
         \draw[black, line width=0.5pt] (0,0) rectangle (7,8);
     \end{tikzpicture}
-    \begin{tikzpicture}[scale=0.7]
+    \begin{tikzpicture}[scale=0.679]
         \draw[very thin, gray!70] (0,0) grid (7,8);
         
         %\draw[fill=gray!90, gray!90] (0,0) rectangle (5,4);
@@ -1136,7 +1148,7 @@ Note que todos os pares de ponto $(p,q)$ encontrados possuem o ponto $p$ como o 
 
         \draw[black, line width=0.5pt] (0,0) rectangle (7,8);
     \end{tikzpicture}
-    \begin{tikzpicture}[scale=0.7]
+    \begin{tikzpicture}[scale=0.679]
         \draw[very thin, gray!70] (0,0) grid (7,8);
         
         %\draw[fill=gray!90, gray!90] (7,0) rectangle (6,5);
@@ -1161,7 +1173,7 @@ Note que todos os pares de ponto $(p,q)$ encontrados possuem o ponto $p$ como o 
 
         \draw[black, line width=0.5pt] (0,0) rectangle (7,8);
     \end{tikzpicture}
-    \begin{tikzpicture}[scale=0.7]
+    \begin{tikzpicture}[scale=0.679]
         \draw[very thin, gray!70] (0,0) grid (7,8);
         
         %\draw[fill=gray!90, gray!90] (0,0) rectangle (3,6);
@@ -1184,16 +1196,17 @@ Note que todos os pares de ponto $(p,q)$ encontrados possuem o ponto $p$ como o 
 
         \draw[black, line width=0.5pt] (0,0) rectangle (7,8);
     \end{tikzpicture}    
-    \caption{Para a sequência de acessos $X = (4,1,2,5,6,3,4)$. Para cada ponto azul está destacado o conjunto independente de retângulos que será encontrado pelo algoritmo referente à delimitação do funil para aquele ponto. Perceba que nem todos os pontos do funil do ponto analisado são incluídos. Comparando com a Figura~\ref{fig:funil-execucao}, é facil notar que o tamanho do conjunto de retângulos final é exatamente Funil$(X)$.}
+    \caption{Para a sequência de acessos $X = (4,1,2,5,6,3,4)$. Para cada ponto azul, está destacado o conjunto independente de retângulos que será incluído em $I$ pelo algoritmo, referente à delimitação do funil para aquele ponto. Perceba que nem todos os pontos do funil do ponto analisado são incluídos. Comparando com a Figura~\ref{fig:funil-execucao}, é fácil notar que o tamanho do conjunto de retângulos final é exatamente \Funil$(X)$.}
+\label{fig:retangulos_no_funil}
 \end{figure}
 
 \section{Sequência bit-reversa}
 
-Para evidenciar como as delimitações propostas por Wilber podem ser uma ferramenta poderosa para analisar sequência de acessos, mostraremos uma sequência que é sempre custosa, independente do algoritmo de busca. 
+Para evidenciar como as delimitações propostas por Wilber podem ser uma ferramenta poderosa para analisar sequências de acessos, mostraremos uma sequência que é sempre custosa, independente do algoritmo de busca. 
 
-Nesta seção, excepcionalmente, consideraremos que as ABBs contém as chaves de $0$ a $n-1$. Essa consideração será útil para maior simplificação das análises, porém não é necessária para o estudo abaixo. 
+Nesta seção, excepcionalmente, consideraremos que as ABBs contêm as chaves de $0$ a $n-1$. Essa consideração será útil para maior simplificação das análises, porém não é necessária para o estudo abaixo. 
 
-Definimos a sequência bit-reversa - ou permutação bit-reversa - de $0$ a $n-1$ como a contagem de $0$ a $n-1$ em binário e depois a sua leitura de trás pra frente, ou seja, leia os bits da direita para a esquerda. Veja a Figura~\ref{fig:sequencia}.
+Definimos a \textit{sequência bit-reversa} de $0$ a $n-1$ como a contagem de $0$ a $n-1$ em binário e depois a sua leitura de trás pra frente, ou seja, leia os bits de cada número da direita para a esquerda. Veja a Figura~\ref{fig:sequencia}.
 
 \begin{figure}
     \begin{tikzpicture}
@@ -1224,11 +1237,11 @@ Definimos a sequência bit-reversa - ou permutação bit-reversa - de $0$ a $n-1
         \draw[->] (g) -- (g');
         \draw[->] (h) -- (h');
     \end{tikzpicture}
-    \caption{Sequência bit-reversa para $n = 8$. A coluna da esquerda mostra a contagem de $0$ a $n - 1$ em binário e a  coluna da direita mostra a leitura desses números em base 2 de trás pra frente, ou seja, lendo da direita para a esquerda.}
+    \caption{Sequência bit-reversa para $n = 8$. A coluna da esquerda mostra a contagem de $0$ a $n - 1$ em binário e a  coluna da direita mostra a leitura desses números em base 2 de trás para frente, ou seja, considerando os bits da direita para a esquerda.}
 \label{fig:sequencia}
 \end{figure}
 
-É bastante útil entender como o algoritmo de busca se comporta nas sequências de busca em uma ABB completa fixa. Uma maneira de visualizar as buscas em binário dentro de uma ABB completa fixa é imaginar que os ponteiros representam um bit e a busca em binário dentro da ABB é a sequência de ponteiros que com seus bits concatenados resultam no número buscado. Veja a Figura~\ref{fig:abb-numerada}.
+É bastante útil entender como um algoritmo de busca se comporta nas sequências de acessos em uma ABB completa fixa. Uma maneira de visualizar as buscas em binário dentro de uma ABB completa fixa é imaginar que os ponteiros representam um bit e a busca em binário dentro da ABB é a sequência de ponteiros, que com seus bits concatenados, resultam no número buscado. Veja a Figura~\ref{fig:abb-numerada}.
 
 \begin{figure}
     \begin{tikzpicture}[scale=0.8,
@@ -1269,28 +1282,28 @@ Definimos a sequência bit-reversa - ou permutação bit-reversa - de $0$ a $n-1
         \draw[thick, ->] (N) -- (M) node[near start, right] {$1$};
         \draw[thick, ->] (N) -- (O) node[near start, left] {$0$};
     \end{tikzpicture}
-    \caption{ABB completa de 8 folhas com a representação binária.}
+    \caption{ABB completa de 8 folhas com uma representação binária.}
 \label{fig:abb-numerada}
 \end{figure}
 
-Como estamos lendo os bits de trás pra frente, sabemos que a característica do contador binário se mantém porém com os bits ao contrário. Assim, sabemos que essa sequência tem a propriedade que o maior bit se altera toda adição no número, o segundo maior bit se altera em metade das adições, o terceiro maior bit se altera em um quarto das adições e o $i$-ésimo bit se altera em $2^{i - 1}$ das adições.
+Como estamos lendo os bits de trás para frente, sabemos que a característica do contador binário se mantém porém com os bits ao contrário. Assim, sabemos que essa sequência tem a propriedade que o maior bit se altera em todo incremento do número, o segundo maior bit se altera em metade dos incrementos, o terceiro maior bit se altera em um quarto dos incrementos e o $i$-ésimo bit se altera em $2^{i - 1}$ dos incrementos.
 
-Voltando ao contexto de ABBs, como as buscas estão sempre se alterando com essa propriedade então sabemos que a partir da raiz, todas as buscas serão alternadas entre a subárvore esquerda e a subárvore direita. A mesma propriedade se mantém para todos os nós intermediários. Assim, como sabemos que as alternâncias começam pela esquerda por esta ser a ordem na contagem, então sabemos que para qualquer nó intermediário, a $j$-ésima busca em um de seus descendentes será na subárvore esquerda se $j$ for ímpar e na subárvore direita se $j$ for par.
+Voltando ao contexto de ABBs, as alterações dos bits descritas acima implicam que cada busca começa indo por uma subárvore diferente, tanto na raiz como nos nós intermediários. Assim, como sabemos que as alternâncias começam pela esquerda por esta ser a ordem na contagem, deduzimos que para qualquer nó intermediário, a $j$-ésima busca em um de seus descendentes entrará na sua subárvore esquerda se $j$ for ímpar e na sua subárvore direita se $j$ for par.
 
-A princípio essa informação não parece tão poderosa, porém relembremos como funciona a delimitação da alternância. Para qualquer ABB fixa com as chaves nas folhas, a somatória do número de intercalações esquerda-direita de todos os nós intermediários dessa ABB é uma delimitação inferior no custo de executar essa sequência dentro do modelo de computação adotado. Assim, como notado anteriormente, nunca há duas buscas consecutivas na mesma subárvore, todos as buscas se alternam em todos os nós, assim sabemos que em nenhuma busca dessa sequência será usado algum ponteiro filho preferido. Assim, essa sequência maximiza a delimitação da alternância.
+A princípio essa informação não parece tão poderosa, porém relembremos como funciona a delimitação da alternância. Para qualquer ABB fixa com as chaves nas folhas, a somatória do número de intercalações esquerda-direita de todos os nós intermediários dessa ABB é uma delimitação inferior no custo de executar essa sequência de acessos dentro do modelo de computação adotado. Assim, como notado anteriormente, nunca há duas buscas consecutivas na mesma subárvore: todas as buscas se alternam em todos os nós. Portanto, sabemos que nenhum ponteiro de filho preferido será percorrido durante as buscas dessa sequência. Assim, essa sequência maximiza a delimitação da alternância.
 
-Na ABB completa, cada folha tem altura $\lg n$. Então, sabemos que cada simulação de busca na ABB completa fixa acarretará em $\lg n$ alternâncias/alterações em ponteiros de filho preferido, e assim para uma sequência bit-reversa $X$ de acessos com $m$ buscas, Alt$_\cT(X) = m \cdot \lg n$ para a árvore completa $\cT$. Assim, sabemos que o $OPT(X) \geq m \cdot \lg n$.
+Na ABB completa com $n$ folhas, cada folha tem altura $\lg n$. Então, sabemos que cada simulação de busca na ABB completa fixa acarretará em $\lg n$ alternâncias/alterações em ponteiros de filho preferido, e assim para uma sequência bit-reversa $X$ de acessos com $m$ buscas, \Alt$_\cT(X) = m \cdot \lg n$ para a árvore completa $\cT$ com $n$ folhas. Assim, sabemos que $\OPT(X) \geq m \cdot \lg n$.
 
-Esse resultado é particularmente especial, pois nos mostra que a melhor maneira de executar todos os acessos dessa sequência vai ter custo maior ou igual a $m \cdot \lg n$, ou seja, $\lg n$ por busca. Essa é a delimitação trivial de árvores binárias de busca balanceadas como a árvore rubro-negra ou a AVL. Em outras palavras, essa sequência é tão cara no modelo de computação que não existe nenhuma maneira de melhorar seu custo acima da delimitação trivial e assim, qualquer ABB balanceada com custo $\Oh(\lg n)$ por busca tem custo assintoticamente proporcional ao ótimo.
+Esse resultado é particularmente especial, pois nos mostra que a melhor maneira de executar todos os acessos dessa sequência vai ter custo maior ou igual a $m \cdot \lg n$, ou em média, $\lg n$ por busca. Essa é a delimitação trivial de árvores binárias de busca balanceadas como a árvore rubro-negra ou a AVL. Em outras palavras, essa sequência é tão cara no modelo de computação que não existe nenhuma maneira de melhorar seu custo acima da delimitação trivial, e assim, qualquer ABB balanceada com custo $\Oh(\lg n)$ por busca tem custo assintoticamente proporcional ao ótimo nessas sequências.
 
-Por fim, vale a pena relembrar que essa sequência também é importante para as delimitações da eficiência do algoritmo guloso futurista. Como citado anteriormente, O pior caso conhecido do guloso futurista é buscar a sequência bit-reversa uma vez e depois seguir a sequência apenas buscando as folhas da ABB.
+Por fim, vale a pena relembrar que essa sequência também é importante para as delimitações da eficiência do algoritmo guloso futurista. Como citado anteriormente, o pior caso conhecido do guloso futurista é buscar a sequência bit-reversa uma vez e depois seguir a sequência apenas buscando as folhas da ABB.
 
-Note que esse caso é ruim, pois os nós intermediários se mantém no caminho das folhas e não permitem que o algoritmo traga as folhas para a superfície, assim todas as buscas visitam uma série de nós desnecessários e acarretam em um custo de $OPT(X) + \Oh(m)$. Veja a Figura~\ref{fig:GreedyFuture-bit-reversal}.
+Note que esse caso é ruim, pois os nós intermediários se mantêm no caminho das folhas e não permitem que o algoritmo traga as folhas para perto da raiz. Assim, todas as buscas visitam uma série de nós desnecessários e acarretam em um custo de $\OPT(X) + \Oh(m)$. Veja a Figura~\ref{fig:GreedyFuture-bit-reversal}.
 
 \begin{figure}
     \centering
     
-    \begin{tikzpicture}[scale=0.265]
+    \begin{tikzpicture}[scale=0.34]
         \draw[very thin, gray] (0,0) grid (8,12);
         
         \draw[teste, very thick] (0,2) -- (8,2);
@@ -1309,7 +1322,7 @@ Note que esse caso é ruim, pois os nós intermediários se mantém no caminho d
         \filldraw[black] (7,11) circle (8pt);
         \draw[black, line width=0.5pt] (0,0) rectangle (8,12);
     \end{tikzpicture}
-    \begin{tikzpicture}[scale=0.265]
+    \begin{tikzpicture}[scale=0.34]
         \draw[very thin, gray] (0,0) grid (8,12);
         
         \draw[teste, very thick] (0,3) -- (8,3);
@@ -1329,7 +1342,7 @@ Note que esse caso é ruim, pois os nós intermediários se mantém no caminho d
         \filldraw[black] (7,11) circle (8pt);
         \draw[black, line width=0.5pt] (0,0) rectangle (8,12);
     \end{tikzpicture}
-    \begin{tikzpicture}[scale=0.265]
+    \begin{tikzpicture}[scale=0.34]
         \draw[very thin, gray] (0,0) grid (8,12);
         
         \draw[teste, very thick] (0,4) -- (8,4);
@@ -1351,7 +1364,7 @@ Note que esse caso é ruim, pois os nós intermediários se mantém no caminho d
         \filldraw[black] (7,11) circle (8pt);
         \draw[black, line width=0.5pt] (0,0) rectangle (8,12);
     \end{tikzpicture}
-    \begin{tikzpicture}[scale=0.265]
+    \begin{tikzpicture}[scale=0.34]
         \draw[very thin, gray] (0,0) grid (8,12);
         
         \draw[teste, very thick] (0,5) -- (8,5);
@@ -1375,7 +1388,7 @@ Note que esse caso é ruim, pois os nós intermediários se mantém no caminho d
         \filldraw[black] (7,11) circle (8pt);
         \draw[black, line width=0.5pt] (0,0) rectangle (8,12);
     \end{tikzpicture}
-    \begin{tikzpicture}[scale=0.265]
+    \begin{tikzpicture}[scale=0.34]
         \draw[very thin, gray] (0,0) grid (8,12);
         
         \draw[teste, very thick] (0,6) -- (8,6);
@@ -1402,7 +1415,7 @@ Note que esse caso é ruim, pois os nós intermediários se mantém no caminho d
         \draw[black, line width=0.5pt] (0,0) rectangle (8,12);
     \end{tikzpicture}
     \\
-    \begin{tikzpicture}[scale=0.265]
+    \begin{tikzpicture}[scale=0.34]
         \draw[very thin, gray] (0,0) grid (8,12);
         
         \draw[teste, very thick] (0,7) -- (8,7);
@@ -1429,7 +1442,7 @@ Note que esse caso é ruim, pois os nós intermediários se mantém no caminho d
         \filldraw[black] (7,11) circle (8pt);
         \draw[black, line width=0.5pt] (0,0) rectangle (8,12);
     \end{tikzpicture}
-    \begin{tikzpicture}[scale=0.265]
+    \begin{tikzpicture}[scale=0.34]
         \draw[very thin, gray] (0,0) grid (8,12);
         
         \draw[teste, very thick] (0,8) -- (8,8);
@@ -1459,7 +1472,7 @@ Note que esse caso é ruim, pois os nós intermediários se mantém no caminho d
         \filldraw[black] (7,11) circle (8pt);
         \draw[black, line width=0.5pt] (0,0) rectangle (8,12);
     \end{tikzpicture}
-    \begin{tikzpicture}[scale=0.265]
+    \begin{tikzpicture}[scale=0.34]
         \draw[very thin, gray] (0,0) grid (8,12);
         
         \draw[teste, very thick] (0,9) -- (8,9);
@@ -1491,7 +1504,7 @@ Note que esse caso é ruim, pois os nós intermediários se mantém no caminho d
         \filldraw[black] (7,11) circle (8pt);
         \draw[black, line width=0.5pt] (0,0) rectangle (8,12);
     \end{tikzpicture}
-    \begin{tikzpicture}[scale=0.265]
+    \begin{tikzpicture}[scale=0.34]
         \draw[very thin, gray] (0,0) grid (8,12);
         
         \draw[teste, very thick] (0,10) -- (8,10);
@@ -1525,7 +1538,7 @@ Note que esse caso é ruim, pois os nós intermediários se mantém no caminho d
         \filldraw[black] (7,11) circle (8pt);
         \draw[black, line width=0.5pt] (0,0) rectangle (8,12);
     \end{tikzpicture}
-    \begin{tikzpicture}[scale=0.265]
+    \begin{tikzpicture}[scale=0.34]
         \draw[very thin, gray] (0,0) grid (8,12);
         
         \draw[teste, very thick] (0,11) -- (8,11);
@@ -1561,6 +1574,6 @@ Note que esse caso é ruim, pois os nós intermediários se mantém no caminho d
         \draw[black, line width=0.5pt] (0,0) rectangle (8,12);
     \end{tikzpicture}
     
-    \caption{Execução do Greedy Future para a sequência $X = (4,2,1,3,5,7,1,3,5,7)$ de acessos. $4,2,1$ representam as chaves dos nós intermediários e o restante são as folhas. Basta desenhar uma árvore completa e perceber o comportamento ineficiente.}
+    \caption{Execução do algoritmo guloso futurista para a sequência $X = (4,2,1,3,5,7,1,3,5,7)$ de acessos. As chaves $4,2,1$ representam as chaves dos nós intermediários e o restante são as folhas. Basta desenhar uma árvore completa e perceber o comportamento ineficiente.}
 \label{fig:GreedyFuture-bit-reversal}
 \end{figure}
