@@ -242,7 +242,9 @@ class Treap {
             while(root != nullptr && root->priority < now && !stop){ //sink all roots with priority < now
                 root = sink_node(next_acess, root, now, stop);
             }
-            print();
+            if(!stop){
+                print();
+            }
             return 0;
         }
 
@@ -255,16 +257,12 @@ class Treap {
 };
 
 int main(){
-    cout << "Fale o número de pontos e, em seguida, os pontos na forma (x, y)." << endl;
-
     int n,u,v;
     int m = 0;
-    cin >> n;
 
     vector<pair<int, int>> data;
 
-    for(int i = 0; i < n; i++){
-        cin >> u;
+    while(cin >> u){
         cin >> v;
         data.push_back({u,v});
     }
@@ -281,8 +279,6 @@ int main(){
             m = data[i].second;
         }
     }
-
-    cout << "\nn = " << n << ", e m = " << m << endl << endl; //print n and m values 
 
     vector<LinkedList*> next_acess;
 
@@ -316,38 +312,16 @@ int main(){
         }
     }
 
-    cout << "Initial Treap:------------" << endl;
-    tr->print();
-    cout << "--------------------------" << endl;
-
-    for(int i = 1; i < next_acess.size(); i++){ //print data vector after initial treap
-        cout << "i = " << i << ": ";
-        if(next_acess[i] != nullptr){
-            next_acess[i]->print();
-        }
-        cout << endl;
-    }
-    cout << endl;
-
     int time = 1;
-    
     bool stop_signal = false;
 
     while(time < m + 2 && !stop_signal){ //move time
-        cout << "Time = " << time;
-        if(time < 10){
-            cout << " -----------------" << endl;
-        }
-        else{
-            cout << " ----------------" << endl;
-        }
+        cout << "Time = " << time << " -----------------" << endl;
         if(tr->sink_root(next_acess, time, stop_signal) == -1){
             break;
         }
         time = time + 1;
-        cout << "--------------------------" << endl;
     }
-
 
     delete tr;
 }
