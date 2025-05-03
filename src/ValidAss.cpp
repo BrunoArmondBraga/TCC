@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <vector>
 #include <climits>
+#include <string>
 
 using namespace std;
 
@@ -144,9 +145,10 @@ class Treap {
                 return;
             }
 
-            if(node != nullptr && node->right != nullptr){
-                debug_rec(node->right, space + 3);
+            if(node != nullptr && node->left != nullptr){
+                debug_rec(node->left, space + 3);
             }
+
             for(int j = 0; j < space; j++){
                 cout << " ";
             }
@@ -160,8 +162,8 @@ class Treap {
             }
             cout << endl;
 
-            if(node != nullptr && node->left != nullptr){
-                debug_rec(node->left, space + 3);
+            if(node != nullptr && node->right != nullptr){
+                debug_rec(node->right, space + 3);
             }
         }
 
@@ -190,9 +192,11 @@ class Treap {
             if(left != nullptr){
                 if(current->priority > left->priority && left->LastAcess != current->LastAcess && current->LastAcess != left->priority){
                     Node* finalNode = max_with_same_priority(left); //get the correct point
-                    cout << "The pair of points { (" << current->val << "," << current->LastAcess << ") , ";
-                    cout << "(" << finalNode->val << "," << finalNode->priority << ") } ";
-                    cout << "is not arborally satisfied!" << endl;
+                    //cout << "The pair of points { (" << current->val << "," << current->LastAcess << ") , ";
+                    //cout << "(" << finalNode->val << "," << finalNode->priority << ") } ";
+                    //cout << "is not arborally satisfied!" << endl;
+                    cout << "(" << current->val << "," << current->LastAcess << ") ";
+                    cout << "(" << finalNode->val << "," << finalNode->priority << ")" << endl;
                     stop = true; //stop execution
                     return current;
                 }
@@ -203,9 +207,11 @@ class Treap {
             if(right != nullptr){
                 if(current->priority > right->priority && right->LastAcess != current->LastAcess && current->LastAcess != right->priority){
                     Node* finalNode = min_with_same_priority(right); //get the correct point
-                    cout << "The pair of points { (" << current->val << "," << current->LastAcess << ") , ";
-                    cout << "(" << finalNode->val << "," << finalNode->priority << ") } ";
-                    cout << "is not arborally satisfied!" << endl;
+                    //cout << "The pair of points { (" << current->val << "," << current->LastAcess << ") , ";
+                    //cout << "(" << finalNode->val << "," << finalNode->priority << ") } ";
+                    //cout << "is not arborally satisfied!" << endl;
+                    cout << "(" << current->val << "," << current->LastAcess << ") ";
+                    cout << "(" << finalNode->val << "," << finalNode->priority << ")" << endl;
                     stop = true; //stop execution
                     return current;
                 }
@@ -234,7 +240,7 @@ class Treap {
             return current;
         }
 
-        int sink_root(vector<LinkedList*>& next_acess, int now, bool& stop){
+        int sink_root(vector<LinkedList*>& next_acess, int now, bool& stop, bool debug_mode){
             if(isEmpty()){
                 return -1;
             }
@@ -242,7 +248,7 @@ class Treap {
             while(root != nullptr && root->priority < now && !stop){ //sink all roots with priority < now
                 root = sink_node(next_acess, root, now, stop);
             }
-            if(!stop){
+            if(!stop && debug_mode){
                 print();
             }
             return 0;
@@ -256,11 +262,16 @@ class Treap {
         }
 };
 
-int main(){
+int main(int argc, char* argv[]){
+    bool debug_mode = false;
     int n,u,v;
     int m = 0;
 
     vector<pair<int, int>> data;
+
+    if(argc == 2 && string(argv[1]) == "-DEBUG"){
+        debug_mode = true;
+    }
 
     while(cin >> u){
         cin >> v;
@@ -316,11 +327,17 @@ int main(){
     bool stop_signal = false;
 
     while(time < m + 2 && !stop_signal){ //move time
-        cout << "Time = " << time << " -----------------" << endl;
-        if(tr->sink_root(next_acess, time, stop_signal) == -1){
+        if(debug_mode){
+            cout << "Time = " << time << " -----------------" << endl;
+        }
+        if(tr->sink_root(next_acess, time, stop_signal, debug_mode) == -1){
             break;
         }
         time = time + 1;
+    }
+
+    if(!stop_signal){
+        cout << "ASS" << endl;
     }
 
     delete tr;
