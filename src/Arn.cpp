@@ -109,8 +109,9 @@ class Arn {
             return aux;
         }
 
-        void Fix(NodeARN* filho, bool is_left_child){
+        void Fix(NodeARN* filho){
             NodeARN* p = filho->pai; 
+
             while(true){
                 if(p->preto == true){
                     break;
@@ -244,103 +245,13 @@ class Arn {
                 p->dir = filho;
             }
 
-            while(true){
-                if(p->preto == true){
-                    break;
-                }
-                NodeARN *avo = p->pai;
-                if(avo==nullptr){
-                    p->preto = true;
-                    p->black_height = filho->black_height + 1;
-                    break;
-                }
+            Fix(filho);
 
-                //ACHAR O TIO!
-                NodeARN *tio = nullptr;//OUTRO FILHO!!
-                if(avo->dir != nullptr){
-                    if(avo->dir == p){
-                        tio = avo->esq;
-                    }
-                    else{
-                        tio = avo->dir;
-                    }
-                }
-
-                if(tio != nullptr && tio->preto == false){ //caso tio vermelho
-                    avo->preto = false;
-                    p->preto = tio->preto = true;
-                    filho = avo;
-                    
-                    tio->black_height = avo->black_height;
-                    p->black_height = avo->black_height;
-                    
-                    p = avo->pai;
-                    if(p==nullptr){ //pra que serve isso?
-                        break;
-                    }
-                }
-                else{ //caso tio preto
-                    if(p==avo->esq && filho == p->esq){ //mesmo lado
-                        NodeARN *q = rodaDir(avo);
-                        q->preto = true;
-                        avo->preto = false;
-
-                        int aux = q->black_height;
-                        q->black_height = avo->black_height;
-                        avo->black_height = aux;
-
-                        if(raiz == avo){
-                            raiz = q;
-                        }
-                        break;
-                    }
-                    else if(p==avo->esq && filho == p->dir){ //lados diferentes
-                        NodeARN *q = rodaEsq(p);
-                        NodeARN *r = rodaDir(avo);
-                        r->preto = true;
-                        avo->preto = false;
-
-                        int aux = avo->black_height;
-                        avo->black_height = r->black_height;
-                        r->black_height = aux;
-
-                        if(raiz == avo){
-                            raiz = r;
-                        }
-                        break;
-                    }
-                    else if(p==avo->dir && filho ==p->dir){ //mesmo lado
-                        NodeARN *q = rodaEsq(avo);
-                        q->preto = true;
-                        avo->preto = false;
-
-                        int aux = q->black_height;
-                        q->black_height = avo->black_height;
-                        avo->black_height = aux;
-
-                        if(raiz == avo){
-                            raiz = q;
-                        }
-                        break;
-                    }
-                    else{ //lados diferentes
-                        NodeARN *q = rodaDir(p);
-                        NodeARN *r = rodaEsq(avo);
-                        r->preto = true;
-                        avo->preto = false;
-
-                        int aux = avo->black_height;
-                        avo->black_height = r->black_height;
-                        r->black_height = aux;
-
-                        if(raiz == avo){
-                            raiz = r;
-                        }
-                        break;
-                    }
-                }
+            NodeARN* new_root = raiz;
+            while(new_root->pai != nullptr){
+                new_root = new_root->pai;
             }
-            return raiz;
+            return new_root;
         }
 
         void debug_rec(NodeARN *u, int i){
@@ -412,7 +323,7 @@ class Arn {
                 rec_check_black_height(u->dir, actual_black_height, deu_erro);
             }
             else{
-                cout << "ACHEI UM NÓ COM BH = " << actual_black_height << ", PORÉM A BH ACIMA É " << u->black_height << ". Esse nó tem chave " << u->key << endl;
+                cout << "ACHEI UM NÓ COM BH = " << actual_black_height << ", PORÉM A BH ACIMA É " << bh << ". Esse nó tem chave " << u->key << endl;
                 deu_erro = true;
             }
         }
@@ -486,10 +397,10 @@ NodeARN* Join(NodeARN *u, int k, NodeARN *v){
 
 int main(){
     bool deu_erro = false;
-    for(unsigned int seed = 1; seed < 1500; seed++){
+    for(unsigned int seed = 0; seed < 500000; seed++){
         cout << "SEED = " << seed << endl;
         std::mt19937 gen(seed);
-        std::uniform_int_distribution<> distrib(1, 100000);
+        std::uniform_int_distribution<> distrib(1, 20000);
         vector<int> numeros_adicionados;
 
         Arn rn;
@@ -501,18 +412,26 @@ int main(){
             rn.imprimir();
         } */
 
-        for(int i = 1; i < 200; i++){
+        for(int i = 1; i < 10; i++){
             int numero_sorteado = distrib(gen);
             while(std::find(numeros_adicionados.begin(), numeros_adicionados.end(), numero_sorteado) != numeros_adicionados.end()){
                 numero_sorteado = distrib(gen);
             }
             //cout << "ADICIONANDO NÚMERO  " << numero_sorteado << endl;
             rn.add(numero_sorteado, deu_erro);
+            //rn.imprimir();
             numeros_adicionados.push_back(numero_sorteado);
             if(deu_erro){
                 cout << "DEU MERDA na seed " << seed << "! :(" << endl;
                 break;
             }
+        }
+
+        if(deu_erro){
+            for(int i = 0; i < numeros_adicionados.size(); i++){
+                cout << numeros_adicionados[i] << " ";
+            }
+            cout << endl;
         }
     }
     if(!deu_erro){
