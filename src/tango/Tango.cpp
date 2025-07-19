@@ -9,33 +9,6 @@
 
 using namespace std;
 
-class Node{       
-    public:
-        Node *esq;
-        Node *dir;
-        int key;
-
-        Node() {
-            esq = nullptr;
-            dir = nullptr;
-        };
-
-        Node(int v) { 
-            esq = nullptr;
-            dir = nullptr;
-            key = v;
-        };
-        
-        ~Node() {
-            if(esq != nullptr){
-                delete esq;
-            }
-            if(dir != nullptr){
-                delete dir;
-            }
-        }
-};
-
 /* int main(){
     int n;
     cout << "Quantos nós deseja utilizar?" << endl;
@@ -75,52 +48,59 @@ class Node{
 } */
 
 int main(){
-    bool deu_erro = false;
-    for(unsigned int seed = 1; seed < 2; seed++){
-        cout << "SEED = " << seed << endl;
-        std::mt19937 gen(seed);
-        std::uniform_int_distribution<> distrib(1, 600);
-        vector<int> numeros_adicionados = {1,2,3,4,5,6,7,8,9,10};
+    vector<int> numeros_adicionados = {1,2,3,4,5,6,7,8,9,10,11};
+    for(int i = 0; i < 100; i++){
+        numeros_adicionados.push_back(12 + i);
+    }
+    NodeARN* root = nullptr;
+    for(int i = 0; i < numeros_adicionados.size(); i++){
+        root = add(root, numeros_adicionados[i], nullptr);
+    }
+    imprimir(root);
+    int n = 0;
+    bool deu_errado = false;
+    while(!deu_errado){
+        cout << "Qual quer tchombers?" << endl;
+        cin >> n;
+        if(n == -1){
+            break;
+        }
 
-
-        /* for(int i = 1; i < 150; i++){
-            int numero_sorteado1 = distrib(gen);
-            while(std::find(numeros_adicionados.begin(), numeros_adicionados.end(), numero_sorteado1) != numeros_adicionados.end()){
-                numero_sorteado1 = distrib(gen);
-            }
-            numeros_adicionados.push_back(numero_sorteado1);
-        } */
+        root = bring_to_front(root, n);
+        cout << "print bring_to_front" << endl;
+        imprimir(root);
         
-        NodeARN* root = new NodeARN(numeros_adicionados[0]);
-        for(int i = 1; i < numeros_adicionados.size(); i++){
-            if(numeros_adicionados[i] == 546){
-                cout << "oi" << endl;
-            }
-            root = add(root,numeros_adicionados[i],deu_erro);
-        }
-
-        for(int i = 0; i < numeros_adicionados.size(); i++){
-            if(deu_erro){
-                cout << "os proximos seriam :" << numeros_adicionados[i] << endl;
-                continue;
-            }
-            root = bring_to_front(root, numeros_adicionados[i]);
-            //imprimir(root);
-            if(root->key != numeros_adicionados[i]){
-                cout << "DEU ERRO!" << endl;
-                deu_erro = true;
-                break;
-            }
-        }
+        root = concatenate(root);
+        cout << "print concatenate" << endl;
         imprimir(root);
     }
-    if(deu_erro){
-        cout << "fudeu, meu garoto :(" << endl;
+    
+    if(deu_errado){
+        cout << "NAO NAO NAO NAO DROGA" << endl;
     }
     else{
         cout << "UFAAAA :)" << endl;
     }
+    
+    /* NodeARN* root2 = nullptr;
+    for(int i = 0; i < numeros_adicionados.size()/2 + 1; i++){
+        root = add(root,numeros_adicionados[i],nullptr);
+    }
+    for(int i = numeros_adicionados.size()/2 + 1; i < numeros_adicionados.size(); i++){
+        root2 = add(root2,numeros_adicionados[i],nullptr);
+    }
+
+    imprimir(root);
+    imprimir(root2);
+
+    NodeARN* six = new NodeARN(6);
+
+    root = Join(root,six,root2);
+    imprimir(root); */
+
+    delete root;
 }
+
 
 /*
 int main(){
@@ -200,3 +180,47 @@ int main(){
 }
 
 */
+
+
+/* // teste 1
+    //NodeARN* root = new NodeARN(numeros_adicionados[0]);
+    NodeARN* root = add(nullptr,numeros_adicionados[0],nullptr);
+    //NodeARN* root2 = new NodeARN(numeros_adicionados[numeros_adicionados.size()/2]);
+    NodeARN* root2 = add(nullptr,numeros_adicionados[numeros_adicionados.size()/2],nullptr);
+    for(int i = 1; i < numeros_adicionados.size()/2; i++){
+        root = add(root,numeros_adicionados[i],nullptr);
+    }
+    for(int i = numeros_adicionados.size()/2 + 1; i < numeros_adicionados.size(); i++){
+        root2 = add(root2,numeros_adicionados[i],nullptr);
+    }
+
+    cout << "printe 1 -----------------------------------" << endl;
+    imprimir(root);
+    cout << "printe 2 -----------------------------------" << endl;
+    imprimir(root2);
+
+    NodeARN* six = new NodeARN(2);
+
+    root2 = Join(root, six, root2);
+    imprimir(root2);
+
+    root2 = concatenate(root2);
+    imprimir(root2); */
+
+
+
+    // teste 2
+    /* NodeARN* root = new NodeARN(numeros_adicionados[0]);
+    root->is_root = true;
+    root->preto = true;
+    root->black_height = 2;
+    for(int i = 1; i < numeros_adicionados.size(); i++){
+        imprimir(root);
+        root = add(root, numeros_adicionados[i], nullptr);
+    }
+    imprimir(root);
+    root = bring_to_front(root,5);
+    imprimir(root); 
+
+    root = concatenate(root);
+    imprimir(root); */
