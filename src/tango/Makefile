@@ -24,3 +24,10 @@ run:
 	@$(MAKE) --no-print-directory clean
 	@$(MAKE) --no-print-directory all
 	@./$(OUT)
+
+# Compilar do zero e executar
+test:
+	clear
+	@$(MAKE) --no-print-directory clean
+	@$(MAKE) --no-print-directory all
+	@./$(OUT)
