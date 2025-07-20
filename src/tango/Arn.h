@@ -8,6 +8,7 @@
 #include <random>
 #include <algorithm>
 #include <stack>
+#include <climits>
 
 using namespace std;
 
@@ -21,8 +22,8 @@ class NodeARN{
         bool is_root = false;
         int is_double_black = 0; //0 = false, 1 = true, 2 = to be deleted/null double black
         int depth = 0;
-        int min_depth = 0;
-        int max_depth = 0;
+        int min_depth = INT_MAX;
+        int max_depth = INT_MIN;
         NodeARN *pai;
         NodeARN *esq;
         NodeARN *dir;
@@ -54,6 +55,8 @@ class NodeARN{
             esq = nullptr;
             dir = nullptr;
             this->depth = depth;
+            this->max_depth = depth;
+            this->min_depth = depth;
             if(pai == nullptr){
                 this->pai = nullptr;
             }
@@ -139,8 +142,8 @@ NodeARN* reset_node(NodeARN* u){
     }
     u->is_double_black = false;
     u->is_root = false;
-    u->max_depth = -1;
-    u->min_depth = 100000;
+    u->max_depth = INT_MIN;
+    u->min_depth = INT_MAX;
     u->pai = nullptr;
     u->black_height = 1;
     u->preto = false;
@@ -953,8 +956,7 @@ split_data Split(NodeARN *root, float pivot){
         final_left_tree = left_trees.top();
         left_trees.pop();
 
-        NodeARN* final_insertion = final_left_tree; //get last 
-        //final_insertion->is_root = false;
+        NodeARN* final_insertion = final_left_tree; //get last
 
         if(final_left_tree->esq != nullptr){
             final_left_tree = final_left_tree->esq;
@@ -965,45 +967,13 @@ split_data Split(NodeARN *root, float pivot){
         }
         else{
             final_left_tree = nullptr;
-        }
-
-
-        /* if(final_left_tree->esq == nullptr){
-            //delete final_left_tree;
-            //final_left_tree = nullptr;
-        }
-        else{       
-            final_left_tree = final_left_tree->esq;
-            if(final_left_tree->pai != nullptr){
-                final_left_tree->pai->esq = nullptr;
-            } 
-            //delete final_left_tree->pai;
-            //final_left_tree->pai = nullptr;
-        } */
-        
+        }        
         
         while(left_trees.size() > 0){
             NodeARN* aux_tree = left_trees.top();
             left_trees.pop();
 
-            //int aux_index = aux_tree->key;
-
             NodeARN* insertion_node = aux_tree;
-            //insertion_node->is_root = false;
-
-            /* if(aux_tree->esq != nullptr){
-
-                aux_tree = aux_tree->esq;
-                if(aux_tree->pai != nullptr){
-                    aux_tree->pai->esq = nullptr;
-                }
-                delete aux_tree->pai;
-                aux_tree->pai = nullptr;
-            }
-            else{
-                delete aux_tree;
-                aux_tree = nullptr;
-            } */
 
             if(aux_tree->esq != nullptr){
                 aux_tree = aux_tree->esq;
@@ -1028,19 +998,6 @@ split_data Split(NodeARN *root, float pivot){
         right_trees.pop();
 
         NodeARN* final_insertion = final_right_tree;
-        //final_insertion->is_root = false;
-
-        /* if(final_right_tree->dir == nullptr){
-            delete final_right_tree;
-            final_right_tree = nullptr;
-        }
-        else{
-            final_right_tree = final_right_tree->dir;
-            
-            final_right_tree->pai->dir = nullptr;
-            delete final_right_tree->pai;
-            final_right_tree->pai = nullptr;
-        } */
 
         if(final_right_tree->dir != nullptr){
             final_right_tree = final_right_tree->dir;
@@ -1052,31 +1009,12 @@ split_data Split(NodeARN *root, float pivot){
         else{
             final_right_tree = nullptr;
         }
-
         
-
         while(right_trees.size() > 0){
             NodeARN* aux_tree = right_trees.top();
             right_trees.pop();
 
             NodeARN* insertion_node = aux_tree;
-            //insertion_node->is_root = false;
-
-            /* int aux_index = aux_tree->key;
-
-            if(aux_tree->dir != nullptr){
-
-                aux_tree = aux_tree->dir;
-                if(aux_tree->pai != nullptr){
-                    aux_tree->pai->dir = nullptr;
-                }
-                delete aux_tree->pai;
-                aux_tree->pai = nullptr;
-            }
-            else{
-                delete aux_tree;
-                aux_tree = nullptr;
-            } */
 
             if(aux_tree->dir != nullptr){
                 aux_tree = aux_tree->dir;
@@ -1289,9 +1227,11 @@ NodeARN* bring_to_front(NodeARN* root, int item){
 
     if(first_fragment != nullptr){
         first_fragment->is_root = false;
+        first_fragment->pai = single_node;
     }
     if(second_fragment != nullptr){
         second_fragment->is_root = false;
+        second_fragment->pai = single_node;
     }
 
     single_node->preto = true;
@@ -1320,9 +1260,8 @@ NodeARN* concatenate(NodeARN* root){
     NodeARN* single_node = root;
     NodeARN* first_fragment = root->esq;
     NodeARN* second_fragment = root->dir;
-    root->esq = nullptr;
-    root->dir = nullptr;
-    return Join(first_fragment, reset_node(root), second_fragment);
+    NodeARN* final = reset_node(root);
+    return Join(first_fragment, final, second_fragment);
 }
 
 #endif
