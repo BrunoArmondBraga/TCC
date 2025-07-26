@@ -13,7 +13,7 @@
 \usepackage[size=a1,scale=1.1, orientation=portrait]{beamerposter}
 %\usepackage[size=custom,width=70.7,height=100,scale=1.0]{beamerposter} % font scale factor=1.0
 
-\usepackage[brazil]{babel}
+\usepackage[english]{babel}
 \usepackage[utf8]{inputenc}
 
 % para poder usar imagens eps e psfrag
@@ -89,10 +89,10 @@
   \setbeamercolor{block alerted body}{fg=black,bg=gray!20}%body color
 %
 %==Title, date and authors of the poster=======================================
-\title{Árvores binárias de busca e a Conjectura da Otimalidade Dinâmica}
+\title{Binary search trees and the Dynamic Optimality Conjecture}
 \author{Bruno Armond Braga \hspace{80pt} Orientadora: Cristina Gomes Fernandes}
-\institute{\vspace{3pt}Departamento de Ciência da Computação,
-Instituto de Matemática e Estatística, Universidade de São Paulo\vspace{-15pt}}
+\institute{\vspace{3pt}Computer Science Department,
+Institute of Mathematics and Statistics, University of São Paulo\vspace{-15pt}}
 %\date{\today}
 
 
@@ -108,15 +108,14 @@ Instituto de Matemática e Estatística, Universidade de São Paulo\vspace{-15pt
 %--the left column-------------------------------------------------------------
 \begin{column}{0.35\paperwidth}% the right size for a 3-column layout
 
-	\begin{alertblock}{Introdução}
+	\begin{alertblock}{Introduction}
 
 %Árvores Binárias de Busca (ABBs) são estruturas de dados que armazenam um conjunto de chaves de um universo estático, que possui uma ordem total, e dão suporte a buscas neste conjunto. Denotaremos por n o número de elementos do conjunto armazenado na ABB considerada.\vskip2ex
 
 %Árvore binária de busca é uma árvore binária onde cada nó possui uma chave comparável e possivelmente um valor associado. Além disso, os nós satisfazem a restrição de que a chave em qualquer nó é maior do que as chaves em todos os nós na subárvore esquerda desse nó e menor do que as chaves em todos os nós na subárvore direita desse nó.\vskip2ex
 
-Árvores binárias de busca (ABBs) são estruturas fundamentais no mundo da computação e rotações são muito utilizadas para melhorar a sua eficiência. 
-%Apesar desse amplo estudo em torno dessas estruturas e o extenso número de aplicações, a tarefa de estabelecer limites inferiores para os custos de algoritmos de busca que permitem rotações se mantém um grande desafio para os pesquisadores. 
-No contexto da Conjectura da Otimalidade Dinâmica, inserções e remoções não são consideradas: uma ABB armazena as chaves de $1$ a $n$ e é submetida a uma sequência de acessos. Um \textbf{acesso} é uma busca por uma chave de $1$ a $n$, sendo que o algoritmo de busca pode executar rotações. A árvore splay é uma ABB que faz rotações durante as buscas. A Conjectura da Otimalidade Dinâmica, de 1985, afirma que a árvore splay é \textbf{dinamicamente ótima}.
+Binary search trees (BSTs) are fundamental structures in computer science and rotations play a crucial role in optimizing their efficiency. 
+The Dynamic Optimality Conjecture considers a BST that stores the keys from $1$ to $n$ and is subjected to a sequence of accesses (insertions and deletions are not considered). An \textbf{access} is a search for a key from $1$ to $n$, and the search algorithm is allowed to perform rotations. The splay tree is a BST that rotates in a specific way during accesses. The Dynamic Optimality Conjecture, proposed in 1985 and still open, states that the splay tree is \textbf{dynamically optimal}.
 \vskip2ex
 
 %Ainda pouco se sabe em relação ao custo ótimo de sequências de acesso. A pergunta que esse projeto se propõe a tratar é: existe uma ABB que é assintoticamente tão boa quanto todas as outras para qualquer sequência de acessos? Assim, defini-se que uma ABB online é \textbf{dinamicamente ótima} se, para todas as sequências de buscas $Z$, seu algoritmo de busca tem custo proporcional ao custo ótimo e não possui conhecimento prévio sobre essas sequências de buscas.
@@ -125,49 +124,41 @@ No contexto da Conjectura da Otimalidade Dinâmica, inserções e remoções nã
 	\end{alertblock}
 	\vskip2ex
 
-	\begin{block}{Modelo de Computação\vspace{5pt}}
+	\begin{block}{Computation Model\vspace{5pt}}
 
   %// definiremos abb como um modelo de computação\vskip2ex
-  Adotaremos o seguinte modelo de computação: Um algoritmo de busca em uma ABB mantém um único ponteiro chamado de nó corrente durante o acesso a uma chave. No início da execução de cada acesso, o ponteiro aponta para a raiz da árvore. Há quatro operações chamadas de primitivas:\vskip2ex
+  The following computation model will be adopted. A search algorithm in a BST maintains a single pointer during accesses, called the current node. At the beginning of the execution of each access, the pointer points to the root of the tree. There are four operations called primitives:\vskip1ex
   
-    \hspace{35pt}1. Mover o ponteiro para o filho esquerdo do nó corrente.
+    \hspace{35pt}1. Move the pointer to the left child of the current node.
 
-    \hspace{35pt}2. Mover o ponteiro para o filho direito do nó corrente.
+    \hspace{35pt}2. Move the pointer to the right child of the current node.
 
-    \hspace{35pt}3. Mover o ponteiro para o pai do nó corrente.
+    \hspace{35pt}3. Move the pointer to the parent of the current node.
 
-    \hspace{35pt}4. Fazer uma rotação que troca a posição do nó corrente e do seu pai.\vskip2ex
+    \hspace{35pt}4. Perform a rotation that swaps the position of the current node and its parent.\vskip2ex
 
-    %Sabemos que o número de rotações necessárias para transformar qualquer ABB com $n$ nós em qualquer outra ABB com os mesmos $n$ nós com uma disposição diferente é linear em $n$. 
-    %Assim, 
-    O custo de um acesso dentro deste modelo é o número total de nós visitados durante esse acesso. Seja $Z$ uma sequência de acessos. Denota-se por $\OPT(Z)$ o custo de um algoritmo de busca que tem custo mínimo para atender os acessos de $Z$.
+    The cost of an access in this model is the total number of visited nodes during that access. Let $Z$ be a sequence of accesses. We denote by $\OPT(Z)$ the cost of a search algorithm that achieves the minimum possible cost to process the accesses of $Z$.
 	\end{block}
     \vskip1ex
-    \begin{block}{Árvores Splays\vspace{5pt}}
+    \begin{block}{Splay Trees\vspace{5pt}}
 
-    %Padrões de acesso do mundo real muitas vezes possuem estruturas repetitivas, como por exemplo bancos de dados que recebem solicitações frequentes para um pequeno número de elementos de alto tráfego. Nesses casos de acessos frequentes a chaves específicas é possível garantir uma eficiência maior se rotações forem utilizadas durante as buscas.\vskip2ex
-
-%Com isso em mente, 
-Sleator e Tarjan criaram, em 1985, a árvore splay. Essa estrutura segue a heurística “move to front” e assim, após cada acesso, a árvore se reestrutura por meio de rotações duplas até a raiz, trazendo o nó da chave acessada para a raiz da árvore.
+  Sleator and Tarjan proposed the splay tree in 1985. This data structure follows the “move to front” heuristic and, after each access, the tree is restructured through double rotations to the root, bringing the node of the accessed key to the tree's root.
 \vskip2ex
 \begin{figure}
   \includegraphics[scale=1.05]{fullsplay2.pdf}
-  %\caption{Operação splay no nó com chave 4.}
 \end{figure}
 
-Essa reestruturação tende a balancear uma parte da árvore e eventualmente diminuir sua altura. De fato, Sleator e Tarjan provaram que o custo amortizado por acesso nessa estrutura é~$\Oh(\lg n)$.
+This restructuring tends to balance a portion of the tree and eventually decrease its height. In fact, Sleator and Tarjan proved that the amortized cost per access in this structure is~$\Oh(\lg n)$ for access sequences of length $\Omega(n)$.
 \vskip2ex
 
+The \textbf{Dynamic Optimality Conjecture} states that splay trees have cost $\Oh(\OPT(Z))$ for every sequence $Z$ of accesses. From the previous analysis, it can be concluded that splay trees have cost $\Oh(\lg n \cdot \OPT(Z))$.
+\vskip2ex
 
-%Há uma conjectura sobre essa estrutura que diz que as árvores splay são dinamicamente ótimas. Essa conjectura ficou conhecida como a Conjectura da Otimalidade Dinâmica.\vskip2ex
+\begin{block}{Arborally Satisfied Sets\vspace{5pt}}
 
-A \textbf{Conjectura da Otimalidade Dinâmica} afirma que as árvores splay têm custo $\Oh(\OPT(Z))$ para toda sequência $Z$ de acessos. Da análise anterior, pode-se concluir que as árvores splay têm custo $\Oh(\lg n \cdot \OPT(Z))$. \vskip2ex
-
-\begin{block}{Conjuntos arboreamente satisfeitos\vspace{5pt}}
-
-  Um conceito essencial para entender a geometria por trás das buscas em ABBs é o de conjuntos arboreamente satisfeitos.
-    Um par de pontos $\{a,b\}$ de um conjunto $P$ é arboreamente satisfeito se $a$ e $b$ são ortogonalmente colineares ou se há pelo menos um ponto do conjunto $P \setminus \{a,b\}$ que está dentro da região delimitada pelo retângulo ortogonal que tem $a$ e $b$ como vértices.
-    Um conjunto é \textbf{arboreamente satisfeito} se todos os pares de pontos do conjunto são arboreamente satisfeitos. Abaixo estão exemplos de conjuntos de pontos com seus pares de pontos arboreamente insatisfeitos destacados.
+  Arborally satisfaction is an essential concept for understanding the geometry behind BST searches.
+  A pair of points $\{a,b\}$ from a set $P$ is arborally satisfied if $a$ and $b$ are orthogonally collinear or if there is at least one point from the set $P \setminus \{a,b\}$ that lies within the region bounded by the orthogonal rectangle that has $a$ and $b$ as vertices.
+  A set is \textbf{arborally satisfied} if all pairs of points in the set are arborally satisfied. Below are examples of point sets with their arborally unsatisfied point pairs highlighted.
     \vskip2ex
     
 
@@ -183,15 +174,16 @@ A \textbf{Conjectura da Otimalidade Dinâmica} afirma que as árvores splay têm
 % ---------------------------------------------------------------------------- %
 \vskip2ex
 \vspace{-5pt}
-	\begin{block}{Informações\vspace{1pt}}
-        Para mais informações, acesse a página do trabalho:
+	\begin{block}{Extra\vspace{1pt}}
+        %Para mais informações, acesse a página do trabalho:
+        For more information, access the repository:
 
 		\textcolor{jblue}{{\url{https://github.com/BrunoArmondBraga/TCC}}}
     
     \vskip1ex
-    Esse projeto contou com o financiamento da FAPESP (n° 2024/04708-2) que foi essencial para o estudo e preparo deste material.
-        %Endereço para contato: \textcolor{jblue}
-        %{{\url{abragabruno@usp.br}}}
+    %Esse projeto contou com o financiamento da FAPESP (n° 2024/04708-2) que foi essencial para o estudo e preparo deste material.
+
+    During the development of this work, the author received financial support from FAPESP -- grant \#2024/04708-2.
 
 	\end{block}
 
@@ -201,29 +193,31 @@ A \textbf{Conjectura da Otimalidade Dinâmica} afirma que as árvores splay têm
 % ---------------------------------------------------------------------------- %
 \begin{column}{0.60\paperwidth} 
   \vspace{-5pt}
-  \begin{block}{Abordagem Geométrica de Algoritmos de Busca\vspace{5pt}}
+  \begin{block}{Geometric Approach to Search Algorithms\vspace{5pt}}
 
-    Em 2009, Demaine, Harmon, Iacono, Kane e Pătraşcu desenvolveram uma maneira inovadora de encarar o problema. Eles provaram que toda execução de um algoritmo de busca em ABB representa um conjunto arboreamente satisfeito e que todo conjunto arboreamente satisfeito representa a execução de um algoritmo de busca em ABB.\vskip2ex
+    In 2009, Demaine, Harmon, Iacono, Kane, and Pătraşcu developed an innovative way to approach the problem. They proved that every execution of a BST search algorithm represents an arborally satisfied set and that every arborally satisfied set represents the execution of a BST search algorithm.\vskip2ex
 
-    Para uma sequência $Z = (z_1, z_2, \ldots, z_m)$ de acessos, a \textbf{visão geométrica de $Z$} é o conjunto dos pontos $\{(i,z_i): i = 1,\ldots,m\}$. A \textbf{visão geométrica da execução de um algoritmo de busca} para atender $Z$ é o conjunto de pontos $(x,i)$ tal que $x$ é a chave de um dos nós visitados durante a busca pela chave $z_i$, para $i = 1,\ldots,m$. \vskip2ex
+    For a sequence $Z = (z_1, z_2, \ldots, z_m)$ of accesses, the \textbf{geometric view of $Z$} is the set of points $\{(z_i,i) : i = 1,\ldots,m\}$. The \textbf{geometric view of the execution of a search algorithm} to satisfy $Z$ is the set of points $(x,i)$ such that $x$ is the key of one of the nodes visited during the search for key $z_i$, for $i = 1,\ldots,m$. \vskip2ex
 
     \begin{figure}
     \includegraphics[scale=1.7]{conjuntoASS2.pdf}
-    \caption{À esquerda, a visão geométrica de $Z = (3,1,4,2,5)$. À direita, a visão geométrica da execução do algoritmo de busca que não efetua rotações na ABB ao centro. Os pontos vermelhos indicam as chaves do restante dos nós visitados durante os acessos.}
+    %\caption{À esquerda, a visão geométrica de $Z = (3,1,4,2,5)$. À direita, a visão geométrica da execução do algoritmo de busca que não efetua rotações na ABB ao centro. Os pontos vermelhos indicam as chaves do restante dos nós visitados durante os acessos.}
+    \caption{On the left, the geometric view of Z=(3,1,4,2,5). On the right, the geometric view of the execution of the search algorithm that does not perform rotations in the BST at the center. The red points indicate the keys of the remaining nodes visited during the accesses.}
     \end{figure}
     
-    O custo de um algoritmo para atender $Z$ é o número de pontos da visão geométrica da sua execução. O valor de $\OPT(Z)$ é o número de pontos de um menor superconjunto arboreamente satisfeito da visão geométrica de $Z$. 
-        
+    The cost of an algorithm to satisfy $Z$ is the number of points in the geometric view of its execution. The value of $\OPT(Z)$ is the number of points in a smallest arborally satisfied superset of the geometric view of $Z$.        
     
       \end{block}
+      \vskip2ex
 
-      \begin{block}{Guloso Futurista\vspace{5pt}}
+      \begin{block}{Greedy Future\vspace{5pt}}
         \begin{minipage}[t]{0.4\textwidth}
           \vspace{3pt}
 
-          Considere a visão geométrica $P$ de uma sequência $Z$ de acessos. O algoritmo \textbf{guloso futurista} produz um conjunto arboreamente satisfeito $P' \supseteq P$ da seguinte maneira. Inicialmente $P' = P$. Deslize uma reta horizontal de baixo para cima e, ao passar por cada ponto de $P$, adicione pontos a $P'$ sobre a reta de modo que os pontos de $P'$ da reta para baixo formem um conjunto arboreamente satisfeito. 
+          Consider the geometric view $P$ of a sequence $Z$ of accesses. The \textbf{greedy future} algorithm produces an arborally satisfied set $P' \supseteq P$ as follows. Initially $P' = P$. Slide a horizontal line from bottom to top and, as you pass through each point of $P$, add points to $P'$ on the line so that the point set of $P'$ on the line or below it 
+          is arborally satisfied. 
           \vskip2ex
-          No contexto de ABBs, o algoritmo correspondente visita apenas os nós no caminho do nó com a chave acessada e reorganiza esses nós para deixar mais perto da raiz os próximos nós a serem visitados.Veja na figura ao lado: à esquerda, o algoritmo guloso futurista, no meio, o acesso à chave buscada e à direita a reestruturação final da ABB após este acesso.
+          In the context of BSTs, the corresponding algorithm visits only the nodes on the path from the root to the node with the accessed key and rearranges these nodes to bring the next nodes to be visited closer to the root. See the figure on the right: in the first column, the greedy future algorithm, in the second column, the access to the searched key and, in the third, the final restructuring of the BST after this access.
         \end{minipage}%
         \hfill
         \begin{minipage}[t]{0.6\textwidth}
@@ -234,25 +228,25 @@ A \textbf{Conjectura da Otimalidade Dinâmica} afirma que as árvores splay têm
             \end{figure}
         \end{minipage}
     \end{block}
-    \vskip1ex
-	\begin{block}{Delimitações de Wilber\vspace{5pt}}
+    \vskip2ex
+	\begin{block}{Wilber Bounds\vspace{5pt}}
 
 %R. Wilber deu os passos pioneiros na delimitação de algoritmos de busca que permitem rotações. O trabalho dele, de 1989, trouxe duas delimitações.
 		\begin{columns}[c,totalwidth=0.60\paperwidth]
 
 		\begin{column}{0.47\columnwidth}
       
-		\begin{block}{Delimitação da Alternância\vspace{5pt}}
+		\begin{block}{Alternation Bound\vspace{5pt}}
 
-      %Fixe uma árvore de busca binária completa e considera a sequência $Z$ de acessos. 
-      Considere a sequência $Z$ de acessos aplicada a uma árvore de busca binária completa estática.
-      O \textbf{filho preferido} de um nó é o filho mais recentemente visitado. Wilber provou que a somatória do número de vezes que um filho preferido se altera durante os acessos de $Z$ %durante a busca pela sequência de acessos $Z$ nesta ABB fixa, resulta em um número que 
-      é uma delimitação inferior para o custo de qualquer algoritmo de busca que atende $Z$.\vskip2ex
+      Consider the sequence $Z$ of accesses applied to a static complete binary search tree in which only leaves have keys.
+      The \textbf{preferred child} of a node is the most recently visited child. Wilber proved that the sum of the number of times a preferred child changes during accesses of $Z$
+      is a lower bound for the cost of any search algorithm that satisfies $Z$.\vskip2ex
 
       \begin{figure}[H]
         \centering
-        \includegraphics[scale=1.28]{alternancia.pdf}
-        \caption{Delimitação para a sequência de acessos $Z = (1,5,3,7,2,6,4)$.}
+        \includegraphics[scale=1.2]{alternation.pdf}
+        %\caption{Delimitação para a sequência de acessos $Z = (1,5,3,7,2,6,4)$.}
+        \caption{Alternation bound for the sequence $Z = (3,2,1,4,2,3)$ of accesses.}
     \end{figure}
 
         \vspace{33pt}
@@ -261,17 +255,18 @@ A \textbf{Conjectura da Otimalidade Dinâmica} afirma que as árvores splay têm
         \end{column}
 
 		\begin{column}{0.5\columnwidth}
-      \vspace{-15pt}
-		\begin{block}{Delimitação do Funil\vspace{5pt}}
+      \vspace{-16pt}
+		\begin{block}{Funnel Bound\vspace{5pt}}
 
-      Seja $P$ a visão geométrica de uma sequência $Z$ de acessos. Para cada ponto, conte o número de alternâncias direita-esquerda dos pontos abaixo dele, indo de cima para baixo,
-       cuja coordenada $x$ se aproxima da coordenada $x$ do ponto analisado. 
-       A somatória desses números é uma delimitação inferior para o custo de qualquer algoritmo de busca que atende $Z$.\vskip2ex
+      Let $P$ be the geometric view of a sequence $Z$ of accesses. For each point, count the number of right-left alternations of the points below it, going from top to bottom,
+      whose coordinate $x$ is closest to the coordinate $x$ of the analyzed point.
+      The sum of these numbers is a lower bound for the cost of any search algorithm that meets~$Z$.\vskip2ex
 
       \begin{figure}[H]
         \centering
-        \includegraphics[scale=0.6]{funil.pdf}
-        \caption{Funil do ponto mais acima e suas alternâncias.}
+        \includegraphics[scale=1.04]{funnel.pdf}
+        %\caption{Funil do ponto mais acima e suas alternâncias.}
+        \caption{Funnel of the highest point and its 4 alternations.}
     \end{figure}
 
 
@@ -282,20 +277,20 @@ A \textbf{Conjectura da Otimalidade Dinâmica} afirma que as árvores splay têm
 	\end{block}
 	%\vskip2ex
 
-\vskip1ex
 
 % ---------------------------------------------------------------------------- %
-\begin{block}{\vspace{-27pt}Árvores Tango\vspace{5pt}}
+\begin{block}{\vspace{-27pt}Tango Trees\vspace{5pt}}
 
   %A estrutura dentro do modelo de computação adotado que possui maior eficiência assintótica conhecida é a árvore tango. 
   
-  Demaine et al., inspirados pela delimitação da alternância, desenvolveram, em 2007, a árvore tango cujo custo é $\Oh(\lg \lg n \cdot \OPT(Z))$ para toda sequência $Z$ de acessos. Essa é a melhor eficiência conhecida no modelo proposto. Um \textbf{caminho preferido} é o caminho maximal que passa apenas por filhos preferidos de um nó até a folha. A ideia central da árvore tango é armazenar os $\Oh(\lg n)$ nós de cada caminho preferido em uma ABB balanceada. Nosso próximo passo é implementar uma árvore tango.% e manter essa estrutura após cada acesso por meio de um número constante de operações conhecidas por split e concatenate que são bastante sofisticadas.
+  Demaine et al., inspired by the alternation bound, developed in 2007 the tango tree whose cost is $\Oh(\lg \lg n \cdot \OPT(Z))$ for every sequence $Z$ of accesses. This is currently the best-known efficiency in the proposed model. A \textbf{preferred path} is the maximal path that passes only through preferred children from a node to a leaf. The central idea of the tango tree is to store the $\Oh(\lg n)$ nodes of each preferred path in a balanced BST, updating them as the access happen and change the preferred children.
   \vspace{5pt}
 
   \begin{figure}[H]
     \centering
     \includegraphics[scale=1.3]{tangotree2.pdf}
-    \caption{À esquerda, a árvore de referência para a sequência $Z = (13,11,7,3)$. As cores representam caminhos preferidos. À direita, a própria árvore tango.}
+    %\caption{À esquerda, a árvore de referência para a sequência $Z = (13,11,7,3)$. As cores representam caminhos preferidos. À direita, a própria árvore tango.}
+    \caption{On the left, the reference tree for the sequence $Z = (13,11,7,3)$. The colors represent preferred paths. On the right, an actual tango tree.}
 \end{figure}
 
 \vskip1ex
@@ -304,7 +299,7 @@ A \textbf{Conjectura da Otimalidade Dinâmica} afirma que as árvores splay têm
 \end{block}
 \vspace{-2ex}
 \vspace{-10pt}
-\begin{block}{Referências}
+\begin{block}{References}
 	\scriptsize{\begin{thebibliography}{99}    
     \vspace{-4pt}
 
