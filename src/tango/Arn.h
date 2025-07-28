@@ -161,6 +161,14 @@ void fix_depths(NodeARN* u){
     u->max_depth = max(left_max_depth, u->depth, right_max_depth);
 }
 
+void reset_depths(NodeARN* u){
+    if(u == nullptr){
+        return;
+    }
+    u->min_depth = u->depth;
+    u->max_depth = u->depth;
+}
+
 NodeARN* reset_node(NodeARN* u){
     if(u == nullptr){
         return nullptr;
@@ -256,18 +264,40 @@ NodeARN *rodaDir(NodeARN *r){
     return aux;
 }
 
-NodeARN* predecessor(NodeARN* root){
-    if(root->esq == nullptr){
-        return root;
+int predecessor(NodeARN* root, int index){
+    int pred = -1;
+    NodeARN* current_node = root;
+
+    while(current_node != nullptr && (!current_node->is_root)){
+        if(current_node->key < index){ //go right
+            if(current_node->key > pred){
+                pred = current_node->key;
+            }
+            current_node = current_node->dir;
+        }
+        else{
+            current_node = current_node->esq;
+        }
     }
-    return predecessor(root->esq);
+    return pred;
 }
 
-NodeARN* sucessor(NodeARN* root){
-    if(root->dir == nullptr){
-        return root;
+int sucessor(NodeARN* root, int index){
+    int suc = -1;
+    NodeARN* current_node = root;
+
+    while(current_node != nullptr && (!current_node->is_root)){
+        if(current_node->key > index){ //go left
+            if(current_node->key < suc || suc == -1){
+                suc = current_node->key;
+            }
+            current_node = current_node->esq;
+        }
+        else{
+            current_node = current_node->dir;
+        }
     }
-    return sucessor(root->dir);
+    return suc;
 }
 
 bool search(NodeARN* root, int key){
@@ -399,6 +429,11 @@ NodeARN *putRN(NodeARN *raiz, int key, NodeARN* to_be_positioned, int depth = 0)
         return insert;
     }
 
+    NodeARN* upper_nodes = raiz->pai;
+    if(raiz->pai != nullptr){
+        raiz->pai = nullptr;
+    }
+
     int actual_depth = depth;
     if(to_be_positioned != nullptr){
         actual_depth = to_be_positioned->depth;
@@ -486,6 +521,9 @@ NodeARN *putRN(NodeARN *raiz, int key, NodeARN* to_be_positioned, int depth = 0)
     NodeARN* new_root = raiz;
     while(new_root->pai != nullptr){
         new_root = new_root->pai;
+    }
+    if(upper_nodes != nullptr){
+        new_root->pai = upper_nodes;
     }
     return new_root;
 }
@@ -585,11 +623,11 @@ void fixDoubleBlack(NodeARN* root){
 
 void deleteRN(NodeARN* root){
     if(root->dir != nullptr && root->esq != nullptr){
-        NodeARN* suc = sucessor(root);
-        root->depth = suc->depth; //ESTAMOS PERDENDO INFORMAÇÃO DA DEPTH!!
-        root->key = suc->key;
-        suc->key = root->key;
-        deleteRN(suc);
+        //NodeARN* suc = sucessor(root);
+        //root->depth = suc->depth; //ESTAMOS PERDENDO INFORMAÇÃO DA DEPTH!!
+        //root->key = suc->key;
+        //suc->key = root->key;
+        //deleteRN(suc);
     }
 
     bool is_leaf = false;
@@ -853,7 +891,7 @@ void imprimir(NodeARN* raiz){
     cout << "---------------" << endl << endl;
 }
 
-void imprimir_em_partes(NodeARN* raiz){
+void imprimir_em_partes(NodeARN* raiz, bool all = true){
     if(raiz == nullptr){
         return;
     }
@@ -868,9 +906,9 @@ void imprimir_em_partes(NodeARN* raiz){
         debug_rec_with_parts(debug, 0, parts);
         cout << "-------------" << endl;
         contador += 1;
-        /* if(contador > 1){
+        if(!all){
             break;
-        } */
+        }
     }
 }
 
@@ -963,6 +1001,7 @@ void add_to_tango(NodeARN* root, NodeARN* new_piece){
 }
 
 NodeARN* Join(NodeARN *u, NodeARN* k, NodeARN *v){
+    fix_depths(k);
     if(u == nullptr && v == nullptr){
         return k;
     }
@@ -972,17 +1011,25 @@ NodeARN* Join(NodeARN *u, NodeARN* k, NodeARN *v){
         k->preto = false;
     }
     if(u == nullptr || u->is_root){
-        NodeARN* to_be_returned = add(v, k->key, k, k->depth);
         if(u != nullptr){
-            add_to_tango(to_be_returned, u);
+            k->esq = u;
         }
+        NodeARN* to_be_returned = add(v, k->key, k, k->depth);
+        /* if(u != nullptr){
+            cout << "ADD TO TANGO MAL USADO!" << endl;
+            add_to_tango(to_be_returned, u);
+        } */
         return to_be_returned;
     }
     if(v == nullptr || v->is_root){
-        NodeARN* to_be_returned = add(u, k->key, k, k->depth);
         if(v != nullptr){
-            add_to_tango(to_be_returned, v);
+            k->dir = v;
         }
+        NodeARN* to_be_returned = add(u, k->key, k, k->depth);
+        /* if(v != nullptr){
+            cout << "ADD TO TANGO MAL USADO!" << endl;
+            add_to_tango(to_be_returned, v);
+        } */
         return to_be_returned;
     }
     NodeARN *novo = k;
@@ -998,6 +1045,7 @@ NodeARN* Join(NodeARN *u, NodeARN* k, NodeARN *v){
         novo->esq->is_root = false;
         novo->dir->is_root = false;
         /* novo->is_root = true; */
+        fix_depths(novo);
         return novo;
     }
 
@@ -1040,6 +1088,7 @@ NodeARN* Join(NodeARN *u, NodeARN* k, NodeARN *v){
         v_aux->pai = novo;
         novo->pai = x;
     }
+    fix_depths(novo);
     if(novo->pai->preto == false){
         Fix(novo);
     }
@@ -1059,6 +1108,7 @@ split_data Split(NodeARN *root, float pivot){
 
     bool is_there_remaning_node = false;
     NodeARN* remaining_node = nullptr;
+
     while(search != nullptr){
         if(search->key > pivot){ //go left
             NodeARN* right = search;
@@ -1071,8 +1121,8 @@ split_data Split(NodeARN *root, float pivot){
                 right->dir->black_height += 1; 
             }
             if(right->esq != nullptr){
-                if(right->esq->is_root){ //nodes in between need to be moved
-                    if(left_trees.size() != 0 && right->esq->key < pivot){
+                if(right->esq->is_root){ //got to a node that is a new root
+                    if(left_trees.size() != 0 && right->esq->key < pivot){ //nodes in between need to be moved
                         remaining_node = right->esq;
                         is_there_remaning_node = true;
                         right->esq->pai = nullptr;
@@ -1126,6 +1176,7 @@ split_data Split(NodeARN *root, float pivot){
             remaining_node->pai = final_insertion;
             is_there_remaning_node = false;
         }
+        fix_depths(final_insertion);
 
         //isso faz sentido?
         if(final_left_tree->esq != nullptr && (!final_left_tree->esq->is_root)){
@@ -1144,6 +1195,7 @@ split_data Split(NodeARN *root, float pivot){
             left_trees.pop();
 
             NodeARN* insertion_node = aux_tree;
+            fix_depths(insertion_node);
 
             if(aux_tree->esq != nullptr){
                 aux_tree = aux_tree->esq;
@@ -1179,7 +1231,7 @@ split_data Split(NodeARN *root, float pivot){
             remaining_node->pai = final_insertion;
             is_there_remaning_node = false;
         }
-
+        fix_depths(final_insertion);
 
         if(final_right_tree->dir != nullptr && (!final_right_tree->dir->is_root)){
             final_right_tree = final_right_tree->dir;
@@ -1197,6 +1249,7 @@ split_data Split(NodeARN *root, float pivot){
             right_trees.pop();
 
             NodeARN* insertion_node = aux_tree;
+            fix_depths(insertion_node);
 
             if(aux_tree->dir != nullptr){
                 aux_tree = aux_tree->dir;
@@ -1326,53 +1379,18 @@ NodeARN* build_tango_tree(NodeARN* u){
     return tango;
 }
 
-NodeARN* tango_function(NodeARN* u, int min_depth){
-    cout << "Tango no nó com chave  " << u->key << "  , procura-se depth = " << min_depth << endl;
-    return u;
-}
-
-bool search_in_tango(NodeARN* root, int searched_item){
-    if(root == nullptr){
-        return false;
-    }
-
-    NodeARN* last_root = root;
-    NodeARN* current_node = root;
-
-    while(current_node != nullptr){
-
-        if(current_node->is_root and current_node != last_root){
-            // it is going to return the new tree
-            last_root = tango_function(last_root, current_node->min_depth);
-            return true;
-        }
-
-        if(current_node->key == searched_item){
-            return true;
-        }
-    
-        if(current_node->key > searched_item){
-            current_node = current_node->esq;
-        }
-        else{
-            current_node = current_node->dir;
-        }
-    }
-    return false;
-}
-
 NodeARN* bring_to_front(NodeARN* root, int item){
     if(root == nullptr){
         return nullptr;
     }
     root->is_root = false;
-    imprimir(root);
+    //imprimir(root);
     split_data first_split = Split(root, item - 0.5);
-    imprimir(first_split.left_tree);
-    imprimir(first_split.right_tree);
+    //imprimir(first_split.left_tree);
+    //imprimir(first_split.right_tree);
     split_data second_split = Split(first_split.right_tree, item + 0.5);
-    imprimir(second_split.left_tree);
-    imprimir(second_split.right_tree);
+    //imprimir(second_split.left_tree);
+    //imprimir(second_split.right_tree);
 
     NodeARN* first_fragment = first_split.left_tree;
     NodeARN* single_node = second_split.left_tree;
@@ -1414,7 +1432,7 @@ NodeARN* bring_to_front(NodeARN* root, int item){
     }
 
     single_node->preto = true;
-    single_node->is_root = true;
+    /* single_node->is_root = true; */
     
     if(first_fragment != nullptr){
         single_node->black_height = first_fragment->black_height + 1;
@@ -1452,8 +1470,174 @@ NodeARN* concatenate(NodeARN* root){
         second_fragment->pai = nullptr;
     }
     NodeARN* final = Join(first_fragment, single_node, second_fragment);
-    final->is_root = true;
+    //final->is_root = true;
     return final;
+}
+
+NodeARN* cut(NodeARN* u, int min_depth){
+    NodeARN* current_node = u;
+    u->is_root = false;
+    
+    int l, r;
+    l = r = -1;
+    
+    while(current_node != nullptr){ //find l
+        if(current_node->is_root){
+            break;
+        }
+        if(current_node->depth > min_depth && (current_node->key < l || l == -1)){
+            l = current_node->key;
+        }
+        if(current_node->esq != nullptr && current_node->esq->max_depth > min_depth && (!current_node->esq->is_root)){
+            current_node = current_node->esq;
+        }
+        else{
+            current_node = current_node->dir;
+        }
+    }
+
+    current_node = u; //reset current_node
+    
+    while(current_node != nullptr){ //find r
+        if(current_node->is_root){
+            break;
+        }
+        if(current_node->depth > min_depth && current_node->key > r){
+            r = current_node->key;
+        }
+        if(current_node->dir != nullptr && current_node->dir->max_depth > min_depth && (!current_node->dir->is_root)){
+            current_node = current_node->dir;
+        }
+        else{
+            current_node = current_node->esq;
+        }
+    }
+
+    int l_prime = predecessor(u, l); //calculate l'
+    int r_prime = sucessor(u, r); //calculate r'
+
+
+    NodeARN* root = u;    
+    if(l_prime != -1 && r_prime != -1){ //bigger case
+
+        root = bring_to_front(root, l_prime);
+        root->dir = bring_to_front(root->dir, r_prime);
+        if(root->dir != nullptr){
+            root->dir->pai = root;
+        }
+
+        
+        root->dir->esq->is_root = true;
+        
+
+        root->dir = concatenate(root->dir);
+        if(root->dir != nullptr){
+            root->dir->pai = root;
+        }
+        root = concatenate(root);
+    }
+    else if(l_prime == -1 && r_prime != -1){ //smaller case
+        root = bring_to_front(root, r_prime);
+        
+
+        root->esq->is_root = true;
+        
+
+        root = concatenate(root);
+    }
+    else{
+        root = bring_to_front(root, l_prime);
+        root->dir->is_root = true;
+
+        root = concatenate(root);
+    }
+    return root;
+}
+
+NodeARN* glue(NodeARN* u, int searched_item){
+    int l_prime, r_prime;
+    l_prime = r_prime = -1;
+
+    NodeARN* current_node = u;
+
+    while(!current_node->is_root){
+        if(current_node->key > searched_item){ //go left
+            r_prime = current_node->key;
+            current_node = current_node->esq;
+        }
+        else{ //go right
+            l_prime = current_node->key;
+            current_node = current_node->dir;
+        }
+    }
+
+    NodeARN* root = u;
+    if(l_prime != -1 && r_prime != -1){ //bigger case
+
+        root = bring_to_front(root, l_prime);
+        root->dir = bring_to_front(root->dir, r_prime);
+        if(root->dir != nullptr){
+            root->dir->pai = root;
+        }
+
+        root->dir->esq->is_root = false;
+        imprimir(root);
+
+        root->dir = concatenate(root->dir);
+        if(root->dir != nullptr){
+            root->dir->pai = root;
+        }
+        root = concatenate(root);
+    }
+    else if(l_prime == -1 && r_prime != -1){ //l_prime == -1
+        root = bring_to_front(root, r_prime);
+        root->esq->is_root = false;
+        
+        root = concatenate(root);
+    }
+    else{ //r_prime == -1
+        root = bring_to_front(root, l_prime);
+        
+        root->dir->is_root = false;
+        root = concatenate(root);
+    }
+    root->is_root = true;
+    return root;
+}
+
+NodeARN* tango(NodeARN* u, int min_depth, int searched_item){
+    NodeARN* new_root = cut(u, min_depth);
+    imprimir(new_root);
+    new_root = glue(new_root, searched_item);
+    imprimir(new_root);
+    return new_root;
+}
+
+NodeARN* search_in_tango(NodeARN* root, int searched_item, bool& found){
+    if(root == nullptr){
+        return nullptr;
+    }
+
+    NodeARN* last_root = root;
+    NodeARN* current_node = root;
+
+    while(current_node != nullptr && !found){
+        if(current_node->is_root && current_node != last_root){
+            last_root = tango(last_root, current_node->min_depth - 1, searched_item);
+            current_node = last_root;
+        }
+
+        if(current_node->key == searched_item){
+            found = true;
+        }
+        else if(current_node->key > searched_item){ //go left
+            current_node = current_node->esq;
+        }
+        else{ //go right
+            current_node = current_node->dir;
+        }
+    }
+    return last_root;
 }
 
 #endif

@@ -9,19 +9,85 @@
 
 using namespace std;
 
-/* int main(){
+int main(){
     int n;
     cout << "Quantos nós deseja utilizar?" << endl;
-    //cin >> n;
+    cin >> n;
 
-    // NodeARN* root = build_complete_BST(n);
+    NodeARN* root = build_complete_BST(n);
     //imprimir_em_partes(root);
     
-    //root = build_tango_tree(root);
-    //imprimir_em_partes(root);
-    
+    root = build_tango_tree(root);
+    imprimir_em_partes(root);
+    //imprimir(root);
 
-    bool deu_erro = false;
+    while(true){
+        cout << "Operações: 0 -> imprimir, -1 -> imprimir primeira, -2 -> imprimir tudo, número -> busca, -10 -> parar" << endl;
+        cout << "Escolha a operação:";
+        cin >> n;
+        cout << endl;
+
+        if(n == 0){
+            imprimir(root);
+        }
+        else if(n == -1){
+            imprimir_em_partes(root, false);
+        }
+        else if(n == -2){
+            imprimir_em_partes(root);
+        }
+        else if(n == -10){
+            break;
+        }
+        else{
+            bool in_tree = false;
+            root = search_in_tango(root, n, in_tree);
+            if(in_tree){
+                cout << "Found it!" << endl;
+            }
+            else{
+                cout << "The tree does not have that element!" << endl;
+            }
+            imprimir_em_partes(root);
+        }
+    }
+
+    /* while(true){
+        cout << "Qual nó?" << endl;
+        cin >> n;
+        if(n == -1){
+            break;
+        }
+        if(n == 0){
+            imprimir(root);
+            continue;
+        }
+        if(n == -10){
+            int index;
+            cout << "qual para o cut?" << endl;
+            cin >> index;
+            root = cut(root, index);
+            imprimir(root);
+            imprimir_em_partes(root);
+
+
+            cout << "Qual o índice do glue?" << endl;
+            cin >> index;
+            imprimir(root);
+            root = glue(root, index);
+            imprimir_em_partes(root);
+            imprimir(root);
+            break;
+        }
+        root = bring_to_front(root, n);
+        //imprimir(root);
+        root = concatenate(root);
+        //imprimir(root);
+        imprimir_em_partes(root);
+    }
+    imprimir(root); */
+
+    /* bool deu_erro = false;
     vector<int> element = {1,2,3,4,5,6,7,8,9,10};
     for(int i = 0; i < 1000; i++){
         element.push_back(11 + i);
@@ -42,12 +108,12 @@ using namespace std;
             cout << "DEU ERRO!" << endl;
             break;
         }
-    }
+    } */
     
     delete root;
-} */
+}
 
-int main(){
+/* int main(){
     vector<int> numeros_adicionados = {1,2,3,4,5,6,7,8,9,10,11};
     for(int i = 0; i < 100; i++){
         numeros_adicionados.push_back(12 + i);
@@ -82,7 +148,7 @@ int main(){
         cout << "UFAAAA :)" << endl;
     }
     
-    /* NodeARN* root2 = nullptr;
+    NodeARN* root2 = nullptr;
     for(int i = 0; i < numeros_adicionados.size()/2 + 1; i++){
         root = add(root,numeros_adicionados[i],nullptr);
     }
@@ -96,10 +162,10 @@ int main(){
     NodeARN* six = new NodeARN(6);
 
     root = Join(root,six,root2);
-    imprimir(root); */
+    imprimir(root);
 
     delete root;
-}
+} */
 
 
 /*
