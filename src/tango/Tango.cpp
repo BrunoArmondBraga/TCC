@@ -1,292 +1,100 @@
-#include <iostream>
-#include <stdlib.h>
-#include <string>
-#include <vector>
 #include <random>
-#include <algorithm>
-#include <stack>
-#include "Arn.h"
+#include <ctime>
+#include "Auxiliary.h"
 
 using namespace std;
 
 int main(){
-    int n;
-    cout << "Quantos nós deseja utilizar?" << endl;
-    cin >> n;
+    int n, mode;
+    n = mode = -1;
 
-    NodeARN* root = build_complete_BST(n);
-    //imprimir_em_partes(root);
-    
-    root = build_tango_tree(root);
-    imprimir_em_partes(root);
-    //imprimir(root);
-
-    while(true){
-        cout << "Operações: 0 -> imprimir, -1 -> imprimir primeira, -2 -> imprimir tudo, número -> busca, -10 -> parar" << endl;
-        cout << "Escolha a operação:";
+    while(n < 0){
+        cout << "n = ";
         cin >> n;
-        cout << endl;
+    }
 
-        if(n == 0){
-            imprimir(root);
-        }
-        else if(n == -1){
-            imprimir_em_partes(root, false);
-        }
-        else if(n == -2){
-            imprimir_em_partes(root);
-        }
-        else if(n == -10){
-            break;
-        }
-        else{
-            bool in_tree = false;
-            root = search_in_tango(root, n, in_tree);
-            if(in_tree){
-                cout << "Found it!" << endl;
+    while(mode != 1 && mode != 2 && mode != 3){
+        cout << "Choose mode: 1 - iteractive mode, 2 - random test mode with random seed, 3 - random test mode with specific seed." << endl;
+        cout << "Mode: ";
+        cin >> mode;
+    }
+
+    Node* root = build_complete_BST(n);
+    root = build_tango_tree(root);
+
+    if(mode == 1){
+        while(true){
+            cout << "Operations: 0 - print raw, -1 - print first, -2 - print trees, -3 -> end program, anything else - search" << endl;
+            cout << "Choose operation: ";
+            cin >> n;
+            cout << endl;
+
+            if(n == 0){
+                print(root);
+            }
+            else if(n == -1){
+                print_trees(root, false);
+            }
+            else if(n == -2){
+                print_trees(root);
+            }
+            else if(n == -3){
+                break;
             }
             else{
-                cout << "The tree does not have that element!" << endl;
+                bool in_tree = false;
+                root = search_in_tango(root, n, in_tree);
+                if(in_tree){
+                    cout << "Found the key " <<  n << "!" << endl;
+                }
+                else{
+                    cout << "The tree does not have key " << n << "!" << endl;
+                }
             }
-            imprimir_em_partes(root);
         }
-    }
-
-    /* while(true){
-        cout << "Qual nó?" << endl;
-        cin >> n;
-        if(n == -1){
-            break;
-        }
-        if(n == 0){
-            imprimir(root);
-            continue;
-        }
-        if(n == -10){
-            int index;
-            cout << "qual para o cut?" << endl;
-            cin >> index;
-            root = cut(root, index);
-            imprimir(root);
-            imprimir_em_partes(root);
-
-
-            cout << "Qual o índice do glue?" << endl;
-            cin >> index;
-            imprimir(root);
-            root = glue(root, index);
-            imprimir_em_partes(root);
-            imprimir(root);
-            break;
-        }
-        root = bring_to_front(root, n);
-        //imprimir(root);
-        root = concatenate(root);
-        //imprimir(root);
-        imprimir_em_partes(root);
-    }
-    imprimir(root); */
-
-    /* bool deu_erro = false;
-    vector<int> element = {1,2,3,4,5,6,7,8,9,10};
-    for(int i = 0; i < 1000; i++){
-        element.push_back(11 + i);
-    }
-
-
-    NodeARN* root = new NodeARN(1);
-    for(int i = 1; i < element.size(); i++){
-        root = add(root,element[i],deu_erro);
-    }
-
-    imprimir(root);
-
-    for(int i = 0; i < element.size(); i++){
-        root = bring_to_front(root, element[i]);
-        imprimir(root);
-        if(root->key != element[i]){
-            cout << "DEU ERRO!" << endl;
-            break;
-        }
-    } */
-    
-    delete root;
-}
-
-/* int main(){
-    vector<int> numeros_adicionados = {1,2,3,4,5,6,7,8,9,10,11};
-    for(int i = 0; i < 100; i++){
-        numeros_adicionados.push_back(12 + i);
-    }
-    NodeARN* root = nullptr;
-    for(int i = 0; i < numeros_adicionados.size(); i++){
-        root = add(root, numeros_adicionados[i], nullptr);
-    }
-    imprimir(root);
-    int n = 0;
-    bool deu_errado = false;
-    while(!deu_errado){
-        cout << "Qual quer tchombers?" << endl;
-        cin >> n;
-        if(n == -1){
-            break;
-        }
-
-        root = bring_to_front(root, n);
-        cout << "print bring_to_front" << endl;
-        imprimir(root);
-        
-        root = concatenate(root);
-        cout << "print concatenate" << endl;
-        imprimir(root);
-    }
-    
-    if(deu_errado){
-        cout << "NAO NAO NAO NAO DROGA" << endl;
     }
     else{
-        cout << "UFAAAA :)" << endl;
-    }
-    
-    NodeARN* root2 = nullptr;
-    for(int i = 0; i < numeros_adicionados.size()/2 + 1; i++){
-        root = add(root,numeros_adicionados[i],nullptr);
-    }
-    for(int i = numeros_adicionados.size()/2 + 1; i < numeros_adicionados.size(); i++){
-        root2 = add(root2,numeros_adicionados[i],nullptr);
-    }
-
-    imprimir(root);
-    imprimir(root2);
-
-    NodeARN* six = new NodeARN(6);
-
-    root = Join(root,six,root2);
-    imprimir(root);
-
-    delete root;
-} */
-
-
-/*
-int main(){
-    bool deu_erro = false;
-    bool deu_erro_contagem = false;
-
-    for(unsigned int seed = 1; seed < 2; seed++){
-        cout << "SEED = " << seed << endl;
-        std::mt19937 gen(seed);
-        std::uniform_int_distribution<> distrib(1, 10000);
-        std::uniform_int_distribution<> distrib2(20001, 30000);
-        vector<int> numeros_adicionados;
-
-
-        for(int i = 1; i < 1000; i++){
-            int numero_sorteado1 = distrib(gen);
-            int numero_sorteado2 = distrib2(gen);
-            while(std::find(numeros_adicionados.begin(), numeros_adicionados.end(), numero_sorteado1) != numeros_adicionados.end()){
-                numero_sorteado1 = distrib(gen);
-            }
-            numeros_adicionados.push_back(numero_sorteado1);
-        }
-
-        
-    for(int j = 1; j < numeros_adicionados.size(); j++){
-        NodeARN* new_tree = nullptr;
-
-        for(int i=0; i < numeros_adicionados.size(); i++){
-            new_tree = add(new_tree, numeros_adicionados[i], deu_erro);
-        }
-        
-        imprimir(new_tree);
-        
-        
-        int searched = numeros_adicionados[j] + 0.5;
-        int size_before = size(new_tree);    
-        
-        split_data oi = Split(new_tree, searched);
-        
-        if(!deu_erro){
-            check_black_height(oi.left_tree, deu_erro);
-        }
-        if(!deu_erro){
-            check_black_height(oi.right_tree, deu_erro);
+        int seed = 0;
+        if(mode == 3){
+            cout << "Choose seed: ";
+            cin >> seed;
         }
         else{
-            imprimir(oi.left_tree);
-        }
-        if(deu_erro){
-            imprimir(oi.right_tree);
+            seed = time(nullptr);
         }
         
-        if(size_before != size(oi.left_tree) + size(oi.right_tree)){
-            deu_erro_contagem = true;
+        int counter = 1;
+        int num_test = 0;
+        bool printing = 0;
+
+        cout << "How many tests? ";
+        cin >> num_test;
+
+        string see;
+        cout << "Do you want to see every tree? (Y/N) ";
+        cin >> see;
+        if(see == "Y"){
+            printing = true;
         }
-        
-        
-        cout << "ESQUERDA -------------------------" << endl;
-        imprimir(oi.left_tree);
-        cout << "----------------------------------" << endl;
-        cout << "DIREITA --------------------------" << endl;
-        imprimir(oi.right_tree);
-        cout << "----------------------------------" << endl;
+
+        while(true){
+            mt19937 rng(seed);
+            uniform_int_distribution<int> dist(1, n);
+
+            for (int i = 0; i < num_test; ++i) {
+                int n = dist(rng);
+                cout << "Search n°" << counter << ", Searching for: " << n <<  endl;
+
+                bool in_tree = false;
+                root = search_in_tango(root, n, in_tree);
+                counter++;
+                if(printing){
+                    print_trees(root, false);
+                }
+            }
+            break;
+        }
+        print_trees(root);
     }
-        
-    }
-    if(deu_erro){
-        cout << "ERRO BLACK HEIGHT" << endl;
-    }
-    else if(deu_erro_contagem){
-        cout << "ERRO CONTAGEM" << endl;
-    }
-    else{
-        cout << "TUDO OK!" << endl;
-    }
-    
+    delete root;
 }
-
-*/
-
-
-/* // teste 1
-    //NodeARN* root = new NodeARN(numeros_adicionados[0]);
-    NodeARN* root = add(nullptr,numeros_adicionados[0],nullptr);
-    //NodeARN* root2 = new NodeARN(numeros_adicionados[numeros_adicionados.size()/2]);
-    NodeARN* root2 = add(nullptr,numeros_adicionados[numeros_adicionados.size()/2],nullptr);
-    for(int i = 1; i < numeros_adicionados.size()/2; i++){
-        root = add(root,numeros_adicionados[i],nullptr);
-    }
-    for(int i = numeros_adicionados.size()/2 + 1; i < numeros_adicionados.size(); i++){
-        root2 = add(root2,numeros_adicionados[i],nullptr);
-    }
-
-    cout << "printe 1 -----------------------------------" << endl;
-    imprimir(root);
-    cout << "printe 2 -----------------------------------" << endl;
-    imprimir(root2);
-
-    NodeARN* six = new NodeARN(2);
-
-    root2 = Join(root, six, root2);
-    imprimir(root2);
-
-    root2 = concatenate(root2);
-    imprimir(root2); */
-
-
-
-    // teste 2
-    /* NodeARN* root = new NodeARN(numeros_adicionados[0]);
-    root->is_root = true;
-    root->preto = true;
-    root->black_height = 2;
-    for(int i = 1; i < numeros_adicionados.size(); i++){
-        imprimir(root);
-        root = add(root, numeros_adicionados[i], nullptr);
-    }
-    imprimir(root);
-    root = bring_to_front(root,5);
-    imprimir(root); 
-
-    root = concatenate(root);
-    imprimir(root); */

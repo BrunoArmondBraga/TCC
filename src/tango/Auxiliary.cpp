@@ -1,70 +1,10 @@
-#ifndef ARN_H
-#define ARN_H
-
+#include "Auxiliary.h"
 #include <iostream>
-#include <stdlib.h>
 #include <string>
 #include <vector>
-#include <random>
-#include <algorithm>
 #include <stack>
-#include <climits>
 
 using namespace std;
-
-class Node{        
-    public:
-        int key;
-        bool is_black;
-        int black_height = 1;
-        bool is_root = false;
-        int depth = 0;
-        int min_depth;
-        int max_depth;
-        Node *parent;
-        Node *left;
-        Node *right;
-        ~Node(){
-            if(left != nullptr){
-                delete left;
-            }
-            if(right != nullptr){
-                delete right;
-            }
-        }
-        Node(int key, int depth = 0){
-            is_black = false;
-            black_height = 1;
-            left = nullptr;
-            right = nullptr;
-            parent = nullptr;
-            this->key = key;
-            this->depth = depth;
-            min_depth = depth;
-            max_depth = depth;
-        }
-        Node(Node* parent,int key,int depth){
-            is_black = false;
-            left = nullptr;
-            right = nullptr;
-            this->depth = depth;
-            this->max_depth = depth;
-            this->min_depth = depth;
-            if(parent == nullptr){
-                this->parent = nullptr;
-            }
-            else{
-                this->parent = parent;
-            }
-            this->key = key;
-        }
-};
-
-struct split_data
-{
-    Node* left_tree;
-    Node* right_tree;
-};
 
 int max(int a, int b, int c){
     //Given integers a,b,c, returns the biggest of all three
@@ -300,7 +240,7 @@ void Fix(Node* son){
     }
 }
 
-Node *add_RB(Node *root, int key, Node* to_be_positioned, int depth = 0){
+Node *add_RB(Node *root, int key, Node* to_be_positioned, int depth){
     //Insert a key or a node to a tree. If to_be_positioned = nullptr, add key, add to_be_positioned otherwise.
     //Returns the new root of the tree.
     if(root == nullptr){
@@ -419,7 +359,7 @@ Node *add_RB(Node *root, int key, Node* to_be_positioned, int depth = 0){
     return new_root;
 }
 
-Node* add(Node* root, int key, Node* to_be_positioned, int depth = 0){
+Node* add(Node* root, int key, Node* to_be_positioned, int depth){
     //Given a tree, and key or node, add that key/node to the tree and returns the new root.
     bool first_node = false;
     if(root == nullptr){
@@ -438,7 +378,7 @@ Node* add(Node* root, int key, Node* to_be_positioned, int depth = 0){
     return root;
 }
 
-void debug_rec(Node *u, int i = 0){
+void debug_rec(Node *u, int i){
     //Recursively print the tree in a tree-shaped format
     if(u == nullptr){
         return;
@@ -494,7 +434,7 @@ void debug_rec_trees(Node *u, int i, stack<Node*>& parts, int& sum){
     else{
         cout << "   ";
     }
-    cout << u->key << "(" << u->black_height << "/" << u->depth << ")";
+    cout << u->key << "(" << u->black_height << ")";
     cout << "  [" << u->min_depth << " " << u->max_depth << "]";
     if(u->is_black){
         cout << "   --- Black";
@@ -534,7 +474,7 @@ void print(Node* root){
     cout << "---------------" << endl << endl;
 }
 
-void print_trees(Node* root, bool all = true){
+void print_trees(Node* root, bool all){
     //Given a root and a bool all, print the tree taking into account the different trees within it
     //If all is equal to true, print the whole tree, if all is equal to false, print just the first tree 
     if(root == nullptr){
@@ -882,7 +822,7 @@ split_data Split(Node *root, float pivot){
     return {final_left_tree, final_right_tree};
 }
 
-Node* build_complete_BST(int n, int offset = 0, int depth = 0){
+Node* build_complete_BST(int n, int offset, int depth){
     if(n <= 0){
         return nullptr;
     }
@@ -1194,5 +1134,3 @@ Node* search_in_tango(Node* root, int searched_item, bool& found){
     }
     return last_root;
 }
-
-#endif
