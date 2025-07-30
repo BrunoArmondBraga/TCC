@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <stack>
+#include <cmath>
 
 using namespace std;
 
@@ -848,52 +849,61 @@ Node* build_complete_BST(int n, int offset, int depth){
     r += (x - 2)/2;
 
     Node* new_node = new Node(l + offset + 1, depth);
+    new_node->is_black = true;
+    new_node->black_height = 2;
     new_node->left = build_complete_BST(l, offset, depth + 1);
     new_node->right = build_complete_BST(r, offset + l + 1, depth + 1);
     return new_node;
+}
+
+Node* tango(vector<Node*> preferred_path, stack<Node*> &child_trees, int l, int r, int h) {
+    if (l > r) {
+        Node* u = child_trees.top();
+        child_trees.pop();
+        u = build_tango_tree(u);
+        return u;
+    }
+    int m = (l+r)/2;
+    Node* u = preferred_path[m];
+    u->left  = tango(preferred_path, child_trees, m+1,r,h-1);
+    if(u->left != nullptr){
+        u->left->parent = u;
+    }
+    u->right = tango(preferred_path, child_trees, l, m-1,h-1);
+    if(u->right != nullptr){
+        u->right->parent = u;
+    }
+    if (h == 0){
+        u->is_black = false;
+    }
+    u->black_height = h+1;
+    fix_depths(u);
+    return u;
 }
 
 Node* build_tango_tree(Node* u){
     if(u == nullptr){
         return nullptr;
     }
-    stack<Node*> all_nodes;
-    all_nodes.push(u);
-
-    Node* tango = nullptr;
-
-    while(!all_nodes.empty()){
-        Node* node_in_auxiliary_tree = all_nodes.top();
-        all_nodes.pop();
-        Node* new_node = add(nullptr, node_in_auxiliary_tree->key, nullptr, node_in_auxiliary_tree->depth);
-        //new Node(node_in_auxiliary_tree->key,node_in_auxiliary_tree->depth);
-        int min_depth = new_node->depth;
-        int max_depth = new_node->depth;
-
-        while(node_in_auxiliary_tree->left != nullptr){
-            if(node_in_auxiliary_tree->right != nullptr){
-                all_nodes.push(node_in_auxiliary_tree->right);
-            }
-            new_node = add(new_node, node_in_auxiliary_tree->left->key,nullptr,node_in_auxiliary_tree->left->depth);
-            node_in_auxiliary_tree = node_in_auxiliary_tree->left;
-            if(node_in_auxiliary_tree->depth < min_depth){
-                min_depth = node_in_auxiliary_tree->depth;
-            }
-            if(node_in_auxiliary_tree->depth > max_depth){
-                max_depth = node_in_auxiliary_tree->depth;
-            }
-        }
-
-        new_node->is_root = true;
-
-        if(tango == nullptr){
-            tango = new_node;
-        }
-        else{
-            add_to_tango(tango, new_node);
-        }
+    stack<Node*> child_trees;
+    vector<Node*> preferred_path;
+    Node* t;
+    while(u != nullptr){
+        child_trees.push(u->right);
+        preferred_path.push_back(u);
+        u = u->left;
     }
-    return tango;
+    child_trees.push(nullptr);
+
+    int n = preferred_path.size();
+    int h = log2(n);
+    t = tango(preferred_path, child_trees, 0, n-1, h);
+
+    if(!t->is_black){
+        t->black_height = 2;
+    }
+    t->is_black = t->is_root = true;
+    return t;
 }
 
 Node* bring_to_front(Node* root, int item){
@@ -901,13 +911,8 @@ Node* bring_to_front(Node* root, int item){
         return nullptr;
     }
     root->is_root = false;
-    //print(root);
     split_data first_split = Split(root, item - 0.5);
-    //print_trees(first_split.left_tree);
-    //print_trees(first_split.right_tree);
     split_data second_split = Split(first_split.right_tree, item + 0.5);
-    //print_trees(second_split.left_tree);
-    //print_trees(second_split.right_tree);
 
     Node* first_fragment = first_split.left_tree;
     Node* single_node = second_split.left_tree;
