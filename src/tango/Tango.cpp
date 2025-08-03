@@ -1,5 +1,6 @@
 #include <random>
 #include <ctime>
+#include <iostream>
 #include "Auxiliary.h"
 
 using namespace std;
@@ -13,43 +14,44 @@ int main(){
         cin >> n;
     }
 
-    while(mode != 1 && mode != 2 && mode != 3){
+    while(mode < 1 || mode > 3){
         cout << "Choose mode: 1 - iteractive mode, 2 - random test mode with random seed, 3 - random test mode with specific seed." << endl;
         cout << "Mode: ";
         cin >> mode;
     }
 
-    Node* root = build_complete_BST(n);
-    root = build_tango_tree(root);
+    Node* root = build_initial_tango(n);
 
     if(mode == 1){
-        while(true){
+        bool running = true;
+        while(running){
             cout << "Operations: 0 - print raw, -1 - print first, -2 - print trees, -3 -> end program, anything else - search" << endl;
             cout << "Choose operation: ";
             cin >> n;
-            cout << endl;
 
-            if(n == 0){
-                print(root);
-            }
-            else if(n == -1){
-                print_trees(root, false);
-            }
-            else if(n == -2){
-                print_trees(root);
-            }
-            else if(n == -3){
-                break;
-            }
-            else{
-                bool in_tree = false;
-                root = search_in_tango(root, n, in_tree);
-                if(in_tree){
-                    cout << "Found the key " <<  n << "!" << endl;
-                }
-                else{
-                    cout << "The tree does not have key " << n << "!" << endl;
-                }
+            switch(n) {
+                case 0:
+                    print(root);
+                    break;
+                case -1:
+                    print_trees(root, false);
+                    break;
+                case -2:
+                    print_trees(root);
+                    break;
+                case -3:
+                    running = false;
+                    break;
+                default:
+                    bool in_tree = false;
+                    root = search_in_tango(root, n, in_tree);
+                    if(in_tree){
+                        cout << "Found the key " <<  n << "!" << endl;
+                    }
+                    else{
+                        cout << "The tree does not have key " << n << "!" << endl;
+                    }
+                    break;
             }
         }
     }

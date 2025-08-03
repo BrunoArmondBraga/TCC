@@ -2,10 +2,10 @@
 CXX = g++
 
 # Flags de compilação
-CXXFLAGS =
+CXXFLAGS = -Wextra -O2 -std=c++17
 
 # Fontes
-SRC = Tango.cpp Auxiliary.cpp
+SRC = Tango.cpp Auxiliary.cpp RedBlack.cpp
 OBJ = $(SRC:.cpp=.o)
 
 # Nome do executável
