@@ -21,5 +21,7 @@ Node* glue(Node* u, int searched_item);
 //its root
 
 Node* search_in_tango(Node* root, int searched_item, bool& found);
+//Given a root u and a int searched, search in tango for that key, changing the red-black
+//trees accordingly and return the root of the tango at the end of the execution
 
 #endif

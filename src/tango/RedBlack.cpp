@@ -97,7 +97,7 @@ int predecessor(Node* root, int i){
     int pred = -1;
     Node* current_node = root;
 
-    while(current_node != nullptr && (!current_node->is_root)){
+    while(current_node != nullptr && !current_node->is_root){
         if(current_node->key < i){ //go right
             if(current_node->key > pred){
                 pred = current_node->key;
@@ -112,11 +112,11 @@ int predecessor(Node* root, int i){
 }
 
 int sucessor(Node* root, int i){
-    //Given the root of a tree and an integer i, return the biggest key in the tree that is smaller than i.
+    //Given the root of a tree and an integer i, return the smallest key in the tree that is bigger than i
     int suc = -1;
     Node* current_node = root;
 
-    while(current_node != nullptr && (!current_node->is_root)){
+    while(current_node != nullptr && !current_node->is_root){
         if(current_node->key > i){ //go left
             if(current_node->key < suc || suc == -1){
                 suc = current_node->key;
@@ -130,9 +130,9 @@ int sucessor(Node* root, int i){
     return suc;
 }
 
-void Fix(Node* son){
+void fix(Node* child){
     //Given a red node, fix the structure/colors of the tree to be valid
-    Node* p = son->parent; 
+    Node* p = child->parent; 
 
     while(true){
         if(p->is_black == true){ //if parent is black, it is fixed
@@ -140,11 +140,11 @@ void Fix(Node* son){
         }
 
         Node *grandparent = p->parent;
-        if(grandparent==nullptr){
+        /* if(grandparent==nullptr){
             p->is_black = true;
-            p->black_height = son->black_height + 1;
+            p->black_height = child->black_height + 1;
             break;
-        }
+        } */
 
         //finding uncle!
         Node *uncle = nullptr;
@@ -160,7 +160,7 @@ void Fix(Node* son){
         if(uncle != nullptr && uncle->is_black == false){ //case red uncle
             grandparent->is_black = false;
             p->is_black = uncle->is_black = true;
-            son = grandparent;
+            child = grandparent;
             
             uncle->black_height = grandparent->black_height;
             p->black_height = grandparent->black_height;
@@ -171,7 +171,7 @@ void Fix(Node* son){
             }
         }
         else{ //case uncle is black
-            if(p==grandparent->left && son == p->left){ //same side
+            if(p==grandparent->left && child == p->left){ //same side
                 Node *q = right_rotate(grandparent);
                 q->is_black = true;
                 grandparent->is_black = false;
@@ -181,7 +181,7 @@ void Fix(Node* son){
                 grandparent->black_height = aux;
                 break;
             }
-            else if(p==grandparent->left && son == p->right){ //different sides
+            else if(p==grandparent->left && child == p->right){ //different sides
                 Node *q = left_rotate(p);
                 Node *r = right_rotate(grandparent);
                 r->is_black = true;
@@ -192,7 +192,7 @@ void Fix(Node* son){
                 r->black_height = aux;
                 break;
             }
-            else if(p==grandparent->right && son ==p->right){ //same side
+            else if(p==grandparent->right && child ==p->right){ //same side
                 Node *q = left_rotate(grandparent);
                 q->is_black = true;
                 grandparent->is_black = false;
@@ -303,7 +303,7 @@ Node *add_RB(Node *root, Node* unplaced){
         unplaced->black_height = p->black_height - 1; //new_node is red, father must be black
     }
 
-    Fix(unplaced);
+    fix(unplaced);
 
     //update new_root
     Node* new_root = root;
@@ -428,6 +428,7 @@ int size(Node* root){
 }
 
 void print(Node* root){
+    //Given a root, print the tree
     cout << "Size of the tree = " << size(root) << endl;
     debug_rec(root);
     cout << "---------------" << endl << endl;
@@ -484,19 +485,19 @@ Node* join(Node *u, Node* k, Node *v){
         Node* to_be_returned = add(u, k);
         return to_be_returned;
     }
-    Node *novo = k;
+    Node *new_node = k;
 
     if(u->black_height == v->black_height){
-        novo->is_black = true;
-        novo->black_height = u->black_height + 1;
-        u->parent = novo;
-        v->parent = novo;
-        novo->left = u;
-        novo->right = v;
-        novo->left->is_root = false;
-        novo->right->is_root = false;
-        fix_depths(novo);
-        return novo;
+        new_node->is_black = true;
+        new_node->black_height = u->black_height + 1;
+        u->parent = new_node;
+        v->parent = new_node;
+        new_node->left = u;
+        new_node->right = v;
+        new_node->left->is_root = false;
+        new_node->right->is_root = false;
+        fix_depths(new_node);
+        return new_node;
     }
 
     Node *x;
@@ -520,14 +521,14 @@ Node* join(Node *u, Node* k, Node *v){
         }
 
         x = u_aux->parent;
-        novo->left = u_aux;
-        novo->black_height = u_aux->black_height;
-        x->right = novo;
-        novo->right = v;
+        new_node->left = u_aux;
+        new_node->black_height = u_aux->black_height;
+        x->right = new_node;
+        new_node->right = v;
 
-        v->parent = novo;
-        u_aux->parent = novo;
-        novo->parent = x;
+        v->parent = new_node;
+        u_aux->parent = new_node;
+        new_node->parent = x;
     }
     else{ //u->black_height < v->black_height
         min_depth_being_added = std::min({k->min_depth, k->min_depth, u->min_depth});
@@ -545,23 +546,19 @@ Node* join(Node *u, Node* k, Node *v){
         }
         
         x = v_aux->parent;
-        novo->right = v_aux;
-        novo->black_height = v_aux->black_height;
-        x->left = novo;
-        novo->left = u;
+        new_node->right = v_aux;
+        new_node->black_height = v_aux->black_height;
+        x->left = new_node;
+        new_node->left = u;
         
-        u->parent = novo;
-        v_aux->parent = novo;
-        novo->parent = x;
+        u->parent = new_node;
+        v_aux->parent = new_node;
+        new_node->parent = x;
     }
-    fix_depths(novo);
-    if(novo->parent->is_black == false){
-        Fix(novo);
-    }
+    fix_depths(new_node);
     while(final_root->parent != nullptr){
         final_root = final_root->parent;
     }
-    //final_root->is_root = true;
     return final_root;
 }
 
@@ -753,6 +750,10 @@ split_data split(Node *root, float pivot){
 }
 
 Node* bring_to_root(Node* root, int item){
+    //Given a node r and a key x, such that there is a node v with key x in r's subtree, than 
+    //re-arrange r's subtree so the node v is at the root and the left subtree of v is a valid red-black
+    //tree with only nodes with keys smaller than x and the right subtree of v is a valid red-black tree
+    //with only nodes with keys greater than x. Return node v
     if(root == nullptr){
         return nullptr;
     }
@@ -784,7 +785,7 @@ Node* bring_to_root(Node* root, int item){
     else{
         single_node->black_height = 2;
     }
-    
+
     return single_node;
 }
 

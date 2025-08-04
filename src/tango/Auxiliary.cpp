@@ -14,16 +14,16 @@ Node* build_complete_BST(int n, int offset = 0, int depth = 0){
     int x = pow(2,h);
 
     int l, r = 0;
-    
     l = n - x + 1;
     
-    if(l > x/2){
-        r = l - x/2;
+    if(l > x/2){ //if l > x/2, there are some nodes in the last layer in the right part
+        r = l - x/2; //calculate how many nodes in the right part
         l = x/2;
     }
     
-    l += (x - 2)/2;
-    r += (x - 2)/2;
+    //add the remaining the nodes
+    l += x/2 - 1;
+    r += x/2 - 1;
 
     Node* new_node = new Node(l + offset + 1, depth);
     new_node->is_black = true;
@@ -47,17 +47,21 @@ Node* build_BST_from_preferred_path(vector<Node*> preferred_path, stack<Node*> &
     }
     int m = (l+r)/2;
     Node* u = preferred_path[m];
+
     u->left  = build_BST_from_preferred_path(preferred_path, child_trees, m+1,r,h-1);
     if(u->left != nullptr){
-        u->left->parent = u;
+        u->left->parent = u; //update parent node
     }
+
     u->right = build_BST_from_preferred_path(preferred_path, child_trees, l, m-1,h-1);
     if(u->right != nullptr){
-        u->right->parent = u;
+        u->right->parent = u; //update parent node
     }
+
     if (h == 0){
         u->is_black = false;
     }
+    
     u->black_height = h+1;
     fix_depths(u);
     return u;
@@ -73,6 +77,8 @@ Node* build_tango(Node* u){
     stack<Node*> child_trees;
     vector<Node*> preferred_path;
     Node* t;
+
+    //put the whole preferred path in the vector
     while(u != nullptr){
         child_trees.push(u->right);
         preferred_path.push_back(u);
@@ -84,7 +90,7 @@ Node* build_tango(Node* u){
     int h = log2(n);
     t = build_BST_from_preferred_path(preferred_path, child_trees, 0, n-1, h);
 
-    if(!t->is_black){ //case when there is only one node
+    if(!t->is_black){ //case single node
         t->black_height = 2;
     }
     t->is_black = t->is_root = true;
@@ -115,7 +121,7 @@ Node* cut(Node* u, int min_depth){
         if(current_node->depth > min_depth && (current_node->key < l || l == -1)){
             l = current_node->key;
         }
-        if(current_node->left != nullptr && current_node->left->max_depth > min_depth && (!current_node->left->is_root)){
+        if(current_node->left != nullptr && !current_node->left->is_root && current_node->left->max_depth > min_depth){
             current_node = current_node->left;
         }
         else{
@@ -132,7 +138,7 @@ Node* cut(Node* u, int min_depth){
         if(current_node->depth > min_depth && current_node->key > r){
             r = current_node->key;
         }
-        if(current_node->right != nullptr && current_node->right->max_depth > min_depth && (!current_node->right->is_root)){
+        if(current_node->right != nullptr && !current_node->right->is_root && current_node->right->max_depth > min_depth){
             current_node = current_node->right;
         }
         else{
@@ -146,20 +152,15 @@ Node* cut(Node* u, int min_depth){
     int l_prime = predecessor(u, l); //calculate l'
     int r_prime = sucessor(u, r); //calculate r'
 
-
     Node* root = u;    
     if(l_prime != -1 && r_prime != -1){ //bigger case
-
         root = bring_to_root(root, l_prime);
         root->right = bring_to_root(root->right, r_prime);
         if(root->right != nullptr){
             root->right->parent = root;
         }
-
-        
         root->right->left->is_root = true;
         
-
         root->right = concatenate(root->right);
         if(root->right != nullptr){
             root->right->parent = root;
@@ -168,23 +169,18 @@ Node* cut(Node* u, int min_depth){
     }
     else if(l_prime == -1 && r_prime != -1){
         root = bring_to_root(root, r_prime);
-        
-
         root->left->is_root = true;
-        
-
         root = concatenate(root);
     }
     else{
         root = bring_to_root(root, l_prime);
         root->right->is_root = true;
-
         root = concatenate(root);
     }
     return root;
 }
 
-Node* glue(Node* u, int searched_item){
+Node* glue(Node* u, int searched){
     //Given a node u, root of a tree, and an int searched item, glues together the trees
     //u and the tree that has the node with key searched item
     int l_prime, r_prime;
@@ -193,7 +189,7 @@ Node* glue(Node* u, int searched_item){
     Node* current_node = u;
 
     while(!current_node->is_root){
-        if(current_node->key > searched_item){ //go left
+        if(current_node->key > searched){ //go left
             r_prime = current_node->key;
             current_node = current_node->left;
         }
@@ -203,17 +199,17 @@ Node* glue(Node* u, int searched_item){
         }
     }
 
+    //l_prime is the key of the deepest node in the subtree of u that has its key lower that searched
+    //r_prime is the key of the deepest node in the subtree of u that has its key greater that searched
+
     Node* root = u;
     if(l_prime != -1 && r_prime != -1){ //bigger case
-
         root = bring_to_root(root, l_prime);
         root->right = bring_to_root(root->right, r_prime);
         if(root->right != nullptr){
             root->right->parent = root;
         }
-
         root->right->left->is_root = false;
-        //print(root);
 
         root->right = concatenate(root->right);
         if(root->right != nullptr){
@@ -224,12 +220,10 @@ Node* glue(Node* u, int searched_item){
     else if(l_prime == -1 && r_prime != -1){ //l_prime == -1
         root = bring_to_root(root, r_prime);
         root->left->is_root = false;
-        
         root = concatenate(root);
     }
     else{ //r_prime == -1
         root = bring_to_root(root, l_prime);
-        
         root->right->is_root = false;
         root = concatenate(root);
     }
@@ -237,33 +231,34 @@ Node* glue(Node* u, int searched_item){
     return root;
 }
 
-Node* tango(Node* u, int min_depth, int searched_item){
-    //
+Node* tango(Node* u, int min_depth, int searched){
+    //Given the root of the tango and two ints min_depth and searched, change the structure of
+    //two red-black trees with cut and glue to match the preferred paths in the auxiliary tree.
     Node* new_root = cut(u, min_depth);
-    new_root = glue(new_root, searched_item);
+    new_root = glue(new_root, searched);
     return new_root;
 }
 
-Node* search_in_tango(Node* root, int searched_item, bool& found){
+Node* search_in_tango(Node* root, int searched, bool& found){
+    //Given a root u and a int searched, search in tango for that key, changing the red-black
+    //trees accordingly and return the root of the tango at the end of the execution
     if(root == nullptr){
         return nullptr;
     }
 
     Node* last_root = root;
     Node* current_node = root;
-    int contador = 0;
 
     while(current_node != nullptr && !found){
-        if(current_node->is_root && current_node != last_root){
-            last_root = tango(last_root, current_node->min_depth - 1, searched_item);
+        if(current_node->is_root && current_node != last_root){ //found a new tree
+            last_root = tango(last_root, current_node->min_depth - 1, searched);
             current_node = last_root;
-            contador++;
         }
 
-        if(current_node->key == searched_item){
+        if(current_node->key == searched){ //found the key
             found = true;
         }
-        else if(current_node->key > searched_item){ //go left
+        else if(current_node->key > searched){ //go left
             current_node = current_node->left;
         }
         else{ //go right

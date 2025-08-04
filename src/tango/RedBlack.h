@@ -46,12 +46,13 @@ int predecessor(Node* root, int i);
 //Given the root of a tree and an integer i, return the biggest key in the tree that is smaller than i
 
 int sucessor(Node* root, int i);
-//Given the root of a tree and an integer i, return the biggest key in the tree that is smaller than i
+//Given the root of a tree and an integer i, return the smallest key in the tree that is bigger than i
 
 int size(Node* root);
 //Gives a node, return the number of nodes in its subtree
 
 void print(Node* root);
+//Given a root, print the tree
 
 void print_trees(Node* root, bool all = true);
 //Given a root and a bool all, print the tree taking into account the different trees within it
