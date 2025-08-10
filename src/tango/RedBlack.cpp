@@ -529,6 +529,7 @@ Node* join(Node *u, Node* k, Node *v){
         v->parent = new_node;
         u_aux->parent = new_node;
         new_node->parent = x;
+        fix(new_node->left);
     }
     else{ //u->black_height < v->black_height
         min_depth_being_added = std::min({k->min_depth, k->min_depth, u->min_depth});
@@ -554,6 +555,7 @@ Node* join(Node *u, Node* k, Node *v){
         u->parent = new_node;
         v_aux->parent = new_node;
         new_node->parent = x;
+        fix(new_node->right);
     }
     fix_depths(new_node);
     while(final_root->parent != nullptr){
