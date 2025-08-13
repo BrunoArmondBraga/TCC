@@ -7,17 +7,17 @@ using namespace std;
 
 int main(){
     int n, mode;
-    n = 31;
+    n = 5000;
     mode = 3;
 
     Node* root = build_initial_tango(n);
 
 
-    int seed = 256;
-    while(seed < 2000){   
+    int seed = 0;
+    while(seed < 10){   
         Node* root = build_initial_tango(n);
         int counter = 1;
-        int num_test = 5;
+        int num_test = 100;
         bool printing = false;
 
         while(true){

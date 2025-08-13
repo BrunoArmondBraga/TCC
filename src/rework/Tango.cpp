@@ -9,7 +9,7 @@ int main(){
     int n, mode;
     n = mode = -1;
 
-    /* while(n < 0){
+    while(n < 0){
         cout << "n = ";
         cin >> n;
     }
@@ -18,9 +18,9 @@ int main(){
         cout << "Choose mode: 1 - iteractive mode, 2 - random test mode with random seed, 3 - random test mode with specific seed." << endl;
         cout << "Mode: ";
         cin >> mode;
-    } */
-    n = 31;
-    mode = 1;
+    }
+    /* n = 63;
+    mode = 3; */
 
     Node* root = build_initial_tango(n);
 

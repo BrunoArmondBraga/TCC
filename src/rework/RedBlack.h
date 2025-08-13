@@ -17,10 +17,6 @@ class Node{ //This is a red-black tree node
         Node *left = nullptr;
         Node *right = nullptr;
 
-        //Used in operation delete_min
-        bool is_double_black = false;
-        bool to_be_deleted = false;
-
         //Used in operation join
         int black_height = 2; //number of black nodes in the path from this node to a nullptr
 
@@ -39,7 +35,7 @@ class Node{ //This is a red-black tree node
         }
 };
 
-struct split_data
+struct pair_of_trees
 {
     Node* left_tree;
     Node* right_tree;
@@ -47,12 +43,6 @@ struct split_data
 
 void fix_depths(Node* u);
 //Given a node u, recalculate u->min/max_depth based on its children
-
-int predecessor(Node* root, int i);
-//Given the root of a tree and an integer i, return the biggest key in the tree that is smaller than i
-
-int sucessor(Node* root, int i);
-//Given the root of a tree and an integer i, return the smallest key in the tree that is bigger than i
 
 int size(Node* root);
 //Gives a node, return the number of nodes in its subtree
@@ -64,20 +54,9 @@ void print_trees(Node* root, bool all = true);
 //Given a root and a bool all, print the tree taking into account the different trees within it
 //If all is equal to true, print the whole tree, if all is equal to false, print just the first tree
 
-split_data split(Node* root, float pivot);
+pair_of_trees remove_min(Node* root);
 
-Node* bring_to_root(Node* root, int item);
-//Given a node r and a key x, such that there is a node v with key x in r's subtree, than 
-//re-arrange r's subtree so the node v is at the root and the left subtree of v is a valid red-black
-//tree with only nodes with keys smaller than x and the right subtree of v is a valid red-black tree
-//with only nodes with keys greater than x. Return node v
-
-Node* concatenate(Node* root);
-//Given a node v that has a valid tree in its left and right subtrees and the nodes in
-//its left subtree have keys smaller than the root and all the nodes in the its right
-//subtree have keys greater than the root, then return a valid tree with all nodes
-
-split_data remove_min(Node* root);
+pair_of_trees split(Node* root, float pivot);
 
 Node* join(Node *u, Node* k, Node *v);
 

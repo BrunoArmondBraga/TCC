@@ -92,44 +92,6 @@ Node *right_rotate(Node *u){
     return aux;
 }
 
-int predecessor(Node* root, int i){
-    //Given the root of a tree and an integer i, return the biggest key in the tree that is smaller than i
-    int pred = -1;
-    Node* current_node = root;
-
-    while(current_node != nullptr && !current_node->is_root){
-        if(current_node->key < i){ //go right
-            if(current_node->key > pred){
-                pred = current_node->key;
-            }
-            current_node = current_node->right;
-        }
-        else{
-            current_node = current_node->left;
-        }
-    }
-    return pred;
-}
-
-int sucessor(Node* root, int i){
-    //Given the root of a tree and an integer i, return the smallest key in the tree that is bigger than i
-    int suc = -1;
-    Node* current_node = root;
-
-    while(current_node != nullptr && !current_node->is_root){
-        if(current_node->key > i){ //go left
-            if(current_node->key < suc || suc == -1){
-                suc = current_node->key;
-            }
-            current_node = current_node->left;
-        }
-        else{
-            current_node = current_node->right;
-        }
-    }
-    return suc;
-}
-
 void fix(Node* child){
     //Given a node, fix the structure/colors of the tree to be valid considering only the nodes above child
     if(child == nullptr || child->is_black){
@@ -220,126 +182,6 @@ void fix(Node* child){
     }
 }
 
-Node *add_RB(Node *root, Node* unplaced){
-    //Insert a node to a tree and return the new root of the tree.
-    if(root == nullptr){
-        Node* insert = unplaced;
-        insert->is_black = true;
-        insert->black_height = 2;
-        insert->is_root = true;
-        return insert;
-    }
-
-    //sometimes add_RB is used by a join, and needs to keep the upper_nodes other of the equation.
-    Node* upper_nodes = root->parent;
-    if(root->parent != nullptr){
-        root->parent = nullptr;
-    }
-
-    Node* p = root;
-    bool found = false;
-    
-    int depth = unplaced->depth;
-
-    //fix root's min/max depth
-    if(p->min_depth > depth){
-        p->min_depth = depth;
-    }
-    if(p->max_depth < depth){
-        p->max_depth = depth;
-    }
-
-    while(!found){
-        if((p->key > unplaced->key) && ((p->left == nullptr) || (p->left->is_root == true))){
-            found = true;
-        }
-        else if((p->key < unplaced->key) && ((p->right == nullptr)  || (p->right->is_root == true))){
-            found = true;
-        }
-        else if((p->key > unplaced->key)){
-            p = p->left;
-        }
-        else{
-            p = p->right;
-        }
-
-        //go down updating min/max depths of visited nodes
-        if(p->min_depth > depth){
-            p->min_depth = depth;
-        }
-        if(p->max_depth < depth){
-            p->max_depth = depth;
-        }
-    }
-
-    if(p->key > unplaced->key){
-        if(p->left != nullptr){
-            Node* other_root = p->left;
-            if(other_root->key < unplaced->key){
-                unplaced->left = other_root;
-                other_root->parent = unplaced;
-            }
-            else{
-                unplaced->right = other_root;
-                other_root->parent = unplaced;
-            }
-        }
-        p->left = unplaced;
-    }
-    else{
-        if(p->right != nullptr){
-            Node* other_root = p->right;
-            if(other_root->key < unplaced->key){
-                unplaced->left = other_root;
-                other_root->parent = unplaced;
-            }
-            else{
-                unplaced->right = other_root;
-                other_root->parent = unplaced;
-            }
-        }
-        p->right = unplaced;
-    }
-    unplaced->parent = p;
-
-    if(p->is_black){
-        unplaced->black_height = p->black_height - 1; //new_node is red, father must be black
-    }
-
-    fix(unplaced);
-
-    //update new_root
-    Node* new_root = root;
-    while(new_root->parent != nullptr){
-        new_root = new_root->parent;
-    }
-
-    //put the upper_nodes back
-    if(upper_nodes != nullptr){
-        new_root->parent = upper_nodes;
-    }
-    return new_root;
-}
-
-Node* add(Node* root, Node* unplaced){
-    //Given a tree and a node, add this node to the tree and return the new root of the tree.
-    bool first_node = false;
-    if(root == nullptr){
-        first_node = true;
-    }
-    root = add_RB(root, unplaced);
-    if(root != nullptr){
-        if(!root->is_black){
-            root->black_height++;
-            root->is_black = true;
-        }
-    }
-    if(first_node){
-        root->is_root = true;
-    }
-    return root;
-}
-
 Node* reset_min_node(Node* u){
     if(u->parent != nullptr){
         if(u->right != nullptr){
@@ -357,13 +199,14 @@ Node* reset_min_node(Node* u){
 }
 
 Node* fix_double_black(Node* double_black){
-    //case u and v black (2.)
-    //case sibling has red right child
+    //case u and v black
     if(double_black->parent == nullptr){
         return double_black;
     }
     Node* new_root = double_black->parent;
     Node* sibling = double_black->parent->right;
+
+    //case black sibling with red right child
     if(sibling->is_black && sibling->right != nullptr && !sibling->right->is_root && !sibling->right->is_black){
         Node* local_root = left_rotate(double_black->parent);
 
@@ -379,6 +222,7 @@ Node* fix_double_black(Node* double_black){
         local_root->right->is_black = true;
         local_root->right->black_height++;
     }
+    //case black sibling with red left child
     else if(sibling->is_black && sibling->left != nullptr && !sibling->left->is_root && !sibling->left->is_black){
         Node* local_root = right_rotate(sibling);
         local_root = left_rotate(local_root->parent);
@@ -394,6 +238,7 @@ Node* fix_double_black(Node* double_black){
         local_root->black_height++;
         local_root->left->black_height--;
     }
+    //case black sibling with no red child
     else if(sibling->is_black){
         sibling->is_black = false;
         sibling->black_height--;
@@ -405,6 +250,7 @@ Node* fix_double_black(Node* double_black){
             sibling->parent->is_black = true;
         }
     }
+    //case red sibling
     else{
         Node* local_root = left_rotate(sibling->parent);
 
@@ -412,10 +258,6 @@ Node* fix_double_black(Node* double_black){
         local_root->black_height++;
         local_root->left->is_black = false;
         local_root->left->black_height--;
-        /* if(local_root->left->right != nullptr && !local_root->left->right->is_root){
-            local_root->left->right->is_black = false;
-            local_root->left->right->black_height--;
-        } */
         return fix_double_black(double_black);
     }
 
@@ -426,22 +268,24 @@ Node* fix_double_black(Node* double_black){
 }
 
 Node* get_min_node(Node* root){
+    //Given a root, return the Node with minimum key and fix all min/max depth of the nodes in the path
     if(root->left != nullptr && !root->left->is_root){
         Node* to_be_returned = get_min_node(root->left);
         fix_depths(root);
         return to_be_returned;
     }
-    else{
-        //root is the node with the minimum key value
-        if(root->parent != nullptr){
-            root->min_depth = root->parent->depth;
-            root->max_depth = root->parent->depth;
-        }
-        return root;
+    //root is the node with the minimum key value
+    if(root->parent != nullptr){ //put artificial depth to fix the depth of the nodes above 
+        root->min_depth = root->parent->depth;
+        root->max_depth = root->parent->depth;
     }
+    return root;
 }
 
-split_data remove_min(Node* root){
+pair_of_trees remove_min(Node* root){
+    //Given the root of a valid redblack-tree, remove the node with minimum key of this tree
+    //and return the pair {remaining tree, min_node} 
+
     //case root single node
     if((root->left == nullptr || root->left->is_root) && (root->right == nullptr || root->right->is_root)){
         return {nullptr, root};
@@ -449,7 +293,7 @@ split_data remove_min(Node* root){
 
     Node* min_node = get_min_node(root);
 
-    //case u or v red (Case 1.)
+    //case u or v red
     if(!min_node->is_black || (min_node->right != nullptr && !min_node->right->is_root)){
         if(!min_node->is_black){ //min_node is a red leaf
             if(min_node->right != nullptr){ //put right new_tree in the old place of min_node
@@ -473,6 +317,7 @@ split_data remove_min(Node* root){
             return {aux, reset_min_node(min_node)};
         }
     }
+    //case u and v black
     return {fix_double_black(min_node), reset_min_node(min_node)};
 }
 
@@ -598,12 +443,14 @@ void print_trees(Node* root, bool all){
 }
 
 void fix_join_conditions(Node *u, Node* k, Node *v){
+    //Given three nodes, check if k is child of u/v, make u and v black nodes, k red
+    //fix depths of all pointers.
     if(u != nullptr){
         if(u->parent == k){
             k->left = nullptr;
             u->parent = nullptr;
         }
-        if(!u->is_black){ //this if statement should be inside this upper if?
+        if(!u->is_black){
             u->is_black = true;
             u->black_height++;
         }
@@ -626,7 +473,7 @@ void fix_join_conditions(Node *u, Node* k, Node *v){
     k->parent = nullptr; //maybe problematic?
 }
 
-split_data aux_join(Node *u, Node* k, Node *v){
+pair_of_trees aux_join(Node *u, Node* k, Node *v){
     int left_height, right_height;
     left_height = right_height = 1;
 
@@ -641,27 +488,16 @@ split_data aux_join(Node *u, Node* k, Node *v){
         if(u != nullptr || v != nullptr){
             k->black_height = left_height;
             if(u != nullptr){
-                /* if(u->parent != nullptr){
-                    root = u->parent;
-                } */
                 k->left = u;
                 u->parent = k;
             }
             if(v != nullptr){
-                /* if(v->parent != nullptr){
-                    root = v->parent;
-                } */
                 k->right = v;
                 v->parent = k;
             }
-
             //update k min/max depths
             fix_depths(k);
         }
-
-        /* //check for structural problems
-        fix(k->right);
-        fix(k->left); */
         return {k, k};
     }
 
@@ -679,7 +515,7 @@ split_data aux_join(Node *u, Node* k, Node *v){
     if(left_height > right_height){
         u->min_depth = min;
         u->max_depth = max;
-        split_data next_step = aux_join(u->right, k, v);
+        pair_of_trees next_step = aux_join(u->right, k, v);
         u->right = next_step.left_tree;
         if(u->right != nullptr){
             u->right->parent = u;
@@ -688,7 +524,7 @@ split_data aux_join(Node *u, Node* k, Node *v){
     }
     v->min_depth = min;
     v->max_depth = max;
-    split_data next_step = aux_join(u, k, v->left);
+    pair_of_trees next_step = aux_join(u, k, v->left);
     v->left = next_step.left_tree;
     if(v->left != nullptr){
         v->left->parent = v;
@@ -697,13 +533,13 @@ split_data aux_join(Node *u, Node* k, Node *v){
 }
 
 Node* join(Node *u, Node* k, Node *v){
-    //Given two trees u and v, and a node k, such that all nodes in u have keys smaller than k's key and all
-    //nodes in v have keys greater that k's key, then return a valid tree that has the nodes of all three trees
+    //Given two trees u and v, and a node k, where all nodes in u have keys smaller than k's key and all nodes
+    //in v have keys greater that k's key, then return a valid tree that has the nodes of all three trees
     fix_join_conditions(u,k,v);
-    split_data join_operation = aux_join(u, k, v);
-    Node* root = join_operation.left_tree;
-    fix(join_operation.right_tree->right);
-    fix(join_operation.right_tree->left);
+    pair_of_trees join = aux_join(u, k, v);
+    Node* root = join.left_tree;
+    fix(join.right_tree->right);
+    fix(join.right_tree->left);
     if(root->parent != nullptr){
         root = root->parent;
     }
@@ -719,7 +555,10 @@ Node* join(Node *u, Node* k, Node *v){
     return root;
 }
 
-split_data split(Node* root, float pivot){
+pair_of_trees split(Node* root, float pivot){
+    //Given the root of a tree and a float pivot, return a pair of tree that has its left tree
+    //as a valid red-black tree with only nodes with key less than pivot and has its right tree
+    //as a valid red-black tree with only nodes with key greater than pivot
     if(root == nullptr){
         return {nullptr, nullptr};
     }
@@ -731,11 +570,14 @@ split_data split(Node* root, float pivot){
         return {root, nullptr};
     }
     if(pivot < root->key){ //go left
-        split_data aux = split(root->left, pivot);
+        pair_of_trees aux = split(root->left, pivot);
         root->left = nullptr;
         if(aux.right_tree != nullptr && aux.right_tree->is_root){
             root->left = aux.right_tree;
             aux.right_tree->parent = root;
+            //root is the first node of the actual tree
+            root->is_black = true;
+            root->black_height = 2;
             if(root->right == nullptr || root->right->is_root){
                 fix_depths(root);
                 return{aux.left_tree, root};
@@ -748,11 +590,14 @@ split_data split(Node* root, float pivot){
         return {aux.left_tree, join(aux.right_tree, root, root->right)};
     }
     //go right
-    split_data aux = split(root->right, pivot);
+    pair_of_trees aux = split(root->right, pivot);
     root->right = nullptr;
     if(aux.left_tree != nullptr && aux.left_tree->is_root){
         root->right = aux.left_tree;
         aux.left_tree->parent = root;
+        //root is the first node of the actual tree
+        root->is_black = true;
+        root->black_height = 2;
         if(root->left == nullptr || root->left->is_root){
             fix_depths(root);
             return{root, aux.right_tree};

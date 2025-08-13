@@ -1,11 +1,20 @@
 #include "Auxiliary.h"
 
-#define DEBUG 1
+#define DEBUG 0
+#define DEBUG_addtotango 0
 
 void add_to_tango(Node* root, Node* new_piece){
     if(root->key > new_piece->key){
         if(root->left == nullptr || root->left->is_root){
             if(root->left != nullptr){
+                if(DEBUG_addtotango){
+                    cout << "ANOTHER ITERATION!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
+                    /* cout << "árvore 1 -----------------------------" << endl;
+                    print(new_piece);
+                    cout << "árvore 2 -----------------------------" << endl;
+                    print(root->left);
+                    cout << endl << endl; */
+                }
                 Node* aux = root->left;
                 aux->parent = new_piece;
                 add_to_tango(new_piece, aux);
@@ -20,6 +29,14 @@ void add_to_tango(Node* root, Node* new_piece){
     else{
         if(root->right == nullptr || root->right->is_root){
             if(root->right != nullptr){
+                if(DEBUG_addtotango){
+                    cout << "ANOTHER ITERATION!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
+                    /* cout << "árvore 1 -----------------------------" << endl;
+                    print(new_piece);
+                    cout << "árvore 2 -----------------------------" << endl;
+                    print(root->right);
+                    cout << endl << endl; */
+                }
                 Node* aux = root->right;
                 aux->parent = new_piece;
                 add_to_tango(new_piece, aux);
@@ -33,9 +50,9 @@ void add_to_tango(Node* root, Node* new_piece){
     }
 }
 
-split_data split_operation(Node* root, float pivot){
-    split_data aux = split(root, pivot);
-    if(aux.left_tree != nullptr && aux.left_tree->is_root){
+pair_of_trees split_operation(Node* root, float pivot){
+    pair_of_trees aux = split(root, pivot);
+    if(aux.left_tree != nullptr && aux.left_tree->is_root){        
         add_to_tango(aux.right_tree, aux.left_tree);
         return {nullptr, aux.right_tree};
     }
@@ -51,7 +68,7 @@ Node* join_operation(Node *u, Node* k, Node *v){
         if(v == nullptr){
             return u;
         }
-        split_data remover = remove_min(v);
+        pair_of_trees remover = remove_min(v);
         return join_operation(u, remover.right_tree, remover.left_tree);
     }
     Node* hold_left = nullptr;
@@ -68,9 +85,16 @@ Node* join_operation(Node *u, Node* k, Node *v){
     }
     Node* final_tree = join(u, k, v);
     if(hold_left != nullptr){
+        if(DEBUG_addtotango){
+            cout << "ADD TO TANGO from join!!" << endl;
+        }
+
         add_to_tango(final_tree, hold_left);
     }
     if(hold_right != nullptr){
+        if(DEBUG_addtotango){
+            cout << "ADD TO TANGO from join!!" << endl;
+        }
         add_to_tango(final_tree, hold_right);
     }
     return final_tree;
@@ -224,12 +248,16 @@ Node* cut(Node* u, int min_depth){
         }
     }
 
-    split_data first_split = split_operation(u, l - 0.5);
+    if(DEBUG){
+        print(u);
+    }
+
+    pair_of_trees first_split = split_operation(u, l - 0.5);
     if(DEBUG){
         print(first_split.left_tree);
         print(first_split.right_tree);
     }
-    split_data second_split = split_operation(first_split.right_tree, r + 0.5);
+    pair_of_trees second_split = split_operation(first_split.right_tree, r + 0.5);
     if(DEBUG){
         print(second_split.left_tree);
         print(second_split.right_tree);
@@ -242,24 +270,25 @@ Node* cut(Node* u, int min_depth){
         print(tree_cut_out);
     }
 
-    Node* final_tree;
-
-    /* if(second_split.left_tree != nullptr && second_split.left_tree->is_root && second_split.right_tree != nullptr && second_split.right_tree->is_root){
-        final_tree = first_split.left_tree;
-        Node* aux = second_split.left_tree;
-        add_to_tango(aux, second_split.right_tree);
-        add_to_tango(final_tree, aux);
+    if(second_split.right_tree != nullptr){
+        if(DEBUG_addtotango){
+            cout << "ADD TO TANGO from cut!!" << endl;
+        }
+        add_to_tango(second_split.right_tree, tree_cut_out);
     }
-    else{  */  
-    final_tree = join_operation(first_split.left_tree, nullptr, second_split.right_tree);
+    else{
+        if(DEBUG_addtotango){
+            cout << "ADD TO TANGO from cut!!" << endl;
+        }
+        add_to_tango(first_split.left_tree, tree_cut_out);
+    }
+
+    Node* final_tree = join_operation(first_split.left_tree, nullptr, second_split.right_tree);
 
     if(DEBUG){
         cout << "A FINAL TREE É ESSA AQUI:" << endl;
         print(final_tree);
     }
-
-    add_to_tango(final_tree, tree_cut_out);
-    
 
     return final_tree;
 }
@@ -289,12 +318,12 @@ Node* glue(Node* u, int searched){
 
     if(l != -1 && r != -1){
 
-        split_data first_split = split_operation(u, l + 0.5);
+        pair_of_trees first_split = split_operation(u, l + 0.5);
         if(DEBUG){
             print(first_split.left_tree);
             print(first_split.right_tree);
         }
-        split_data second_split = split_operation(first_split.right_tree, r + 0.5);
+        pair_of_trees second_split = split_operation(first_split.right_tree, r + 0.5);
         if(DEBUG){
             print(second_split.left_tree);
             print(second_split.right_tree);
@@ -315,7 +344,7 @@ Node* glue(Node* u, int searched){
         }
     }
     else if (l != -1){ //r == -1
-        split_data first_split = split_operation(u, l - 0.5);
+        pair_of_trees first_split = split_operation(u, l - 0.5);
 
         Node* middle_node = first_split.right_tree;
         Node* tree_included = middle_node->right;
@@ -324,11 +353,34 @@ Node* glue(Node* u, int searched){
         final_tree = join_operation(first_split.left_tree, middle_node, tree_included);
     }
     else{ //l == -1
-        split_data first_split = split_operation(u, r + 0.5);
+        pair_of_trees first_split = split_operation(u, r + 0.5);
+
+        if(DEBUG){
+            print(first_split.left_tree);
+            print(first_split.right_tree);
+        }
 
         Node* middle_node = first_split.left_tree;
+
+        if(DEBUG){
+            print(middle_node);
+        }
+
         Node* tree_included = middle_node->left;
         tree_included->is_root = false;
+
+        if(DEBUG){
+            print(tree_included);
+        }
+
+        if(DEBUG){
+            cout << "1 ---" << endl;
+            print(tree_included);
+            cout << "2 ---" << endl;
+            print(middle_node);
+            cout << "3 ---" << endl;
+            print(first_split.right_tree);
+        }
 
         final_tree = join_operation(tree_included, middle_node, first_split.right_tree);
     }
