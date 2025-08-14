@@ -19,8 +19,6 @@ int main(){
         cout << "Mode: ";
         cin >> mode;
     }
-    /* n = 63;
-    mode = 3; */
 
     Node* root = build_initial_tango(n);
 
@@ -59,6 +57,11 @@ int main(){
     }
     else{
         int seed = 0;
+        int counter = 1;
+        int num_test = 1;
+        bool printing = false;
+
+
         if(mode == 3){
             cout << "Choose seed: ";
             cin >> seed;
@@ -66,37 +69,29 @@ int main(){
         else{
             seed = time(nullptr);
         }
-        
-        int counter = 1;
-        int num_test = 9;
-        bool printing = false;
 
         cout << "How many tests? ";
         cin >> num_test;
 
         string see;
-        /* cout << "Do you want to see every tree? (Y/N) ";
+        cout << "Do you want to see every tree? (Y/N) ";
         cin >> see;
         if(see == "Y"){
             printing = true;
-        } */
+        }
+        mt19937 rng(seed);
+        uniform_int_distribution<int> dist(1, n);
 
-        while(true){
-            mt19937 rng(seed);
-            uniform_int_distribution<int> dist(1, n);
+        for (int i = 0; i < num_test; ++i) {
+            int n = dist(rng);
+            cout << "Search n°" << counter << ", Searching for: " << n <<  endl;
 
-            for (int i = 0; i < num_test; ++i) {
-                int n = dist(rng);
-                cout << "Search n°" << counter << ", Searching for: " << n <<  endl;
-
-                bool in_tree = false;
-                root = search_in_tango(root, n, in_tree);
-                counter++;
-                if(printing){
-                    print_trees(root, true);
-                }
+            bool in_tree = false;
+            root = search_in_tango(root, n, in_tree);
+            counter++;
+            if(printing){
+                print_trees(root, true);
             }
-            break;
         }
         print_trees(root);
     }     

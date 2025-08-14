@@ -1,101 +1,121 @@
 #include "Auxiliary.h"
 
-#define DEBUG 0
 #define DEBUG_addtotango 0
+#define DEBUG_COMPLEXITY 1
 
-void add_to_tango(Node* root, Node* new_piece){
+void add_to_tango(Node* root, Node* new_piece, int& compĺexity_test){
+    //Given two trees root and new_piece, put the second tree in a leaf pointer of the first tree
     if(root->key > new_piece->key){
         if(root->left == nullptr || root->left->is_root){
             if(root->left != nullptr){
                 if(DEBUG_addtotango){
-                    cout << "ANOTHER ITERATION!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
-                    /* cout << "árvore 1 -----------------------------" << endl;
-                    print(new_piece);
-                    cout << "árvore 2 -----------------------------" << endl;
-                    print(root->left);
-                    cout << endl << endl; */
+                    compĺexity_test++;
+                    cout << "Another iteration!" << endl;
                 }
                 Node* aux = root->left;
                 aux->parent = new_piece;
-                add_to_tango(new_piece, aux);
+                add_to_tango(new_piece, aux, compĺexity_test);
             }
             root->left = new_piece;
             new_piece->parent = root;
         }
         else{
-            add_to_tango(root->left, new_piece);
+            add_to_tango(root->left, new_piece, compĺexity_test);
         }
     }
     else{
         if(root->right == nullptr || root->right->is_root){
             if(root->right != nullptr){
                 if(DEBUG_addtotango){
-                    cout << "ANOTHER ITERATION!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
-                    /* cout << "árvore 1 -----------------------------" << endl;
-                    print(new_piece);
-                    cout << "árvore 2 -----------------------------" << endl;
-                    print(root->right);
-                    cout << endl << endl; */
+                    cout << "Another iteration!" << endl;
                 }
                 Node* aux = root->right;
                 aux->parent = new_piece;
-                add_to_tango(new_piece, aux);
+                add_to_tango(new_piece, aux, compĺexity_test);
             }
             root->right = new_piece;
             new_piece->parent = root;
         }
         else{
-            add_to_tango(root->right, new_piece);
+            add_to_tango(root->right, new_piece, compĺexity_test);
         }
     }
 }
 
 pair_of_trees split_operation(Node* root, float pivot){
+    //Given the root of a tree and a float pivot, return a pair of tree that has its left tree
+    //as a valid red-black tree with only nodes with key less than pivot and has its right tree
+    //as a valid red-black tree with only nodes with key greater than pivot.
+
+    //red-black tree split is not sufficient to the tango context
     pair_of_trees aux = split(root, pivot);
     if(aux.left_tree != nullptr && aux.left_tree->is_root){        
-        add_to_tango(aux.right_tree, aux.left_tree);
+        int complexity_test = 1;
+        add_to_tango(aux.right_tree, aux.left_tree, complexity_test);
+        if(DEBUG_COMPLEXITY && complexity_test > 2){
+            cout << "complexity = " << complexity_test << endl;
+        }
         return {nullptr, aux.right_tree};
     }
     if(aux.right_tree != nullptr && aux.right_tree->is_root){
-        add_to_tango(aux.left_tree, aux.right_tree);
+        int complexity_test = 1;
+        add_to_tango(aux.left_tree, aux.right_tree, complexity_test);
+        if(DEBUG_COMPLEXITY && complexity_test > 2){
+            cout << "complexity = " << complexity_test << endl;
+        }
         return {aux.left_tree, nullptr};
     }
     return aux;
 }
 
 Node* join_operation(Node *u, Node* k, Node *v){
+    //Given two trees u and v, and a node k that can be nullptr, where all nodes in u have keys smaller than all nodes
+    //in v and if k is not nullptr has key in between the maximum key of u and the minimum key of v. Return a single
+    //valid tree with all nodes given.
     if(k == nullptr){
-        if(v == nullptr){
+        if(v == nullptr){ //case where u is the only node
             return u;
         }
+        //otherwise remove from v and join_operation(u,k,v)
         pair_of_trees remover = remove_min(v);
         return join_operation(u, remover.right_tree, remover.left_tree);
     }
+    //hold k's left tree
     Node* hold_left = nullptr;
-    Node* hold_right = nullptr;
     if(k->left != nullptr && k->left->is_root){
         hold_left = k->left;
         hold_left->parent->left = nullptr;
         hold_left->parent = nullptr;
     }
+    //hold k's right tree
+    Node* hold_right = nullptr;
     if(k->right != nullptr && k->right->is_root){
         hold_right = k->right;
         hold_right->parent->right = nullptr;
         hold_right->parent = nullptr;
     }
     Node* final_tree = join(u, k, v);
+    //put k's left tree back
     if(hold_left != nullptr){
         if(DEBUG_addtotango){
             cout << "ADD TO TANGO from join!!" << endl;
         }
-
-        add_to_tango(final_tree, hold_left);
+        int complexity_test = 1;
+        add_to_tango(final_tree, hold_left, complexity_test);
+        if(DEBUG_COMPLEXITY && complexity_test > 2){
+            cout << "complexity = " << complexity_test << endl;
+        }
     }
+    //put k's left tree back
     if(hold_right != nullptr){
         if(DEBUG_addtotango){
             cout << "ADD TO TANGO from join!!" << endl;
         }
-        add_to_tango(final_tree, hold_right);
+        int complexity_test = 1;
+        add_to_tango(final_tree, hold_right, complexity_test);
+        if(DEBUG_COMPLEXITY && complexity_test > 2){
+            cout << "complexity = " << complexity_test << endl;
+        }
     }
     return final_tree;
 }
@@ -214,7 +234,7 @@ Node* cut(Node* u, int min_depth){
     int l, r;
     l = r = -1;
     
-    //find l = minimum key with depth greater than min_depth
+    //find l := minimum key with depth greater than min_depth
     while(current_node != nullptr){
         if(current_node->is_root){
             break;
@@ -232,7 +252,7 @@ Node* cut(Node* u, int min_depth){
 
     current_node = u; //reset current_node
     
-    //find r = maximum key with depth greater than min_depth
+    //find r := maximum key with depth greater than min_depth
     while(current_node != nullptr){
         if(current_node->is_root){
             break;
@@ -248,48 +268,37 @@ Node* cut(Node* u, int min_depth){
         }
     }
 
-    if(DEBUG){
-        print(u);
-    }
-
     pair_of_trees first_split = split_operation(u, l - 0.5);
-    if(DEBUG){
-        print(first_split.left_tree);
-        print(first_split.right_tree);
-    }
     pair_of_trees second_split = split_operation(first_split.right_tree, r + 0.5);
-    if(DEBUG){
-        print(second_split.left_tree);
-        print(second_split.right_tree);
-    }
 
+    //tree cut out is going to be considered as a new tree new
     Node* tree_cut_out = second_split.left_tree;
     tree_cut_out->is_root = true;
 
-    if(DEBUG){
-        print(tree_cut_out);
-    }
-
+    //put the tree cut out back into the tree
     if(second_split.right_tree != nullptr){
         if(DEBUG_addtotango){
             cout << "ADD TO TANGO from cut!!" << endl;
         }
-        add_to_tango(second_split.right_tree, tree_cut_out);
+        int complexity_test = 1;
+        add_to_tango(second_split.right_tree, tree_cut_out, complexity_test);
+        if(DEBUG_COMPLEXITY && complexity_test > 2){
+            cout << "complexity = " << complexity_test << endl;
+        }
     }
     else{
         if(DEBUG_addtotango){
             cout << "ADD TO TANGO from cut!!" << endl;
         }
-        add_to_tango(first_split.left_tree, tree_cut_out);
+        int complexity_test = 1;
+        add_to_tango(first_split.left_tree, tree_cut_out, complexity_test);
+        if(DEBUG_COMPLEXITY && complexity_test > 2){
+            cout << "complexity = " << complexity_test << endl;
+        }
     }
 
+    //join the initial tree
     Node* final_tree = join_operation(first_split.left_tree, nullptr, second_split.right_tree);
-
-    if(DEBUG){
-        cout << "A FINAL TREE É ESSA AQUI:" << endl;
-        print(final_tree);
-    }
-
     return final_tree;
 }
 
@@ -301,8 +310,8 @@ Node* glue(Node* u, int searched){
 
     Node* current_node = u;
 
-    //l = maximum key that is smaller than searched
-    //r = minimum key that is bigger than searched
+    //l = maximum key that is smaller than searched in the path
+    //r = minimum key that is bigger than searched in the path
     while(!current_node->is_root){
         if(current_node->key > searched){ //go left
             r = current_node->key;
@@ -317,71 +326,44 @@ Node* glue(Node* u, int searched){
     Node* final_tree;
 
     if(l != -1 && r != -1){
-
+        //int searched is between two keys in u 
         pair_of_trees first_split = split_operation(u, l + 0.5);
-        if(DEBUG){
-            print(first_split.left_tree);
-            print(first_split.right_tree);
-        }
         pair_of_trees second_split = split_operation(first_split.right_tree, r + 0.5);
-        if(DEBUG){
-            print(second_split.left_tree);
-            print(second_split.right_tree);
-        }
 
         Node* middle_node = second_split.left_tree;
 
+        //tree included is going to be considered as part of the initial tree
         Node* tree_included = middle_node->left;
         tree_included->is_root = false;
 
         final_tree = join_operation(tree_included, middle_node, second_split.right_tree);
-        if(DEBUG){
-            print(final_tree);
-        }
         final_tree = join_operation(first_split.left_tree, nullptr, final_tree);
-        if(DEBUG){
-            print(final_tree);
-        }
     }
     else if (l != -1){ //r == -1
+        //int searched is greater than all keys in u
+        
+        //split the tree so the node with key l is alone at the right tree
         pair_of_trees first_split = split_operation(u, l - 0.5);
 
         Node* middle_node = first_split.right_tree;
+
+        //tree included is going to be considered as part of the initial tree
         Node* tree_included = middle_node->right;
         tree_included->is_root = false;
 
         final_tree = join_operation(first_split.left_tree, middle_node, tree_included);
     }
     else{ //l == -1
-        pair_of_trees first_split = split_operation(u, r + 0.5);
+        //int searched is smaller than all keys in u
 
-        if(DEBUG){
-            print(first_split.left_tree);
-            print(first_split.right_tree);
-        }
+        //split the tree so the node with key r is alone at the left tree
+        pair_of_trees first_split = split_operation(u, r + 0.5);
 
         Node* middle_node = first_split.left_tree;
 
-        if(DEBUG){
-            print(middle_node);
-        }
-
+        //tree included is going to be considered as part of the initial tree
         Node* tree_included = middle_node->left;
         tree_included->is_root = false;
-
-        if(DEBUG){
-            print(tree_included);
-        }
-
-        if(DEBUG){
-            cout << "1 ---" << endl;
-            print(tree_included);
-            cout << "2 ---" << endl;
-            print(middle_node);
-            cout << "3 ---" << endl;
-            print(first_split.right_tree);
-        }
-
         final_tree = join_operation(tree_included, middle_node, first_split.right_tree);
     }
 
@@ -392,13 +374,7 @@ Node* tango(Node* u, int min_depth, int searched){
     //Given the root of the tango and two ints min_depth and searched, change the structure of
     //two red-black trees with cut and glue to match the preferred paths in the auxiliary tree.
     Node* new_root = cut(u, min_depth);
-    if(DEBUG){
-        print(new_root);
-    }
     new_root = glue(new_root, searched);
-    if(DEBUG){
-        print(new_root);
-    }
     return new_root;
 }
 
@@ -413,7 +389,7 @@ Node* search_in_tango(Node* root, int searched, bool& found){
     Node* current_node = root;
 
     while(current_node != nullptr && !found){
-        if(current_node->is_root && current_node != last_root){ //found a new tree
+        if(current_node->is_root && current_node != last_root){ //found a new tree (crossed a non-preferred pointer)
             last_root = tango(last_root, current_node->min_depth - 1, searched);
             current_node = last_root;
         }

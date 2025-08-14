@@ -93,7 +93,7 @@ Node *right_rotate(Node *u){
 }
 
 void fix(Node* child){
-    //Given a node, fix the structure/colors of the tree to be valid considering only the nodes above child
+    //Given a node, fix the structure/colours of the tree to be valid considering only the nodes above child
     if(child == nullptr || child->is_black){
         return;
     }
@@ -103,13 +103,7 @@ void fix(Node* child){
         if(p->is_black == true){ //if parent is black, it is fixed
             break;
         }
-
         Node *grandparent = p->parent;
-        /* if(grandparent==nullptr){
-            p->is_black = true;
-            p->black_height = child->black_height + 1;
-            break;
-        } */
 
         //finding uncle!
         Node *uncle = nullptr;
@@ -183,6 +177,7 @@ void fix(Node* child){
 }
 
 Node* reset_min_node(Node* u){
+    //detach u from the tree it was in
     if(u->parent != nullptr){
         if(u->right != nullptr){
             u->parent->left = u->right;
@@ -211,12 +206,12 @@ Node* fix_double_black(Node* double_black){
         Node* local_root = left_rotate(double_black->parent);
 
         if(local_root->left->is_black){
-            local_root->is_black = true;
             local_root->black_height++;
             local_root->left->black_height--;
         }
         else{
             local_root->is_black = false;
+            local_root->left->is_black = true;
         }
 
         local_root->right->is_black = true;
@@ -322,7 +317,7 @@ pair_of_trees remove_min(Node* root){
 }
 
 void debug_rec(Node *u, int i = 0){
-    //Recursively print the tree in a tree-shaped format
+    //Recursively print the whole tree in a tree-shaped format
     if(u == nullptr){
         return;
     }
@@ -354,7 +349,7 @@ void debug_rec(Node *u, int i = 0){
 }
 
 void debug_rec_trees(Node *u, int i, stack<Node*>& parts, int& sum){
-    //Recursively print the tree in a tree-shaped format
+    //Recursively print each tree in a tree-shaped format
     if(u == nullptr){
         return;
     }
@@ -470,10 +465,12 @@ void fix_join_conditions(Node *u, Node* k, Node *v){
     fix_depths(v);
     k->black_height = 1;
     k->is_black = false;
-    k->parent = nullptr; //maybe problematic?
+    k->parent = nullptr;
 }
 
 pair_of_trees aux_join(Node *u, Node* k, Node *v){
+    //Given two trees u and v, and a node k, where all nodes in u have keys smaller than k's key and all nodes
+    //in v have keys greater that k's key, return a pair of trees {new root, k}
     int left_height, right_height;
     left_height = right_height = 1;
 
@@ -535,11 +532,19 @@ pair_of_trees aux_join(Node *u, Node* k, Node *v){
 Node* join(Node *u, Node* k, Node *v){
     //Given two trees u and v, and a node k, where all nodes in u have keys smaller than k's key and all nodes
     //in v have keys greater that k's key, then return a valid tree that has the nodes of all three trees
+
+    //fix conditions and join trees
     fix_join_conditions(u,k,v);
     pair_of_trees join = aux_join(u, k, v);
+
+    //get new root
     Node* root = join.left_tree;
+
+    //fix possible structural/colour problem
     fix(join.right_tree->right);
     fix(join.right_tree->left);
+
+    //check if root->parent is nullptr
     if(root->parent != nullptr){
         root = root->parent;
     }

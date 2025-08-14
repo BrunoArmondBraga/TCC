@@ -17,7 +17,7 @@ class Node{ //This is a red-black tree node
         Node *left = nullptr;
         Node *right = nullptr;
 
-        //Used in operation join
+        //Used in join operation
         int black_height = 2; //number of black nodes in the path from this node to a nullptr
 
         //Used in tango tree
@@ -42,7 +42,7 @@ struct pair_of_trees
 };
 
 void fix_depths(Node* u);
-//Given a node u, recalculate u->min/max_depth based on its children
+//Given a node u, calculate u->min/max_depth based on its children
 
 int size(Node* root);
 //Gives a node, return the number of nodes in its subtree
@@ -55,9 +55,16 @@ void print_trees(Node* root, bool all = true);
 //If all is equal to true, print the whole tree, if all is equal to false, print just the first tree
 
 pair_of_trees remove_min(Node* root);
+//Given the root of a valid redblack-tree, remove the node with minimum key of this tree
+//and return the pair {remaining tree, min_node} 
 
 pair_of_trees split(Node* root, float pivot);
+//Given the root of a tree and a float pivot, return a pair of tree that has its left tree as a valid
+//red-black tree with only nodes with key less than pivot and has its right tree as a valid red-black
+//tree with only nodes with key greater than pivot
 
 Node* join(Node *u, Node* k, Node *v);
+//Given two trees u and v, and a node k, where all nodes in u have keys smaller than k's key and all nodes
+//in v have keys greater that k's key, then return a valid tree that has the nodes of all three trees
 
 #endif

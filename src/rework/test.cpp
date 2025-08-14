@@ -7,17 +7,17 @@ using namespace std;
 
 int main(){
     int n, mode;
-    n = 5000;
+    n = 3000;
     mode = 3;
 
     Node* root = build_initial_tango(n);
 
 
     int seed = 0;
-    while(seed < 10){   
+    while(seed < 100){   
         Node* root = build_initial_tango(n);
         int counter = 1;
-        int num_test = 100;
+        int num_test = 3000;
         bool printing = false;
 
         while(true){
@@ -31,6 +31,10 @@ int main(){
 
                 bool in_tree = false;
                 root = search_in_tango(root, n, in_tree);
+                if(!in_tree){
+                    cout << "The tree does not have key " << n << "!" << endl;
+                    return 0;
+                }
                 counter++;
                 if(printing){
                     print_trees(root, true);
