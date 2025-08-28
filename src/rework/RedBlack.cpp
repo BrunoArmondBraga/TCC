@@ -26,9 +26,6 @@ void fix_depths(Node* u){
 
 Node *left_rotate(Node *u){
     //Given a node u, rotate it to the left and return the parent node
-    if((u == nullptr)|| (u->right == nullptr)){
-        return u;
-    }
     Node *aux = u->right;
     u->right = aux->left;
     if(u->right != nullptr){
@@ -60,9 +57,6 @@ Node *left_rotate(Node *u){
 
 Node *right_rotate(Node *u){
     //Given a node u, rotate it to the right and return the parent node
-    if((u == nullptr)|| (u->left == nullptr)){
-        return u;
-    }
     Node *aux = u->left;
     u->left = aux->right;
     if(u->left != nullptr){
